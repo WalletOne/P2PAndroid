@@ -1,6 +1,7 @@
 package com.aronskiy_anton.sdk.models;
 
 import com.aronskiy_anton.sdk.constants.CurrencyId;
+import com.aronskiy_anton.sdk.library.Mapper;
 
 import org.json.JSONObject;
 
@@ -11,7 +12,7 @@ import java.util.Date;
  * Created by aaronskiy on 25.08.2017.
  */
 
-public class Deal {
+public class Deal implements Mapper.Mappable {
 
     public static final String DEAL_STATE_ID_CREATED = "Created";
     public static final String DEAL_STATE_ID_PROCESSING = "PaymentProcessing";
@@ -27,7 +28,7 @@ public class Deal {
     public static final String DEAL_TYPE_ID_DEFERRED = "Deferred";
     public static final String DEAL_STATE_ID_INSTANT = "Instant";
 
-    private String platformDealId  = "";
+    private String platformDealId = "";
 
     private String dealStateId = "";
 
@@ -37,7 +38,7 @@ public class Deal {
 
     private Date expireDate;
 
-    private BigDecimal amount  = new BigDecimal(0.0);
+    private BigDecimal amount = new BigDecimal(0.0);
 
     private CurrencyId currencyId = CurrencyId.RUB;
 
@@ -45,7 +46,7 @@ public class Deal {
 
     private BigDecimal platformBonusAmount = new BigDecimal(0.0);
 
-    private String platformPayerId  = "";
+    private String platformPayerId = "";
 
     private Integer payerCardId = 0;
 
@@ -61,33 +62,28 @@ public class Deal {
 
     private String dealTypeId = "";
 
-    public Deal fromJson(JSONObject jsonObject){
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T init(JSONObject o) {
         Deal deal = new Deal();
-        /*try{
-            jsonObject.get("PlatformDealId");
 
-            deal.platformDealId = jsonObject.optString("PlatformDealId", "");
-            deal.dealStateId = jsonObject.optString("DealStateId", "");
-            deal.createDate = ISO8601DateParser.parse(jsonObject.getString("CreateDate"));
-            deal.createDate = ISO8601DateParser.parse(jsonObject.getString("UpdateDate"));
-            deal.createDate = ISO8601DateParser.parse(jsonObject.getString("ExpireDate"));
-            deal.amount = new BigDecimal(jsonObject.getDouble("Amount"));
-            deal.currencyId = jsonObject.(json["CurrencyId"], .rub);
-            deal.payerCommissionAmount = jsonObject.(json["PayerCommissionAmount"], 0.0);
-            deal.platformBonusAmount = jsonObject.(json["PlatformBonusAmount"], 0.0);
-            deal.platformPayerId = jsonObject.(json["PlatformPayerId"], "");
-            deal.payerPhoneNumber = jsonObject.(json["PayerPhoneNumber"], "");
-            deal.payerCardId = jsonObject.(json["PayerCardId"], 0);
-            deal.platformBeneficiaryId = jsonObject.(json["PlatformBeneficiaryId"], "");
-            deal.beneficiaryCardId = jsonObject.(json["BeneficiaryCardId"], 0);
-            deal.shortDescription = jsonObject.(json["ShortDescription"], "");
-            deal.fullDescription = jsonObject.(json["FullDescription"], "");
-            deal.dealTypeId = jsonObject.(json["DealTypeId"], "");
-        } catch (JSONException exception){
-
-        } catch (ParseException ParceException){
-
-        }*/
-        return deal;
+        deal.platformDealId = Mapper.map(o.opt("PlatformDealId"), platformDealId);
+        deal.dealStateId = Mapper.map(o.opt("DealStateId"), dealStateId);
+        deal.createDate = Mapper.map(o.opt("CreateDate"));
+        deal.updatedate = Mapper.map(o.opt("UpdateDate"));
+        deal.expireDate = Mapper.map(o.opt("ExpireDate"));
+        deal.amount = Mapper.map(o.opt("Amount"), amount);
+        deal.currencyId = Mapper.map(o.opt("CurrencyId"), currencyId);
+        deal.payerCommissionAmount = Mapper.map(o.opt("PayerCommissionAmount"), payerCommissionAmount);
+        deal.platformBonusAmount = Mapper.map(o.opt("PlatformBonusAmount"), platformBonusAmount);
+        deal.platformPayerId = Mapper.map(o.opt("PlatformPayerId"), platformPayerId);
+        deal.payerPhoneNumber = Mapper.map(o.opt("PayerPhoneNumber"), payerPhoneNumber);
+        deal.payerCardId = Mapper.map(o.opt("PayerCardId"), payerCardId);
+        deal.platformBeneficiaryId = Mapper.map(o.opt("PlatformBeneficiaryId"), platformBeneficiaryId);
+        deal.beneficiaryCardId = Mapper.map(o.opt("BeneficiaryCardId"), beneficiaryCardId);
+        deal.shortDescription = Mapper.map(o.opt("ShortDescription"), shortDescription);
+        deal.fullDescription = Mapper.map(o.opt("FullDescription"), fullDescription);
+        deal.dealTypeId = Mapper.map(o.opt("DealTypeId"), dealTypeId);
+        return (T) deal;
     }
 }

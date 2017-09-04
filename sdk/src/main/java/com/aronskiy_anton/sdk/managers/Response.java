@@ -6,7 +6,6 @@ package com.aronskiy_anton.sdk.managers;
 
 import com.aronskiy_anton.sdk.W1P2PException;
 import com.aronskiy_anton.sdk.internal.Utility;
-import com.aronskiy_anton.sdk.models.Deal;
 import com.aronskiy_anton.sdk.models.RequestBuilder;
 
 import org.json.JSONArray;
@@ -72,19 +71,6 @@ public class Response {
         return request;
     }
 
-    /**
-     * Indicates whether paging is being done forward or backward.
-     */
-    public enum PagingDirection {
-        /**
-         * Indicates that paging is being performed in the forward direction.
-         */
-        NEXT,
-        /**
-         * Indicates that paging is being performed in the backward direction.
-         */
-        PREVIOUS
-    }
 
     /**
      * Provides a debugging string for this response.
@@ -199,17 +185,16 @@ public class Response {
 
     private static List<Response> createResponsesFromObject(HttpURLConnection connection, RequestBuilder requests,
                                                             Object object, boolean isFromCache) throws W1P2PException, JSONException {
-        assert (connection != null) || isFromCache;
 
         List<Response> responses = new ArrayList<>();
         Object originalResult = object;
-
 
         try {
             // Single request case -- the entire response is the result, wrap it as "body" so we can handle it
             // the same as we do in the batched case. We get the response code from the actual HTTP response,
             // as opposed to the batched case where it is returned as a "code" element.
             JSONObject jsonObject = new JSONObject();
+
             jsonObject.put(BODY_KEY, object);
             int responseCode = (connection != null) ? connection.getResponseCode() : 200;
             jsonObject.put(CODE_KEY, responseCode);
@@ -219,6 +204,7 @@ public class Response {
 
             // Pretend we got an array of 1 back.
             object = jsonArray;
+
         } catch (JSONException e) {
             responses.add(new Response(requests, connection));
         } catch (IOException e) {
@@ -236,9 +222,6 @@ public class Response {
         JSONArray jsonArray = (JSONArray) object;
 
         for (int i = 0; i < jsonArray.length(); ++i) {
-            Deal deal = new Deal();
-            deal.fromJson((JSONObject) jsonArray.get(i));
-
             RequestBuilder request = requests;
             try {
                 Object obj = jsonArray.get(i);

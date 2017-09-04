@@ -1,32 +1,34 @@
 package com.aronskiy_anton.sdk.constants;
 
 /**
- * Created by aaronskiy on 25.08.2017.
+ * Created by aaronskiy on 28.08.2017.
  */
 
 public enum CurrencyId {
 
-    RUB("643", "\u20BD" , false); 	// Russian Ruble
+    RUB(1); 	// Russian Ruble
 
-    private String stringValue;
-    private String sign;
-    private boolean signToLeft;
+    private final int id;
 
-    CurrencyId (String stringValue, String sign, boolean signToLeft){
-        this.stringValue = stringValue;
-        this.sign = sign;
-        this.signToLeft = signToLeft;
+    CurrencyId(int id) {
+        this.id = id;
     }
 
-    public String getId() {
-        return stringValue;
+    public String getAlphabeticCode() {
+        switch (this){
+            case RUB:
+                return "RUB";
+                default:
+                    return "";
+        }
     }
 
-    public String getSign() {
-        return sign;
-    }
-
-    public boolean isSignToLeft() {
-        return signToLeft;
+    public String getSymbol() {
+        switch (this){
+            case RUB:
+                return "\u20BD";
+            default:
+                return "";
+        }
     }
 }

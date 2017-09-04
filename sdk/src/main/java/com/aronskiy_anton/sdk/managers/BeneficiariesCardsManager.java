@@ -5,7 +5,9 @@ import android.text.TextUtils;
 
 import com.aronskiy_anton.sdk.Manager;
 import com.aronskiy_anton.sdk.P2PCore;
+import com.aronskiy_anton.sdk.library.CompleteHandler;
 import com.aronskiy_anton.sdk.library.URLComposer;
+import com.aronskiy_anton.sdk.models.BankCard;
 import com.aronskiy_anton.sdk.models.RequestBuilder;
 
 import java.io.UnsupportedEncodingException;
@@ -33,8 +35,8 @@ public class BeneficiariesCardsManager extends Manager {
      * Get all cards of beneficiary
      * @return all cards of beneficiary
      */
-    public List<Response> cards(){
-        return core.networkManager.request(composer.beneficiariesCards(core.getBenificaryId()), NetworkManager.MethodType.GET, null);
+    public List<BankCard> cards(CompleteHandler<List<BankCard>, Throwable> callback){
+        return core.networkManager.requestList(composer.beneficiariesCards(core.getBenificaryId()), NetworkManager.MethodType.GET, null, BankCard.class, callback);
     }
 
     /**
@@ -42,8 +44,8 @@ public class BeneficiariesCardsManager extends Manager {
      * @param cardId Id card
      * @return card of beneficiary by id
      */
-    public List<Response> card(int cardId){
-        return core.networkManager.request(composer.beneficiariesCardsCard(core.getBenificaryId(), cardId), NetworkManager.MethodType.GET, null);
+    public BankCard card(int cardId, CompleteHandler<BankCard, Throwable> callback){
+        return core.networkManager.request(composer.beneficiariesCardsCard(core.getBenificaryId(), cardId), NetworkManager.MethodType.GET, null, BankCard.class, callback);
     }
 
     /**
@@ -52,7 +54,7 @@ public class BeneficiariesCardsManager extends Manager {
      */
 
     public void delete(int cardId){
-        core.networkManager.request(composer.beneficiariesCardsCard(core.getBenificaryId(), cardId), NetworkManager.MethodType.DELETE, null);
+        core.networkManager.request(composer.beneficiariesCardsCard(core.getBenificaryId(), cardId), NetworkManager.MethodType.DELETE, null, null, null);
     }
 
     /**
