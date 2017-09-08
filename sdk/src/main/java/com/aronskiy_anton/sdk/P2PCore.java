@@ -7,7 +7,11 @@ import com.aronskiy_anton.sdk.managers.PayersCardsManager;
 import com.aronskiy_anton.sdk.managers.PayoutsManager;
 import com.aronskiy_anton.sdk.managers.RefundsManager;
 
-public class P2PCore {
+public enum P2PCore {
+
+    INSTANCE;
+
+    private boolean initialised = false;
 
     private String platformId = "";
 
@@ -72,9 +76,16 @@ public class P2PCore {
     /// Manager for working with payers cards
     public PayersCardsManager payersCards = new PayersCardsManager(this);
 
+    public boolean isInitialized() {
+        return this.initialised;
+    }
+
     public void setPlatform(String platformId, String signatureKey){
-        this.platformId = platformId;
-        this.signatureKey = signatureKey;
+        if(!this.initialised) {
+            this.platformId = platformId;
+            this.signatureKey = signatureKey;
+            this.initialised = true;
+        }
     }
 
     public void setBeneficiary(String id, String title, String phoneNumber) {
@@ -88,6 +99,8 @@ public class P2PCore {
         this.payerTitle = title;
         this.payerPhoneNumber = phoneNumber;
     }
+
+
 }
 
 

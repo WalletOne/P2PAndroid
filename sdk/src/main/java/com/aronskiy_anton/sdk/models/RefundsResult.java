@@ -2,6 +2,7 @@ package com.aronskiy_anton.sdk.models;
 
 import com.aronskiy_anton.sdk.library.Mapper;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -21,7 +22,11 @@ public class RefundsResult implements Mapper.Mappable {
     @Override
     public <T> T init(JSONObject object) {
         RefundsResult result = new RefundsResult();
-        result.refunds = Mapper.map(object.opt("Refunds"), refunds);
+        try {
+            result.refunds = Mapper.map(object.opt("Refunds"), refunds, Refund.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         result.totalCount = Mapper.map(object.opt("TotalCount"), totalCount);
         return (T) result;
     }

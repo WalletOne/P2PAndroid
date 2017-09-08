@@ -54,7 +54,7 @@ public class RefundsManager extends Manager {
      * Get all refunds by payer id
      * @return all refunds of payer
      */
-    public RefundsResult payouts(int pageNumber, int itemsPerPage, String dealId, CompleteHandler<RefundsResult, Throwable> callback){
+    public RefundsResult refunds(int pageNumber, int itemsPerPage, String dealId, CompleteHandler<RefundsResult, Throwable> callback){
         String url = composer.payersRefunds(core.getPayerId(), pageNumber, itemsPerPage, dealId);
         return core.networkManager.request(url, NetworkManager.MethodType.GET, null, RefundsResult.class, callback);
     }

@@ -3,11 +3,13 @@ package com.aronskiy_anton.sdk.library;
 import com.aronskiy_anton.sdk.constants.CurrencyId;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -49,22 +51,34 @@ public class Mapper {
     }
 
     public static CurrencyId map(Object object, CurrencyId def) {
-        return (object instanceof CurrencyId ? (CurrencyId) object : def);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T extends Mappable> T map(Object object, T def) {
-        if (object instanceof JSONObject) {
-            return ((T) object).init((JSONObject) object);
+        if(object instanceof Integer){
+            CurrencyId id = CurrencyId.getCurrencyById((Integer) object);
+            return CurrencyId.UNDEFINED != id ? id : def;
         } else {
             return def;
         }
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Mappable> List<T> map(Object object, List<T> def) {
+    public static <T extends Mappable> T map(Object object, T def, Class<T> cls) {
+        if (object instanceof JSONObject) {
+            return (T) ModelFactory.newInstance(cls, (JSONObject) object);
+        } else {
+            return def;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends Mappable> List<T> map(Object object, List<T> def, Class<T> cls) throws JSONException {
+        List<T> list = new ArrayList<>();
         if (object instanceof JSONArray) {
-            return ((T) object).init((JSONObject) object);
+            JSONArray jsonArray = (JSONArray) object;
+            for (int i = 0; i <  jsonArray.length(); i++) {
+                JSONObject model = jsonArray.getJSONObject(i);
+                T t = map(model, (T) ModelFactory.newInstance(cls, null), cls);
+                list.add(t);
+            }
+            return list;
         } else {
             return def;
         }
@@ -90,7 +104,7 @@ public class Mapper {
                 try {
                     return dateFormat.parse(value);
                 } catch (ParseException e) {
-
+                    e.printStackTrace();
                 }
             }
         }

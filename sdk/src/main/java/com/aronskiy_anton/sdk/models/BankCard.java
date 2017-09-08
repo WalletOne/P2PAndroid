@@ -40,4 +40,20 @@ public class BankCard implements Mapper.Mappable {
 
     public BankCard() {
     }
+
+    public String getCardMask() {
+        return cardMask;
+    }
+
+    public int getCardId() {
+        return cardId;
+    }
+
+    public String getCardHolder() {
+        return cardHolder;
+    }
+
+    public String getExpireDate() {
+        return expireDate;
+    }
 }

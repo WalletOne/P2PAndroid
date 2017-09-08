@@ -96,7 +96,7 @@ public class BeneficiariesCardsManager extends Manager {
                 .setSignature(signature)
                 .setTimestamp(timestamp)
                 .setUrlString(urlString)
-                .setHttpBody(queryString)
+                //.setHttpBody(queryString)
                 .build();
 
         return builder;

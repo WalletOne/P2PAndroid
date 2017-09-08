@@ -1,5 +1,7 @@
 package com.aronskiy_anton.sdk.managers;
 
+import android.os.AsyncTask;
+
 import com.aronskiy_anton.sdk.Manager;
 import com.aronskiy_anton.sdk.P2PCore;
 import com.aronskiy_anton.sdk.W1P2PException;
@@ -129,34 +131,46 @@ public class NetworkManager extends Manager {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Mapper.Mappable> List<T> requestList(String urlString, MethodType method, Map<String, Object> parameters, final Class<T> cls, final CompleteHandler<List<T>, Throwable> callback) {
-        requestWithPrint(urlString, method, parameters, new CompleteHandler<Object, Throwable>() {
+    public <T extends Mapper.Mappable> List<T> requestList(final String urlString, final MethodType method, final Map<String, Object> parameters, final Class<T> cls, final CompleteHandler<List<T>, Throwable> callback) {
+
+        AsyncTask.execute((new Runnable() {
             @Override
-            public void completed(Object json, Throwable var2) {
-                ArrayList<T> listT = new ArrayList<>();
-                JSONArray jArray = (JSONArray) json;
-                if (jArray != null) {
-                    for (int i = 0; i < jArray.length(); i++) {
-                        T t = (T) ModelFactory.newInstance(cls, (JSONObject) jArray.opt(i));
-                        listT.add(t);
+            public void run() {
+                requestWithPrint(urlString, method, parameters, new CompleteHandler<Object, Throwable>() {
+                    @Override
+                    public void completed(Object json, Throwable var2) {
+                        ArrayList<T> listT = new ArrayList<>();
+                        JSONArray jArray = (JSONArray) json;
+                        if (jArray != null) {
+                            for (int i = 0; i < jArray.length(); i++) {
+                                T t = (T) ModelFactory.newInstance(cls, (JSONObject) jArray.opt(i));
+                                listT.add(t);
+                            }
+                        }
+                        callback.completed(listT, var2);
                     }
-                }
-                callback.completed(listT, var2);
+                });
             }
-        });
+        }));
 
         return null;
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Mapper.Mappable> T request(String urlString, MethodType method, Map<String, Object> parameters, final Class<?> cls, final CompleteHandler<T, Throwable> callback) {
-        requestWithPrint(urlString, method, parameters, new CompleteHandler<Object, Throwable>() {
+    public <T extends Mapper.Mappable> T request(final String urlString, final MethodType method, final Map<String, Object> parameters, final Class<?> cls, final CompleteHandler<T, Throwable> callback) {
+
+        AsyncTask.execute((new Runnable() {
             @Override
-            public void completed(Object json, Throwable var2) {
-                T instance = (T) ModelFactory.newInstance(cls, (JSONObject) json);
-                callback.completed(instance, var2);
+            public void run() {
+                requestWithPrint(urlString, method, parameters, new CompleteHandler<Object, Throwable>() {
+                    @Override
+                    public void completed(Object json, Throwable var2) {
+                        T instance = (T) ModelFactory.newInstance(cls, (JSONObject) json);
+                        callback.completed(instance, var2);
+                    }
+                });
             }
-        });
+        }));
 
         return null;
     }
@@ -166,14 +180,11 @@ public class NetworkManager extends Manager {
         String timestamp = ISO8601TimeStamp.getISO8601TimeStamp(new Date());
         String bodyAsString = "";
 
-        final String signature = makeSignature(urlString, timestamp, bodyAsString);
-
-        RequestBuilder requestBuilder = RequestBuilder.newBuilder()
+        RequestBuilder.Builder requestBuilder = RequestBuilder.newBuilder();
+        requestBuilder
                 .setMethodType(method)
-                .setSignature(signature)
                 .setTimestamp(timestamp)
-                .setUrlString(urlString)
-                .build();
+                .setUrlString(urlString);
 
         try {
             if (parameters != null) {
@@ -181,17 +192,31 @@ public class NetworkManager extends Manager {
                 for (Map.Entry<String, Object> entry : parameters.entrySet()) {
                     jsonObject.put(entry.getKey(), entry.getValue());
                 }
+                bodyAsString = jsonObject.toString();
+
+                String base64 = Base64.encode(getSha256(bodyAsString));
+                requestBuilder.setHttpBody(base64);
             }
         } catch (JSONException ex) {
             ex.printStackTrace();
+        } catch (RuntimeException ex){
+            ex.printStackTrace();
         }
 
-        urlConnection = toHttpConnection(requestBuilder);
+        final String signature = makeSignature(urlString, timestamp, bodyAsString);
 
-        return lowLevelRequest_json(urlConnection, callback);
+        requestBuilder.setSignature(signature);
+
+        //urlConnection = toHttpConnection(requestBuilder.build());
+
+        LoadDataAsync task = new LoadDataAsync(callback);
+        task.execute(requestBuilder.build());
+
+        //return lowLevelRequestJson(urlConnection, callback);
+        return null;
     }
-
-    private JSONObject lowLevelRequest_json(HttpURLConnection connection, CompleteHandler<Object, Throwable> callback) {
+/*
+    private JSONObject lowLevelRequestJson(HttpURLConnection connection, CompleteHandler<Object, Throwable> callback) {
 
         InputStream stream = null;
 
@@ -215,10 +240,10 @@ public class NetworkManager extends Manager {
         }
         return null;
     }
-
+*/
     private HttpURLConnection toHttpConnection(RequestBuilder requests) {
 
-        URL url = null;
+        URL url;
         try {
             url = new URL(requests.getUrlString());
         } catch (MalformedURLException e) {
@@ -228,7 +253,7 @@ public class NetworkManager extends Manager {
         HttpURLConnection connection;
         try {
             connection = createConnection(url);
-            connection.setConnectTimeout(200);
+            connection.setConnectTimeout(2000);
             connection.setRequestMethod(requests.getMethodType().getMethodTypeId());
 
             connection.setRequestProperty("X-Wallet-PlatformId", core.getPlatformId());
@@ -256,4 +281,49 @@ public class NetworkManager extends Manager {
             return dateFormat.format(date);
         }
     }
+
+    class LoadDataAsync extends AsyncTask<RequestBuilder, Void, Object> {
+
+        private final CompleteHandler<Object, Throwable> callback;
+
+        private LoadDataAsync(CompleteHandler<Object, Throwable> callback) {
+            this.callback = callback;
+        }
+
+        @Override
+        protected Object doInBackground(RequestBuilder... request) {
+
+            HttpURLConnection urlConnection = toHttpConnection(request[0]);
+
+            InputStream stream = null;
+            Object resultObject = null;
+
+            try {
+                if (urlConnection.getResponseCode() >= 400) {
+                    stream = urlConnection.getErrorStream();
+                } else {
+
+                    stream = urlConnection.getInputStream();
+                    String responseString = Utility.readStreamToString(stream);
+                    JSONTokener tokener = new JSONTokener(responseString);
+                    resultObject = tokener.nextValue();
+                }
+            } catch (JSONException exception) {
+                exception.printStackTrace();
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            } finally {
+                Utility.closeQuietly(stream);
+            }
+            return resultObject;
+        }
+
+        @Override
+        protected void onPostExecute(Object result) {
+            if(callback != null) {
+                callback.completed(result, null);
+            }
+        }
+    }
+
 }

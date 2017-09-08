@@ -94,7 +94,7 @@ public class DealsManager extends Manager {
          params.put("PlatformBeneficiaryId", beneficiaryId);
          params.put("BeneficiaryCardId", beneficiaryCardId);
          params.put("Amount", amount);
-         params.put("CurrencyId", currencyId);
+         params.put("CurrencyId", currencyId.getId());
          params.put("ShortDescription", shortDescription);
          params.put("FullDescription", fullDescription);
          params.put("DeferPayout", deferPayout ? "true" : "false");
@@ -188,7 +188,7 @@ public class DealsManager extends Manager {
         RequestBuilder builder = RequestBuilder.newBuilder()
                 .setMethodType(NetworkManager.MethodType.POST)
                 .setUrlString(urlString)
-                .setHttpBody(queryString)
+                //.setHttpBody(queryString)
                 .build();
 
         return builder;

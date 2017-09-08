@@ -2,6 +2,7 @@ package com.aronskiy_anton.sdk.models;
 
 import com.aronskiy_anton.sdk.library.Mapper;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -19,9 +20,13 @@ public class PayoutResult implements Mapper.Mappable {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T init(JSONObject object) {
+    public <T> T init(JSONObject object){
         PayoutResult result = new PayoutResult();
-        result.payouts = Mapper.map(object.opt("Payouts"), payouts);
+        try {
+            result.payouts = Mapper.map(object.opt("Payouts"), payouts, Payout.class);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         result.totalCount = Mapper.map(object.opt("TotalCount"), totalCount);
         return (T) result;
     }
