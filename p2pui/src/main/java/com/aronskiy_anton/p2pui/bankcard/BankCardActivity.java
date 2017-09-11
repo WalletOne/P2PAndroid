@@ -13,7 +13,7 @@ import com.aronskiy_anton.p2pui.util.ActivityUtils;
 
 public class BankCardActivity extends AppCompatActivity {
 
-    BankCardPresenter.Owner owner = BankCardPresenter.Owner.PAYER;
+    BankCardPresenter.Owner owner = BankCardPresenter.Owner.BENEFICIARY;
 
     private BankCardPresenter presenter;
 
