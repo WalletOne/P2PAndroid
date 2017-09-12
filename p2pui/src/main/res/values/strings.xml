@@ -10,5 +10,11 @@
 
 
     <string name="menu_link_card">Добавить новую карту</string>
+    <string name="payouts_activity_title">Платежи</string>
+    <string name="no_payouts">Нет платежей</string>
+
+    <string name="payout_accepted_state">Платеж принят</string>
+    <string name="payout_precessing_state">Обработка платежа</string>
+    <string name="payout_error_state">Ошибка платежа</string>
 
 </resources>

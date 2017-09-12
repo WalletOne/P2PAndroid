@@ -12,6 +12,9 @@
                 android:value=".bankcard.BankCardActivity" />
         </activity>
 
+
+        <activity android:label="@string/payouts_activity_title" android:name=".payouts.PayoutsActivity"/>
+
     </application>
 
 </manifest>

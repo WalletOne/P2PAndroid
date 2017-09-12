@@ -96,13 +96,11 @@ public class BankCardFragment extends android.support.v4.app.Fragment implements
         return true;
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
         presenter.start();
     }
-
 
     @SuppressLint("RestrictedApi")
     @Override

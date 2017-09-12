@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.aronskiy_anton.p2pui.bankcard.BankCardActivity;
+import com.aronskiy_anton.p2pui.payouts.PayoutsActivity;
 import com.aronskiy_anton.sdk.P2PCore;
 import com.aronskiy_anton.sdk.constants.CurrencyId;
 import com.aronskiy_anton.sdk.library.CompleteHandler;
@@ -29,8 +30,11 @@ public class MainActivity extends AppCompatActivity {
         //asyncRequest = new AsyncRequest();
         //asyncRequest.execute(core);
 
-
+/*
         Intent intent = new Intent(this, BankCardActivity.class);
+        startActivity(intent);
+*/
+        Intent intent = new Intent(this, PayoutsActivity.class);
         startActivity(intent);
 
 

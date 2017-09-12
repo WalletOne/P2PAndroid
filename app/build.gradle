@@ -40,9 +40,9 @@ dependencies {
     /*androidTestImplementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
     androidTestImplementation "com.android.support:recyclerview-v7:$rootProject.supportLibraryVersion"
     androidTestImplementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"*/
-    implementation "com.android.support:design:$rootProject.supportLibraryVersion"
+    compile "com.android.support:design:$rootProject.supportLibraryVersion"
+    compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
 
-    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     androidTestImplementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
 
 }

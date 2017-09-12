@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="processing_state_color">#f7811a</color>
+    <color name="accepted_state_color">#2ec22a</color>
+</resources>

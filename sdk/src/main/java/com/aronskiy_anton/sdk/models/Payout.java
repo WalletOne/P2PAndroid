@@ -43,4 +43,19 @@ public class Payout implements Mapper.Mappable {
         return (T) payout;
     }
 
+    public String getPayoutStateId() {
+        return payoutStateId;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public CurrencyId getCurrencyId() {
+        return currencyId;
+    }
 }
