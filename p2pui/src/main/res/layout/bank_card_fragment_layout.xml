@@ -4,30 +4,46 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:id="@+id/tasksLL"
+        android:visibility="gone"
+        android:id="@+id/cards_block"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/filteringLabel"
+            android:id="@+id/cards_list_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:layout_height="48dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
             android:gravity="center_vertical"
+            android:text="@string/attached_cards"
+            android:textColor="#8A000000"
+            android:textSize="16sp"
             android:layout_marginLeft="@dimen/list_item_padding"
             android:layout_marginRight="@dimen/list_item_padding"
             android:layout_marginTop="@dimen/activity_vertical_margin"
             android:layout_marginBottom="@dimen/activity_vertical_margin" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#cccccc" />
+
         <ListView
+            android:background="@android:color/white"
             android:id="@+id/cards_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <include layout="@layout/bank_card_add_item" />
+
     </LinearLayout>
+
+    <include layout="@layout/no_cards" />
 
     <!--
     <LinearLayout

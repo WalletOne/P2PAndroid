@@ -1,4 +1,14 @@
 <resources>
-    <string name="app_name">P2PUI</string>
-    <string name="unknown_card_type">Unknown Card Type</string>
+    <string name="unknown_card_type">Неизвестный тип карты</string>
+    <string name="attached_cards">Привязанные карты</string>
+    <string name="add_new_card">Привязать новую карту</string>
+    <string name="no_cards">У вас нет привязанных карт</string>
+
+
+    <string name="bank_cards_activity_title">Банковские карты</string>
+    <string name="link_card_activity_title">Привязка новой карты</string>
+
+
+    <string name="menu_link_card">Добавить новую карту</string>
+
 </resources>

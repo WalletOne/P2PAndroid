@@ -2,6 +2,7 @@ package com.aronskiy_anton.p2pui.bankcard;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import com.aronskiy_anton.p2pui.R;
@@ -22,7 +23,7 @@ public class BankCardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bank_card_layout);
 
-        setTitle("Bank Cards");
+        setTitle(getResources().getString(R.string.bank_cards_activity_title));
 
         BankCardFragment bankCardFragment =
                 (BankCardFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);

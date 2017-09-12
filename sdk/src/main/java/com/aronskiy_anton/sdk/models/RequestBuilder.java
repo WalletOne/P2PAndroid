@@ -30,7 +30,7 @@ public class RequestBuilder {
         return timestamp;
     }
 
-    public String getHttpbody() {
+    public String getHttpBody() {
         return httpBody;
     }
 

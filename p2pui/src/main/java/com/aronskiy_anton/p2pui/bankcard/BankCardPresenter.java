@@ -1,5 +1,6 @@
 package com.aronskiy_anton.p2pui.bankcard;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.aronskiy_anton.sdk.P2PCore;
@@ -55,15 +56,17 @@ public class BankCardPresenter implements BankCardContract.Presenter {
             public void completed(List<BankCard> list, Throwable var2) {
                 isLoading = false;
                 cards = list != null ? list : new ArrayList<BankCard>();
-                bankCardView.showCards(cards);
+                if(cards.size() > 0){
+                    bankCardView.showCards(cards);
+                } else {
+                    bankCardView.showEmptyList();
+                }
             }
         };
 
         isLoading = true;
 
         cards = new ArrayList<>();
-
-        bankCardView.showCards(cards);
 
         switch (owner) {
             case BENEFICIARY:
@@ -74,4 +77,10 @@ public class BankCardPresenter implements BankCardContract.Presenter {
                 break;
         }
     }
+
+    @Override
+    public void addNewCard(){
+        bankCardView.showLinkCard();
+    }
+
 }

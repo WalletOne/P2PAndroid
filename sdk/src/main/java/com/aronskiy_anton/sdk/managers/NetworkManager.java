@@ -121,7 +121,7 @@ public class NetworkManager extends Manager {
     }
 
 
-    private byte[] getSha256(String base) {
+    public static byte[] getSha256(String base) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             return digest.digest(base.getBytes("UTF-8"));

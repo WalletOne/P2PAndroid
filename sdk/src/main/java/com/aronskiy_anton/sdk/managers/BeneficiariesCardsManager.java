@@ -2,15 +2,21 @@ package com.aronskiy_anton.sdk.managers;
 
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.aronskiy_anton.sdk.Manager;
 import com.aronskiy_anton.sdk.P2PCore;
+import com.aronskiy_anton.sdk.library.Base64;
 import com.aronskiy_anton.sdk.library.CompleteHandler;
 import com.aronskiy_anton.sdk.library.URLComposer;
 import com.aronskiy_anton.sdk.models.BankCard;
 import com.aronskiy_anton.sdk.models.RequestBuilder;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -18,6 +24,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by aaronskiy on 25.08.2017.
@@ -63,13 +70,14 @@ public class BeneficiariesCardsManager extends Manager {
      * @return request to API
      * @throws MalformedURLException
      */
-    public RequestBuilder linkNewCardRequest(String returnUrl) throws MalformedURLException, UnsupportedEncodingException {
+    public RequestBuilder linkNewCardRequest(String returnUrl){
 
+        HttpURLConnection urlConnection;
         final String urlString = "https://api.dev.walletone.com/p2p/beneficiary/card";
-        final URL url = new URL(urlString);
+        URL url;
         final String timestamp = NetworkManager.ISO8601TimeStamp.getISO8601TimeStamp(new Date());
 
-        Map<String, String> items = new HashMap<>();
+        Map<String, String> items = new TreeMap<>();
         items.put("PhoneNumber", core.getBenificaryPhoneNumber());
         items.put("PlatformBeneficiaryId", core.getBenificaryId());
         items.put("PlatformId", core.getPlatformId());
@@ -88,18 +96,41 @@ public class BeneficiariesCardsManager extends Manager {
 
         final  String queryString = TextUtils.join("&", params);
         System.out.print(queryString);
+        Log.d("LOG", queryString);
 
-        queryString.getBytes("UTF-8");
+        String base64 = Base64.encode(NetworkManager.getSha256(queryString));
 
-        RequestBuilder builder = RequestBuilder.newBuilder()
+        RequestBuilder.Builder builder = RequestBuilder.newBuilder()
                 .setMethodType(NetworkManager.MethodType.POST)
                 .setSignature(signature)
                 .setTimestamp(timestamp)
                 .setUrlString(urlString)
-                //.setHttpBody(queryString)
-                .build();
+                .setHttpBody(queryString);
 
-        return builder;
+
+        ////////////////////////////////////
+
+/*
+        try {
+            url = new URL(urlString);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+
+        NetworkManager.LoadDataAsync task = new NetworkManager.LoadDataAsync(callback);
+        task.execute(builder.build());
+
+*/
+
+
+
+
+
+
+
+
+        return builder.build();
     }
 
     class Composer extends URLComposer{
