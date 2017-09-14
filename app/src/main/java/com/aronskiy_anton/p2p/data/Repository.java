@@ -77,8 +77,8 @@ public class Repository implements P2PDataSource {
     }
 
     @Override
-    public void getDeal(@NonNull String cardId, final  @NonNull GetDealCallback callback) {
-        final Deal deal = cachedDeals.get(cardId);
+    public void getDeal(@NonNull String dealId, final  @NonNull GetDealCallback callback) {
+        final Deal deal = cachedDeals.get(dealId);
 
         // Simulate network by delaying the execution.
         Handler handler = new Handler();

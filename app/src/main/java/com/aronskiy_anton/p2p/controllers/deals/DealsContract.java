@@ -13,9 +13,9 @@ import java.util.List;
  * Created by anton on 13.09.2017.
  */
 
-public class DealsContract {
+public interface DealsContract {
 
-    public interface Presenter extends BasePresenter{
+    interface Presenter extends BasePresenter{
 
         void loadDeals(boolean forceUpdate);
 
@@ -26,7 +26,7 @@ public class DealsContract {
         boolean isAddButtonAvailable();
     }
 
-    public interface View extends BaseView<Presenter>{
+    interface View extends BaseView<Presenter>{
 
         void setLoadingIndicator(boolean show);
 
@@ -39,5 +39,7 @@ public class DealsContract {
         void showNoDeals();
 
         void showAddDealDialog();
+
+        void showDealDetail(String id);
     }
 }

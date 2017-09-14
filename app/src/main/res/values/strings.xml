@@ -17,5 +17,7 @@
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="example_app">Example App</string>
+    <string name="no_data">No data</string>
+    <string name="deal">Deal</string>
 
 </resources>

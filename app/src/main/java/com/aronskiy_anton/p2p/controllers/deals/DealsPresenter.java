@@ -49,7 +49,7 @@ public class DealsPresenter implements DealsContract.Presenter {
 
     @Override
     public void openDealDetails(Deal clickedDeal) {
-
+        view.showDealDetail(clickedDeal.getId());
     }
 
     @Override

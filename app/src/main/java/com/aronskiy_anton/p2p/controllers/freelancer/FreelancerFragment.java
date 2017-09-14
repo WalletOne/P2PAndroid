@@ -103,7 +103,6 @@ public class FreelancerFragment extends Fragment implements FreelancerContract.V
             case R.id.deals_button:
                 intent = new Intent(getContext(), DealsActivity.class);
                 intent.putExtra(ARG_USER_TYPE_ID, UserTypeId.FREELANCER.getId());
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;
             case R.id.bank_card_button:

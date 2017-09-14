@@ -8,13 +8,13 @@ import com.aronskiy_anton.p2p.models.Freelancer;
  * Created by anton on 13.09.2017.
  */
 
-public class FreelancerContract {
+public interface FreelancerContract {
 
-    public interface Presenter extends BasePresenter{
+    interface Presenter extends BasePresenter{
 
     }
 
-    public interface View extends BaseView<Presenter>{
+    interface View extends BaseView<Presenter>{
         void showUserData(Freelancer freelancer);
     }
 }

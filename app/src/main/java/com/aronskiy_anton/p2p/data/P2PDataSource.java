@@ -22,7 +22,7 @@ public interface P2PDataSource {
 
     public interface GetDealCallback {
 
-        void onDealLoaded(Deal deals);
+        void onDealLoaded(Deal deal);
 
         void onDataNotAvailable();
     }

@@ -1,6 +1,7 @@
 package com.aronskiy_anton.p2p.controllers.deals;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,10 +20,15 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import com.aronskiy_anton.p2p.R;
+import com.aronskiy_anton.p2p.controllers.deal.DealActivity;
 import com.aronskiy_anton.p2p.models.Deal;
+import com.aronskiy_anton.p2p.models.UserTypeId;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.aronskiy_anton.p2p.controllers.deal.DealActivity.ARG_DEAL_ID;
+import static com.aronskiy_anton.p2p.controllers.deals.DealsActivity.ARG_USER_TYPE_ID;
 
 
 /**
@@ -159,6 +165,13 @@ public class DealsFragment extends Fragment implements DealsContract.View {
         });
 
         builder.show();
+    }
+
+    @Override
+    public void showDealDetail(String id) {
+        Intent intent = new Intent(getContext(), DealActivity.class);
+        intent.putExtra(ARG_DEAL_ID, id);
+        startActivity(intent);
     }
 
     /**
