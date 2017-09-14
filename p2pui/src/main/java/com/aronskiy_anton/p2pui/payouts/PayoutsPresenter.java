@@ -26,7 +26,7 @@ public class PayoutsPresenter implements PayoutsContract.Presenter {
 
     private boolean isLoadMoreInProgress = false;
 
-    private boolean isAllowLoadMore = false;
+    private boolean isAllowLoadMore = true;
 
     private Integer pageNumber = 0;
 
@@ -49,7 +49,6 @@ public class PayoutsPresenter implements PayoutsContract.Presenter {
 
     @Override
     public void loadPayouts(boolean forceUpdate) {
-        // Simplification for sample: a network reload will be forced on first load.
         loadPayouts(forceUpdate || firstLoad, true);
         firstLoad = false;
     }
@@ -64,8 +63,11 @@ public class PayoutsPresenter implements PayoutsContract.Presenter {
 
                 isLoading = false;
                 pageNumber += 1;
-                isAllowLoadMore = !payoutsList.isEmpty();
-                payouts = list != null ? payoutsList : new ArrayList<Payout>();
+                isAllowLoadMore = payoutsList.size() >= itemsPerPage;
+                if (!isAllowLoadMore) {
+                    payoutsView.setAllDataAreLoaded();
+                }
+                payouts =  payoutsList;
                 if (payouts.size() > 0) {
                     payoutsView.showPayouts(payouts);
                 } else {
@@ -93,18 +95,19 @@ public class PayoutsPresenter implements PayoutsContract.Presenter {
                 isLoadMoreInProgress = false;
                 payouts.addAll(payoutsList);
                 pageNumber += 1;
-                isAllowLoadMore = !payoutsList.isEmpty();
+                isAllowLoadMore = !payoutsList.isEmpty() && payoutsList.size() >= itemsPerPage;
 
-                //payouts = list != null ? payoutsList : new ArrayList<Payout>();
+                if (!isAllowLoadMore) {
+                    payoutsView.setAllDataAreLoaded();
+                }
                 if (payouts.size() > 0) {
                     payoutsView.showPayouts(payouts);
-                } else {
-                    payoutsView.showEmptyList();
                 }
+
             }
         };
 
-        if(isAllowLoadMore) {
+        if (isAllowLoadMore) {
             P2PCore.INSTANCE.payoutsManager.payouts(pageNumber, itemsPerPage, dealId, handler);
         }
     }

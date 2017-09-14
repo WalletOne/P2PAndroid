@@ -21,10 +21,11 @@ public interface PayoutsContract {
     }
 
     interface View extends BaseView<PayoutsContract.Presenter> {
-        void showPayouts(List<Payout> tasks);
+        void showPayouts(List<Payout> payouts);
 
         void showEmptyList();
 
+        void setAllDataAreLoaded();
     }
 
 }

@@ -16,5 +16,12 @@
     <string name="payout_accepted_state">Платеж принят</string>
     <string name="payout_precessing_state">Обработка платежа</string>
     <string name="payout_error_state">Ошибка платежа</string>
+    <string name="refunds_activity_title">Возвраты</string>
+    <string name="no_refunds">Нет возвратов</string>
+    <string name="refund_error_state">Ошибка возврата</string>
+    <string name="refund_precessing_state">Возврат в процессе</string>
+    <string name="refund_accepted_state">Успешный возврат</string>
+    <string name="activity_title_link_card">Привязка карты</string>
+    <string name="activity_title_pay_deal">Создание сделки</string>
 
 </resources>

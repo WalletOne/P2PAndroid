@@ -1,23 +1,15 @@
 package com.aronskiy_anton.p2pui.payouts;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.ListView;
 
 import com.aronskiy_anton.p2pui.R;
-import com.aronskiy_anton.p2pui.bankcard.BankCardAdapter;
-import com.aronskiy_anton.p2pui.bankcard.BankCardFragment;
-import com.aronskiy_anton.sdk.models.BankCard;
 import com.aronskiy_anton.sdk.models.Payout;
 
 import java.util.ArrayList;
@@ -28,23 +20,17 @@ import java.util.List;
  */
 
 public class PayoutsFragment extends android.support.v4.app.Fragment implements PayoutsContract.View,
-        PayoutsAdapter2.OnScrolledToBottomListener{
+        PayoutsAdapter.OnScrolledToBottomListener{
 
     private View noPayoutsView;
 
-    private ListView payoutsListView;
-
-    private RecyclerView payoutsListView2;
+    private RecyclerView payoutsListView;
 
     private PayoutsAdapter payoutsAdapter;
-
-    private PayoutsAdapter2 payoutsAdapter2;
 
     private LinearLayoutManager layoutManager;
 
     private boolean isLoading = false;
-
-    private Integer pageCount = 0;
 
     PayoutsContract.Presenter presenter;
 
@@ -60,8 +46,8 @@ public class PayoutsFragment extends android.support.v4.app.Fragment implements 
         super.onCreate(savedInstanceState);
         //payoutsAdapter = new PayoutsAdapter(new ArrayList<Payout>(0));
 
-        payoutsAdapter2 = new PayoutsAdapter2(new ArrayList<Payout>(0));
-        payoutsAdapter2.setOnScrolledToBottomListener(this);
+        payoutsAdapter = new PayoutsAdapter(new ArrayList<Payout>(0));
+        payoutsAdapter.setOnScrolledToBottomListener(this);
 
     }
 
@@ -70,16 +56,11 @@ public class PayoutsFragment extends android.support.v4.app.Fragment implements 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.payouts_fragment_layout, container, false);
 
-        // Set up bank payouts view
-        //payoutsListView = root.findViewById(R.id.payouts_list);
-        //payoutsListView.setAdapter(payoutsAdapter);
-
+        // Set up payouts view
         layoutManager = new LinearLayoutManager(getContext());
-        payoutsListView2 = root.findViewById(R.id.payouts_list2);
-        payoutsListView2.setLayoutManager(layoutManager);
-        payoutsListView2.setAdapter(payoutsAdapter2);
-
-
+        payoutsListView = root.findViewById(R.id.payouts_list2);
+        payoutsListView.setLayoutManager(layoutManager);
+        payoutsListView.setAdapter(payoutsAdapter);
 
         // Set up no payouts view
         noPayoutsView = root.findViewById(R.id.no_payouts);
@@ -102,10 +83,8 @@ public class PayoutsFragment extends android.support.v4.app.Fragment implements 
 
     @Override
     public void showPayouts(List<Payout> payouts) {
-        //payoutsAdapter.replaceData(payouts);
-        payoutsAdapter2.replaceData(payouts);
-        //payoutsListView.setVisibility(View.VISIBLE);
-        payoutsListView2.setVisibility(View.VISIBLE);
+        payoutsAdapter.replaceData(payouts);
+        payoutsListView.setVisibility(View.VISIBLE);
         noPayoutsView.setVisibility(View.GONE);
     }
 
@@ -118,6 +97,11 @@ public class PayoutsFragment extends android.support.v4.app.Fragment implements 
     @Override
     public void showEmptyList() {
 
+    }
+
+    @Override
+    public void setAllDataAreLoaded() {
+        payoutsAdapter.disableLoadMore();
     }
 
     @Override

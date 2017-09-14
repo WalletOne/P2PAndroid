@@ -31,6 +31,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -292,6 +293,12 @@ public class NetworkManager extends Manager {
 
         @Override
         protected Object doInBackground(RequestBuilder... request) {
+
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             HttpURLConnection urlConnection = toHttpConnection(request[0]);
 

@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">P2P</string>
+    <string name="freelancer_activity_title">Freelancer</string>
+    <string name="employer_activity_title">Employer</string>
+    <string name="get_work">Get work</string>
+    <string name="deals">Deals</string>
+    <string name="Account">Account</string>
+    <string name="bank_cards">Bank Cards</string>
+    <string name="Payouts">Payouts</string>
+    <string name="refunds">Refunds</string>
+    <string name="menu_add_deal">Add deal</string>
+    <string name="no_deals">You have no Deals</string>
+    <string name="no_deals_add">Add a deal item +</string>
+    <string name="title_deal_hint">Title</string>
+    <string name="description_deal_hint">Enter description</string>
+    <string name="enter_deal_data">Enter deal data</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="example_app">Example App</string>
+
 </resources>

@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.aronskiy_anton.p2pui.R;
@@ -40,6 +41,8 @@ public class BankCardFragment extends android.support.v4.app.Fragment implements
     private BankCardAdapter cardsAdapter;
 
     private BankCardContract.Presenter presenter;
+
+    private ProgressBar progressBar;
 
     public BankCardFragment() {
     }
@@ -75,16 +78,24 @@ public class BankCardFragment extends android.support.v4.app.Fragment implements
                 presenter.addNewCard();
             }
         });
+        setLinkCardVisibility(presenter.isAddNewCardAvailable());
 
+        progressBar = root.findViewById(R.id.progress_bar);
 
         setHasOptionsMenu(true);
 
         return root;
     }
 
+    private void setLinkCardVisibility(boolean visibility) {
+        link_card_item.setVisibility(visibility ? View.VISIBLE : View.GONE);
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.bank_cards_menu, menu);
+        if(presenter.isAddNewCardAvailable()) {
+            inflater.inflate(R.menu.bank_cards_menu, menu);
+        }
     }
 
     @Override
@@ -139,6 +150,11 @@ public class BankCardFragment extends android.support.v4.app.Fragment implements
                 }
                 break;
         }
+    }
+
+    @Override
+    public void setLoadingIndicator(boolean show) {
+        progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     /**

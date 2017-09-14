@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,11 +14,12 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 
 import com.aronskiy_anton.p2pui.R;
 import com.aronskiy_anton.p2pui.bankcard.BankCardPresenter;
 import com.aronskiy_anton.sdk.P2PCore;
-import com.aronskiy_anton.sdk.library.Base64;
 import com.aronskiy_anton.sdk.models.RequestBuilder;
 
 import java.io.UnsupportedEncodingException;
@@ -41,6 +43,10 @@ public class LinkCardActivity extends AppCompatActivity {
 
     WebView linkCardWebView;
 
+    FrameLayout progressFrame;
+
+    ProgressBar progressBar;
+
     private boolean finishEventDispatched = false;
 
     public LinkCardActivity() {
@@ -57,7 +63,10 @@ public class LinkCardActivity extends AppCompatActivity {
         setContentView(R.layout.link_card_activity_layout);
 
         linkCardWebView = findViewById(R.id.link_card_web_view);
+        progressFrame = findViewById(R.id.progressFrame);
 
+        progressBar = findViewById(R.id.progress);
+        progressBar.setMax(100);
 
         final RequestBuilder request = P2PCore.INSTANCE.beneficiariesCards.linkNewCardRequest("http://" + RETURN_HOST);
 
@@ -87,8 +96,18 @@ public class LinkCardActivity extends AppCompatActivity {
                 return true;
             }
         });
-    }
 
+        linkCardWebView.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                progressBar.setProgress(newProgress);
+                if (newProgress == 100){
+                    progressFrame.setVisibility(View.GONE);
+                }
+                super.onProgressChanged(view, newProgress);
+            }
+        });
+    }
 
     private class MyWebViewClient extends WebViewClient {
         private String pendingUrl;
@@ -99,11 +118,11 @@ public class LinkCardActivity extends AppCompatActivity {
             if (pendingUrl == null) {
                 pendingUrl = url;
             }
-            //showProgress();
         }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            progressFrame.setVisibility(View.VISIBLE);
             return checkUrl(url);
         }
 
@@ -111,7 +130,6 @@ public class LinkCardActivity extends AppCompatActivity {
         public void onPageFinished(WebView view, String url) {
             if (url == null) url = "";
 
-            //hideProgress();
             checkUrl(url);
             if (!url.equals(pendingUrl)) {
 

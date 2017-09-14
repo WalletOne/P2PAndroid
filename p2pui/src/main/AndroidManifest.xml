@@ -4,7 +4,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <application>
+    <application android:theme="@style/AppTheme">
         <activity android:label="@string/bank_cards_activity_title" android:name=".bankcard.BankCardActivity"/>
         <activity android:label="@string/link_card_activity_title" android:name=".linkcard.LinkCardActivity">
             <meta-data
@@ -14,6 +14,7 @@
 
 
         <activity android:label="@string/payouts_activity_title" android:name=".payouts.PayoutsActivity"/>
+        <activity android:label="@string/refunds_activity_title" android:name=".refunds.RefundsActivity"/>
 
     </application>
 

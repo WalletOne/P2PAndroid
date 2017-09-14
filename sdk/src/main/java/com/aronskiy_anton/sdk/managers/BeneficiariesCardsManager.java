@@ -68,13 +68,10 @@ public class BeneficiariesCardsManager extends Manager {
      * Link new bank card request
      * @param returnUrl Url to back user redirect
      * @return request to API
-     * @throws MalformedURLException
      */
     public RequestBuilder linkNewCardRequest(String returnUrl){
 
-        HttpURLConnection urlConnection;
         final String urlString = "https://api.dev.walletone.com/p2p/beneficiary/card";
-        URL url;
         final String timestamp = NetworkManager.ISO8601TimeStamp.getISO8601TimeStamp(new Date());
 
         Map<String, String> items = new TreeMap<>();
@@ -96,9 +93,7 @@ public class BeneficiariesCardsManager extends Manager {
 
         final  String queryString = TextUtils.join("&", params);
         System.out.print(queryString);
-        Log.d("LOG", queryString);
-
-        String base64 = Base64.encode(NetworkManager.getSha256(queryString));
+        Log.d("REQUESTS", queryString);
 
         RequestBuilder.Builder builder = RequestBuilder.newBuilder()
                 .setMethodType(NetworkManager.MethodType.POST)
@@ -106,29 +101,6 @@ public class BeneficiariesCardsManager extends Manager {
                 .setTimestamp(timestamp)
                 .setUrlString(urlString)
                 .setHttpBody(queryString);
-
-
-        ////////////////////////////////////
-
-/*
-        try {
-            url = new URL(urlString);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-
-
-        NetworkManager.LoadDataAsync task = new NetworkManager.LoadDataAsync(callback);
-        task.execute(builder.build());
-
-*/
-
-
-
-
-
-
-
 
         return builder.build();
     }

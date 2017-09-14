@@ -51,16 +51,20 @@ public class BankCardPresenter implements BankCardContract.Presenter {
 
     private void loadCards(boolean forceUpdate, final boolean showLoadingUI) {
 
+        bankCardView.setLoadingIndicator(true);
+
         CompleteHandler<List<BankCard>, Throwable> handler = new CompleteHandler<List<BankCard>, Throwable>() {
             @Override
             public void completed(List<BankCard> list, Throwable var2) {
+                bankCardView.setLoadingIndicator(false);
                 isLoading = false;
                 cards = list != null ? list : new ArrayList<BankCard>();
-                if(cards.size() > 0){
+                if (cards.size() > 0) {
                     bankCardView.showCards(cards);
                 } else {
                     bankCardView.showEmptyList();
                 }
+
             }
         };
 
@@ -79,8 +83,19 @@ public class BankCardPresenter implements BankCardContract.Presenter {
     }
 
     @Override
-    public void addNewCard(){
+    public void addNewCard() {
         bankCardView.showLinkCard();
     }
+
+    @Override
+    public boolean isAddNewCardAvailable() {
+        switch (owner) {
+            case BENEFICIARY:
+                return true;
+            default:
+                return false;
+        }
+    }
+
 
 }
