@@ -25,7 +25,8 @@ public class Deal {
         this.id = UUID.randomUUID().toString();
     }
 
-    public Deal(String title, String shortDescription){
+    public Deal(String title, String shortDescription, Employer employer){
+        this.employer = employer;
         this.title = title;
         this.shortDescription = shortDescription;
         this.id = UUID.randomUUID().toString();

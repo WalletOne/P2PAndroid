@@ -26,8 +26,6 @@ public class DealsActivity extends AppCompatActivity {
 
     private DealsPresenter presenter;
 
-    private Integer userTypeId;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,7 +49,7 @@ public class DealsActivity extends AppCompatActivity {
         }
 
         // Get the requested user type id
-        userTypeId = getIntent().getIntExtra(ARG_USER_TYPE_ID, 2);
+        Integer userTypeId = getIntent().getIntExtra(ARG_USER_TYPE_ID, 2);
 
         presenter = new DealsPresenter(Repository.getInstance(RemoteDataSource.getInstance()), dealsFragment, UserTypeId.getUserTypeById(userTypeId));
 

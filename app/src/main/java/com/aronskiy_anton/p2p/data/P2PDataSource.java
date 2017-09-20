@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 
 import com.aronskiy_anton.p2p.models.Deal;
+import com.aronskiy_anton.p2p.models.DealRequest;
 
 import java.util.List;
 
@@ -13,16 +14,23 @@ import java.util.List;
 
 public interface P2PDataSource {
 
-    public interface LoadDealsCallback {
+    interface LoadDealsCallback {
 
         void onDealsLoaded(List<Deal> deals);
 
         void onDataNotAvailable();
     }
 
-    public interface GetDealCallback {
+    interface GetDealCallback {
 
         void onDealLoaded(Deal deal);
+
+        void onDataNotAvailable();
+    }
+
+    interface LoadDealRequestsCallback {
+
+        void onRequestsLoaded(List<DealRequest> requests);
 
         void onDataNotAvailable();
     }
@@ -35,4 +43,13 @@ public interface P2PDataSource {
 
     void saveDeal(@NonNull Deal deal);
 
+    void getDealRequests(@NonNull String dealId, @NonNull LoadDealRequestsCallback callback);
+
+    void saveRequest(@NonNull DealRequest request);
+
+    void cancelRequest(@NonNull DealRequest request);
+
+    void completeRequest(@NonNull DealRequest request);
+
+    Deal getDealByIdFromCache(String dealId);
 }

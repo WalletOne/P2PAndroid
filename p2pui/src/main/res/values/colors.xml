@@ -6,4 +6,5 @@
 
     <color name="processing_state_color">#f7811a</color>
     <color name="accepted_state_color">#2ec22a</color>
+    <color name="error_state_color">#c72227</color>
 </resources>

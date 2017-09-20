@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 
 import com.aronskiy_anton.p2p.models.Deal;
+import com.aronskiy_anton.p2p.models.DealRequest;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -72,4 +73,27 @@ public class RemoteDataSource implements P2PDataSource {
     public void saveDeal(@NonNull Deal deal) {
         DEALS_SERVICE_DATA.put(deal.getId(), deal);
     }
+
+    @Override
+    public void getDealRequests(@NonNull String dealId, @NonNull LoadDealRequestsCallback callback) {
+
+    }
+    @Override
+    public void saveRequest(@NonNull DealRequest request) {}
+
+    @Override
+    public void cancelRequest(@NonNull DealRequest request) {
+
+    }
+
+    @Override
+    public void completeRequest(@NonNull DealRequest request) {
+
+    }
+
+    @Override
+    public Deal getDealByIdFromCache(String dealId) {
+        return null;
+    }
+
 }

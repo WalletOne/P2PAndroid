@@ -22,7 +22,10 @@ import com.aronskiy_anton.sdk.models.BankCard;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
 import static android.support.v4.util.Preconditions.checkNotNull;
+import static com.aronskiy_anton.p2pui.bankcard.BankCardActivity.ARG_CARD_ID;
+import static com.aronskiy_anton.p2pui.bankcard.BankCardActivity.REQUEST_SELECT_CARD;
 
 /**
  * Created by aaronskiy on 07.09.2017.
@@ -133,7 +136,7 @@ public class BankCardFragment extends android.support.v4.app.Fragment implements
     }
 
     @Override
-    public void showLinkCard() {
+    public void showLinkCardActivity() {
         Intent intent = new Intent(getContext(), LinkCardActivity.class);
         startActivityForResult(intent, LinkCardActivity.REQUEST_LINK_CARD);
     }
@@ -143,7 +146,7 @@ public class BankCardFragment extends android.support.v4.app.Fragment implements
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode){
             case LinkCardActivity.REQUEST_LINK_CARD:
-                if (resultCode == Activity.RESULT_OK) {
+                if (resultCode == RESULT_OK) {
                     presenter.loadCards(true);
                 } else if (resultCode == LinkCardActivity.RESULT_FAIL) {
                     Toast.makeText(getContext(), "Link card result error", Toast.LENGTH_SHORT).show();
@@ -157,6 +160,14 @@ public class BankCardFragment extends android.support.v4.app.Fragment implements
         progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
+    @Override
+    public void closeBankCardAndShowPayDealActivity() {
+        Intent intent = new Intent();
+        //intent.putExtra(ARG_CARD_ID, clickedCard.getCardId());
+        getActivity().setResult(RESULT_OK, intent);
+        getActivity().finish();
+    }
+
     /**
      * Listener for clicks on bank card in the ListView.
      */
@@ -164,9 +175,11 @@ public class BankCardFragment extends android.support.v4.app.Fragment implements
 
         @Override
         public void onCardClick(BankCard clickedCard) {
-
+            Intent intent = new Intent();
+            intent.putExtra(ARG_CARD_ID, clickedCard.getCardId());
+            getActivity().setResult(RESULT_OK, intent);
+            getActivity().finish();
         }
-
     };
 
     public interface BankCardItemListener {

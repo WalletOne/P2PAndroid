@@ -3,7 +3,10 @@
     android:id="@+id/link_card_item"
     android:orientation="vertical"
     android:layout_marginTop="48dp"
-    android:background="@android:color/white"
+
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -15,9 +18,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="?android:attr/listPreferredItemHeight"
-        android:background="?android:attr/selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true"
+        android:background="@android:color/white"
         android:gravity="center_vertical"
         android:paddingBottom="@dimen/list_item_padding"
         android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -48,4 +49,9 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cccccc" />
 </LinearLayout>

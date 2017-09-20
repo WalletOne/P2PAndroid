@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.aronskiy_anton.p2pui.R;
+import com.aronskiy_anton.p2pui.bankcard.BankCardPresenter;
 import com.aronskiy_anton.sdk.P2PCore;
 import com.aronskiy_anton.sdk.models.RequestBuilder;
 
@@ -27,11 +28,14 @@ import java.io.UnsupportedEncodingException;
 
 public class PayDealActivity extends AppCompatActivity {
 
+    public static final String ARG_AUTH_DATA = "PayDealActivity.ARG_AUTH_DATA";
+    public static final String ARG_DEAL_ID = "PayDealActivity.ARG_DEAL_ID";
+
     public static final int RESULT_FAIL = RESULT_FIRST_USER + 1;
 
     private final String RETURN_HOST = "p2p-success-pay-deal";
 
-    public static final int REQUEST_LINK_CARD = 1;
+    public static final int REQUEST_PAY_DEAL = 2;
 
     private boolean isVisible = false;
     private boolean needFinish = false;
@@ -50,25 +54,19 @@ public class PayDealActivity extends AppCompatActivity {
 
     private boolean finishEventDispatched = false;
 
-    public PayDealActivity() {
-    }
-
-    public PayDealActivity(@NonNull String dealId, @NonNull boolean redirectToCardAddition, @NonNull String authData) {
-        this.dealId = dealId;
-        this.redirectToCardAddition = redirectToCardAddition;
-        this.authData = authData;
-    }
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.pay_deal_activity_layout);
 
         payDealWebView = findViewById(R.id.pay_deal_web_view);
+        progressFrame = findViewById(R.id.progressFrame);
 
         progressBar = findViewById(R.id.progress);
         progressBar.setMax(100);
+
+        this.authData =  getIntent().getStringExtra(ARG_AUTH_DATA);
+        this.dealId =  getIntent().getStringExtra(ARG_DEAL_ID);
 
         final RequestBuilder request = P2PCore.INSTANCE.dealsManager.payRequest(dealId, redirectToCardAddition, authData,  "http://" + RETURN_HOST);
 

@@ -17,16 +17,16 @@
         <activity android:name=".controllers.freelancer.FreelancerActivity"
             android:label="@string/freelancer_activity_title"
             android:theme="@style/AppTheme.OverlapSystemBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity>
 
         <activity android:name=".controllers.employer.EmployerActivity"
             android:label="@string/employer_activity_title"
             android:theme="@style/AppTheme.OverlapSystemBar">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity android:name=".controllers.deals.DealsActivity"

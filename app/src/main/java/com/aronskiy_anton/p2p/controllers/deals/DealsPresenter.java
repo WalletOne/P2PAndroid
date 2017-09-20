@@ -20,7 +20,7 @@ import java.util.List;
 
 public class DealsPresenter implements DealsContract.Presenter {
 
-    UserTypeId typeId;
+    private UserTypeId typeId;
 
     private boolean mFirstLoad = true;
 
@@ -54,7 +54,7 @@ public class DealsPresenter implements DealsContract.Presenter {
 
     @Override
     public void createDeal(String title, String description) {
-        Deal newDeal = new Deal(title, description);
+        Deal newDeal = new Deal(title, description, repository.getEmployer());
         repository.saveDeal(newDeal);
         loadDeals(true);
     }
@@ -70,10 +70,6 @@ public class DealsPresenter implements DealsContract.Presenter {
         if (forceUpdate) {
             repository.refreshDeals();
         }
-
-        // The network request might be handled in a different thread so make sure Espresso knows
-        // that the app is busy until the response is handled.
-        // EspressoIdlingResource.increment(); // App is busy until further notice
 
         repository.getDeals(new P2PDataSource.LoadDealsCallback() {
 
@@ -104,7 +100,6 @@ public class DealsPresenter implements DealsContract.Presenter {
 
     private void processDeals(List<Deal> deals) {
         if (deals.isEmpty()) {
-            // Show a message indicating there are no tasks for that filter type.
             view.showNoDeals();
         } else {
             // Show the list of deals
@@ -120,5 +115,10 @@ public class DealsPresenter implements DealsContract.Presenter {
             default:
                 return false;
         }
+    }
+
+    @Override
+    public UserTypeId getUserTypeId() {
+        return typeId;
     }
 }

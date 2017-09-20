@@ -1,6 +1,5 @@
 package com.aronskiy_anton.p2pui.bankcard;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.aronskiy_anton.sdk.P2PCore;
@@ -28,6 +27,8 @@ public class BankCardPresenter implements BankCardContract.Presenter {
     private boolean firstLoad = true;
 
     private boolean isLoading = false;
+
+    private boolean isAddCardAvailable = false;
 
     private List<BankCard> cards;
 
@@ -84,17 +85,25 @@ public class BankCardPresenter implements BankCardContract.Presenter {
 
     @Override
     public void addNewCard() {
-        bankCardView.showLinkCard();
+        switch (owner){
+            case BENEFICIARY:
+                bankCardView.showLinkCardActivity();
+                break;
+            case PAYER:
+                bankCardView.closeBankCardAndShowPayDealActivity();
+                break;
+
+        }
     }
 
     @Override
     public boolean isAddNewCardAvailable() {
-        switch (owner) {
-            case BENEFICIARY:
-                return true;
-            default:
-                return false;
-        }
+        return isAddCardAvailable || owner == Owner.BENEFICIARY;
+    }
+
+    @Override
+    public void setAddCardAvailable(boolean isAvailable) {
+        this.isAddCardAvailable = isAvailable;
     }
 
 

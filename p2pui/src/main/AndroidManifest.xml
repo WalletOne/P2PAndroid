@@ -7,6 +7,12 @@
     <application android:theme="@style/AppTheme">
         <activity android:label="@string/bank_cards_activity_title" android:name=".bankcard.BankCardActivity"/>
         <activity android:label="@string/link_card_activity_title" android:name=".linkcard.LinkCardActivity">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".bankcard.BankCardActivity" />
+    </activity>
+
+        <activity android:label="@string/activity_title_pay_deal" android:name=".paydeal.PayDealActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".bankcard.BankCardActivity" />

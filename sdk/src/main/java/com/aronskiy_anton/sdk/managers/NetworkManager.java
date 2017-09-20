@@ -1,6 +1,8 @@
 package com.aronskiy_anton.sdk.managers;
 
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.text.TextUtils;
 
 import com.aronskiy_anton.sdk.Manager;
 import com.aronskiy_anton.sdk.P2PCore;
@@ -19,6 +21,8 @@ import org.json.JSONTokener;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -187,16 +191,19 @@ public class NetworkManager extends Manager {
                 .setTimestamp(timestamp)
                 .setUrlString(urlString);
 
+
+
+
         try {
             if (parameters != null) {
+
                 JSONObject jsonObject = new JSONObject();
                 for (Map.Entry<String, Object> entry : parameters.entrySet()) {
                     jsonObject.put(entry.getKey(), entry.getValue());
                 }
                 bodyAsString = jsonObject.toString();
+                requestBuilder.setHttpBody(bodyAsString);
 
-                String base64 = Base64.encode(getSha256(bodyAsString));
-                requestBuilder.setHttpBody(base64);
             }
         } catch (JSONException ex) {
             ex.printStackTrace();
@@ -204,44 +211,18 @@ public class NetworkManager extends Manager {
             ex.printStackTrace();
         }
 
+
+
         final String signature = makeSignature(urlString, timestamp, bodyAsString);
 
         requestBuilder.setSignature(signature);
 
-        //urlConnection = toHttpConnection(requestBuilder.build());
-
         LoadDataAsync task = new LoadDataAsync(callback);
         task.execute(requestBuilder.build());
 
-        //return lowLevelRequestJson(urlConnection, callback);
         return null;
     }
-/*
-    private JSONObject lowLevelRequestJson(HttpURLConnection connection, CompleteHandler<Object, Throwable> callback) {
 
-        InputStream stream = null;
-
-        try {
-            if (connection.getResponseCode() >= 400) {
-                stream = connection.getErrorStream();
-            } else {
-
-                stream = connection.getInputStream();
-                String responseString = Utility.readStreamToString(stream);
-                JSONTokener tokener = new JSONTokener(responseString);
-                Object resultObject = tokener.nextValue();
-                callback.completed(resultObject, null);
-            }
-        } catch (JSONException exception) {
-            exception.printStackTrace();
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        } finally {
-            Utility.closeQuietly(stream);
-        }
-        return null;
-    }
-*/
     private HttpURLConnection toHttpConnection(RequestBuilder requests) {
 
         URL url;
@@ -254,12 +235,19 @@ public class NetworkManager extends Manager {
         HttpURLConnection connection;
         try {
             connection = createConnection(url);
-            connection.setConnectTimeout(2000);
+            connection.setConnectTimeout(5000);
             connection.setRequestMethod(requests.getMethodType().getMethodTypeId());
 
             connection.setRequestProperty("X-Wallet-PlatformId", core.getPlatformId());
             connection.setRequestProperty("X-Wallet-Timestamp", requests.getTimestamp());
             connection.setRequestProperty("X-Wallet-Signature", requests.getSignature());
+
+            // Add POST body
+            if(requests.getHttpBody() != null) {
+                OutputStream os = connection.getOutputStream();
+                os.write(requests.getHttpBody().getBytes("UTF-8"));
+                os.close();
+            }
         } catch (IOException e) {
             throw new W1P2PException("could not construct request body", e);
         }
@@ -272,15 +260,6 @@ public class NetworkManager extends Manager {
         connection = (HttpURLConnection) url.openConnection();
         connection.setRequestProperty(CONTENT_TYPE_HEADER, "application/json; charset=utf-8");
         return connection;
-    }
-
-    static class ISO8601TimeStamp {
-
-        public static String getISO8601TimeStamp(Date date) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
-            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-            return dateFormat.format(date);
-        }
     }
 
     class LoadDataAsync extends AsyncTask<RequestBuilder, Void, Object> {
@@ -330,6 +309,15 @@ public class NetworkManager extends Manager {
             if(callback != null) {
                 callback.completed(result, null);
             }
+        }
+    }
+
+    static class ISO8601TimeStamp {
+
+        public static String getISO8601TimeStamp(Date date) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
+            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            return dateFormat.format(date);
         }
     }
 

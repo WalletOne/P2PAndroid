@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import com.aronskiy_anton.p2pui.R;
 import com.aronskiy_anton.p2pui.util.ActivityUtils;
 
+import java.io.Serializable;
+
 /**
  * Created by aaronskiy on 07.09.2017.
  */
@@ -17,10 +19,17 @@ import com.aronskiy_anton.p2pui.util.ActivityUtils;
 public class BankCardActivity extends AppCompatActivity {
 
     public static final String ARG_OWNER_ID = "BankCardActivity.ARG_OWNER_ID";
+    public static final String ARG_CARD_ID = "BankCardActivity.ARG_CARD_ID";
+    public static final String ARG_SHOW_USE_NEW_CARD_LINK = "BankCardActivity.ARG_SHOW_USE_NEW_CARD_LINK";
 
-    private String ownerId;
+    public static final int REQUEST_SELECT_CARD = 1;
+    public static final int RESULT_FAIL = RESULT_FIRST_USER + 1;
 
-    private BankCardPresenter.Owner owner = BankCardPresenter.Owner.BENEFICIARY;
+    //private String ownerId;
+
+    //private BankCardPresenter.Owner ownerId;
+
+    private BankCardPresenter.Owner owner;
 
     private BankCardPresenter presenter;
 
@@ -44,10 +53,13 @@ public class BankCardActivity extends AppCompatActivity {
         }
 
         // Get the requested owner id
-        ownerId = getIntent().getStringExtra(ARG_OWNER_ID);
-        owner = getOwnerById(ownerId);
+        //ownerId = getIntent().getStringExtra(ARG_OWNER_ID);
+
+        owner = (BankCardPresenter.Owner) getIntent().getSerializableExtra(ARG_OWNER_ID);
+        //owner = getOwnerById(ownerId);
 
         presenter = new BankCardPresenter(owner, bankCardFragment);
+        presenter.setAddCardAvailable(getIntent().getBooleanExtra(ARG_SHOW_USE_NEW_CARD_LINK, false));
     }
 
     private BankCardPresenter.Owner getOwnerById(String id){

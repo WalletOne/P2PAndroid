@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -47,6 +48,8 @@ public class DealsFragment extends Fragment implements DealsContract.View {
 
     private ProgressBar progressBar;
 
+    private FloatingActionButton fabAddDeal;
+
     private EditText titleDeal;
 
     private EditText descriptionDeal;
@@ -87,22 +90,35 @@ public class DealsFragment extends Fragment implements DealsContract.View {
         titleDeal = root.findViewById(R.id.title_deal);
         descriptionDeal = root.findViewById(R.id.description_deal);
 
+        //Set up fab
+        fabAddDeal = (FloatingActionButton) getActivity().findViewById(R.id.fab_add_deal);
+        fabAddDeal.setImageResource(R.drawable.ic_add);
+        fabAddDeal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddDealDialog();
+            }
+        });
+
+        fabAddDeal.setVisibility(presenter.isAddButtonAvailable() ? View.VISIBLE : View.GONE);
+
         // Set up tasks view
         ListView listView = (ListView) root.findViewById(R.id.deals_list);
         listView.setAdapter(adapter);
 
-        setHasOptionsMenu(true);
+        //setHasOptionsMenu(true);
 
         return root;
     }
-
+/*
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if(presenter.isAddButtonAvailable()) {
             inflater.inflate(R.menu.deals_menu, menu);
         }
     }
-
+*/
+/*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         final Integer itemId = item.getItemId();
@@ -111,9 +127,13 @@ public class DealsFragment extends Fragment implements DealsContract.View {
         }
         return true;
     }
-
+*/
     @Override
     public void setLoadingIndicator(boolean show) {
+        if(show) {
+            noDealsView.setVisibility(View.GONE);
+            dealsView.setVisibility(View.GONE);
+        }
         progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
@@ -171,6 +191,7 @@ public class DealsFragment extends Fragment implements DealsContract.View {
     public void showDealDetail(String id) {
         Intent intent = new Intent(getContext(), DealActivity.class);
         intent.putExtra(ARG_DEAL_ID, id);
+        intent.putExtra(DealActivity.ARG_USER_TYPE_ID, presenter.getUserTypeId().getId());
         startActivity(intent);
     }
 

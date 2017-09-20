@@ -20,6 +20,7 @@ import com.aronskiy_anton.p2pui.refunds.RefundsActivity;
 
 import static com.aronskiy_anton.p2p.controllers.deals.DealsActivity.ARG_USER_TYPE_ID;
 import static com.aronskiy_anton.p2pui.bankcard.BankCardActivity.ARG_OWNER_ID;
+import static com.aronskiy_anton.p2pui.bankcard.BankCardPresenter.Owner.PAYER;
 import static com.aronskiy_anton.p2pui.refunds.RefundsActivity.ARG_DEAL_ID;
 
 
@@ -99,7 +100,7 @@ public class EmployerFragment extends Fragment implements EmployerContract.View,
                 break;
             case R.id.bank_card_button:
                 intent = new Intent(getContext(), BankCardActivity.class);
-                intent.putExtra(ARG_OWNER_ID, "payer");
+                intent.putExtra(ARG_OWNER_ID, PAYER);
                 startActivity(intent);
                 break;
             case R.id.refunds_button:

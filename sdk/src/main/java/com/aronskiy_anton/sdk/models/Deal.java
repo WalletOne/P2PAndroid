@@ -86,4 +86,8 @@ public class Deal implements Mapper.Mappable {
         deal.dealTypeId = Mapper.map(o.opt("DealTypeId"), dealTypeId);
         return (T) deal;
     }
+
+    public String getDealStateId() {
+        return dealStateId;
+    }
 }

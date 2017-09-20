@@ -6,6 +6,7 @@ import com.aronskiy_anton.p2p.BasePresenter;
 import com.aronskiy_anton.p2p.BaseView;
 import com.aronskiy_anton.p2p.models.Deal;
 import com.aronskiy_anton.p2p.models.Employer;
+import com.aronskiy_anton.p2p.models.UserTypeId;
 
 import java.util.List;
 
@@ -24,6 +25,8 @@ public interface DealsContract {
         void createDeal(String title, String description);
 
         boolean isAddButtonAvailable();
+
+        UserTypeId getUserTypeId();
     }
 
     interface View extends BaseView<Presenter>{

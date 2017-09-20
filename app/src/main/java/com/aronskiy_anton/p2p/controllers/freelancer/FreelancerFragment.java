@@ -26,6 +26,7 @@ import com.aronskiy_anton.p2pui.payouts.PayoutsActivity;
 
 import static com.aronskiy_anton.p2p.controllers.deals.DealsActivity.ARG_USER_TYPE_ID;
 import static com.aronskiy_anton.p2pui.bankcard.BankCardActivity.ARG_OWNER_ID;
+import static com.aronskiy_anton.p2pui.bankcard.BankCardPresenter.Owner.BENEFICIARY;
 
 
 /**
@@ -108,7 +109,7 @@ public class FreelancerFragment extends Fragment implements FreelancerContract.V
             case R.id.bank_card_button:
 
                 intent = new Intent(getContext(), BankCardActivity.class);
-                intent.putExtra(ARG_OWNER_ID, "beneficiary");
+                intent.putExtra(ARG_OWNER_ID, BENEFICIARY);
                 startActivity(intent);
                 break;
             case R.id.payouts_button:

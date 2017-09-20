@@ -18,6 +18,8 @@ public interface BankCardContract {
         void addNewCard();
 
         boolean isAddNewCardAvailable();
+
+        void setAddCardAvailable(boolean isAvailable);
     }
 
     interface View extends BaseView<Presenter>{
@@ -25,8 +27,10 @@ public interface BankCardContract {
 
         void showEmptyList();
 
-        void showLinkCard();
+        void showLinkCardActivity();
 
         void setLoadingIndicator(boolean show);
+
+        void closeBankCardAndShowPayDealActivity();
     }
 }

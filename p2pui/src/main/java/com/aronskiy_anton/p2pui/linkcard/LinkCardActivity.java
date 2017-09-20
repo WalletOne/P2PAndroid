@@ -49,13 +49,6 @@ public class LinkCardActivity extends AppCompatActivity {
 
     private boolean finishEventDispatched = false;
 
-    public LinkCardActivity() {
-    }
-
-    public LinkCardActivity(BankCardPresenter.Owner owner) {
-        this.owner = owner;
-    }
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,7 +125,6 @@ public class LinkCardActivity extends AppCompatActivity {
 
             checkUrl(url);
             if (!url.equals(pendingUrl)) {
-
                 pendingUrl = null;
             }
         }

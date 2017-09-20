@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import com.aronskiy_anton.p2p.R;
 import com.aronskiy_anton.p2p.data.RemoteDataSource;
 import com.aronskiy_anton.p2p.data.Repository;
+import com.aronskiy_anton.p2p.models.UserTypeId;
 import com.aronskiy_anton.p2p.utils.ActivityUtils;
 
 /**
@@ -17,7 +18,7 @@ import com.aronskiy_anton.p2p.utils.ActivityUtils;
 
 public class DealActivity extends AppCompatActivity {
 
-    @NonNull
+    public static final String ARG_USER_TYPE_ID = "DealActivity.ARG_USER_TYPE_ID";
     public static final String ARG_DEAL_ID = "DealActivity.DEAL_ID";
 
     @Override
@@ -36,6 +37,9 @@ public class DealActivity extends AppCompatActivity {
         // Get the requested deal id
         String dealId = getIntent().getStringExtra(ARG_DEAL_ID);
 
+        // Get the requested user type id
+        Integer userTypeId = getIntent().getIntExtra(ARG_USER_TYPE_ID, 2);
+
         DealFragment dealDetailFragment = (DealFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.contentFrame);
 
@@ -46,12 +50,16 @@ public class DealActivity extends AppCompatActivity {
                     dealDetailFragment, R.id.contentFrame);
         }
 
-        new DealPresenter(Repository.getInstance(RemoteDataSource.getInstance()), dealDetailFragment, dealId);
+        new DealPresenter(Repository.getInstance(RemoteDataSource.getInstance()), dealDetailFragment, dealId, UserTypeId.getUserTypeById(userTypeId));
     }
 
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
     }
 }

@@ -13,11 +13,32 @@
     <string name="no_deals_add">Add a deal item +</string>
     <string name="title_deal_hint">Title</string>
     <string name="description_deal_hint">Enter description</string>
-    <string name="enter_deal_data">Enter deal data</string>
+    <string name="enter_deal_data">Enter deal information</string>
     <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="example_app">Example App</string>
     <string name="no_data">No data</string>
     <string name="deal">Deal</string>
+    <string name="freelancer_requests">Freelancer requests</string>
+    <string name="no_requests">No requests</string>
+    <string name="create">Create</string>
+    <string name="create_request">Create request</string>
+    <string name="what_amount_you_do_this_deal">What amount you do this deal?</string>
+    <string name="change_deal_request_status">Change deal request status?</string>
+    <string name="enter_cvv">Enter CVV</string>
+    <string name="cvv_cvc_3_digits">CVV/CVC - 3 digits</string>
+
+    <string name="payment_precessing_status">Payment Processing… : %s ₽</string>
+    <string name="paid_status">Paid: %s ₽</string>
+    <string name="canceling_status">Canceling…</string>
+    <string name="canceled_status">Canceled: %s ₽</string>
+    <string name="payment_error_status">Payment Error %s</string>
+    <string name="completed_status">Freelancer Completed</string>
+    <string name="confirming_status">Confirming…</string>
+    <string name="payout_processing_status">Payout processing…</string>
+    <string name="payout_processing_error_status">Payout Processing Error</string>
+    <string name="paid_to_freelancer_status">Paid to Freelancer</string>
+    <string name="complete">Complete</string>
+    <string name="cancel_request">Cancel Request</string>
 
 </resources>

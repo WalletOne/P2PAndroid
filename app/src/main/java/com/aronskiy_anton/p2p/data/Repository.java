@@ -4,11 +4,13 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 
 import com.aronskiy_anton.p2p.models.Deal;
+import com.aronskiy_anton.p2p.models.DealRequest;
 import com.aronskiy_anton.p2p.models.Employer;
 import com.aronskiy_anton.p2p.models.Freelancer;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,10 +29,14 @@ public class Repository implements P2PDataSource {
 
     private final P2PDataSource localDataSource;
 
+    private List<DealRequest> requests;
+
     /**
      * This variable has package local visibility so it can be accessed from tests.
      */
-    Map<String, Deal> cachedDeals;
+    private Map<String, Deal> cachedDeals;
+
+    private Map<String, List<DealRequest>> cachedDealRequests;
 
     /**
      * Marks the cache as invalid, to force an update the next time data is requested. This variable
@@ -41,9 +47,9 @@ public class Repository implements P2PDataSource {
     public Repository(@NonNull P2PDataSource localDataSource) {
         this.localDataSource = localDataSource;
 
-        cachedDeals = new LinkedHashMap<>(2);
-        addDeal("Build tower in Pisa", "Ground looks good, no foundation work required.");
-        addDeal("Finish bridge in Tacoma", "Found awesome girders at half the cost!");
+        cachedDeals = new LinkedHashMap<>();
+       // addDeal("Build tower in Pisa", "Ground looks good, no foundation work required.");
+        //addDeal("Finish bridge in Tacoma", "Found awesome girders at half the cost!");
     }
 
     public static Repository getInstance(P2PDataSource localDataSource) {
@@ -57,10 +63,11 @@ public class Repository implements P2PDataSource {
         INSTANCE = null;
     }
 
+
     @Override
     public void getDeals(final @NonNull LoadDealsCallback callback) {
         // Simulate network by delaying the execution.
-        if(cachedDeals != null) {
+        if (cachedDeals != null) {
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 @Override
@@ -72,12 +79,13 @@ public class Repository implements P2PDataSource {
     }
 
     private void addDeal(String title, String description) {
-        Deal newDeal = new Deal(title, description);
+        // TODO Может нужно изавиться
+        Deal newDeal = new Deal(title, description, employer);
         cachedDeals.put(newDeal.getId(), newDeal);
     }
 
     @Override
-    public void getDeal(@NonNull String dealId, final  @NonNull GetDealCallback callback) {
+    public void getDeal(@NonNull final String dealId, final @NonNull GetDealCallback callback) {
         final Deal deal = cachedDeals.get(dealId);
 
         // Simulate network by delaying the execution.
@@ -88,6 +96,11 @@ public class Repository implements P2PDataSource {
                 callback.onDealLoaded(deal);
             }
         }, SERVICE_LATENCY_IN_MILLIS);
+    }
+
+    @Override
+    public Deal getDealByIdFromCache(String dealId) {
+        return cachedDeals.containsKey(dealId) ? cachedDeals.get(dealId) : null;
     }
 
     @Override
@@ -102,6 +115,60 @@ public class Repository implements P2PDataSource {
             cachedDeals = new LinkedHashMap<>();
         }
         cachedDeals.put(deal.getId(), deal);
+    }
+
+    @Override
+    public void getDealRequests(@NonNull final String dealId, @NonNull final LoadDealRequestsCallback callback) {
+
+        // Simulate network by delaying the execution.
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (cachedDealRequests != null) {
+                    List<DealRequest> list = cachedDealRequests.get(dealId);
+                    callback.onRequestsLoaded(list != null ? list : new ArrayList<DealRequest>());
+
+                } else {
+                    callback.onRequestsLoaded(new ArrayList<DealRequest>());
+                }
+            }
+        }, SERVICE_LATENCY_IN_MILLIS);
+    }
+
+    @Override
+    public void saveRequest(@NonNull DealRequest request) {
+        // Do in memory cache update to keep the app UI up to date
+        if (cachedDealRequests == null) {
+            cachedDealRequests = new LinkedHashMap<>();
+        }
+        String dealId = request.getDealId();
+        if (cachedDealRequests.containsKey(dealId)) {
+            cachedDealRequests.get(dealId).add(request);
+        } else {
+            List<DealRequest> newList = new ArrayList<>();
+            newList.add(request);
+            cachedDealRequests.put(dealId, newList);
+        }
+
+    }
+
+    @Override
+    public void cancelRequest(@NonNull DealRequest request) {
+        if (cachedDealRequests != null) {
+            if (cachedDealRequests.containsKey(request.getDealId())) {
+                cachedDealRequests.remove(request.getDealId());
+            }
+        }
+    }
+
+    @Override
+    public void completeRequest(@NonNull DealRequest request) {
+        if (cachedDealRequests != null) {
+            if (cachedDealRequests.containsKey(request.getDealId())) {
+                cachedDealRequests.get(request.getDealId());
+            }
+        }
     }
 
     public Employer getEmployer() {

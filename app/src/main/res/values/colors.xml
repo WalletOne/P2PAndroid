@@ -4,6 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorSecondary">#8f8f8f</color>
+    <color name="completed_state_color">#6089cd</color>
+    <color name="normal_state_color">#000000</color>
 
     <drawable name="touchFeedback">#CFD8DC</drawable>
 </resources>
