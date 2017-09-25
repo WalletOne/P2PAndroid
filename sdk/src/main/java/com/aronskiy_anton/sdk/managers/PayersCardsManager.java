@@ -2,6 +2,7 @@ package com.aronskiy_anton.sdk.managers;
 
 import com.aronskiy_anton.sdk.Manager;
 import com.aronskiy_anton.sdk.P2PCore;
+import com.aronskiy_anton.sdk.library.CompleteErrorOnlyHandler;
 import com.aronskiy_anton.sdk.library.CompleteHandler;
 import com.aronskiy_anton.sdk.library.URLComposer;
 import com.aronskiy_anton.sdk.models.BankCard;
@@ -61,8 +62,8 @@ public class PayersCardsManager extends Manager {
      * @param cardId Id card
      */
 
-    public void delete(int cardId){
-        core.networkManager.request(composer.payersCardsCard(core.getBenificaryId(), cardId), NetworkManager.MethodType.DELETE, null, null, null);
+    public void delete(int cardId, CompleteErrorOnlyHandler callback){
+        core.networkManager.request(composer.payersCardsCard(core.getBenificaryId(), cardId), NetworkManager.MethodType.DELETE, null,  callback);
     }
 
 }

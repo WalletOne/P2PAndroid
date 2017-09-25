@@ -10,15 +10,36 @@
         android:name=".P2PApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".controllers.freelancer.FreelancerActivity"
+            android:label="@string/freelancer_activity_title"
+            android:theme="@style/AppTheme.OverlapSystemBar">
+
+        </activity>
+
+        <activity android:name=".controllers.employer.EmployerActivity"
+            android:label="@string/employer_activity_title"
+            android:theme="@style/AppTheme.OverlapSystemBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name=".controllers.deals.DealsActivity"
+            android:label="@string/deals"
+            android:theme="@style/AppTheme.OverlapSystemBar">
+        </activity>
+
+        <activity android:name=".controllers.deal.DealActivity"
+            android:label="@string/deal"
+            android:theme="@style/AppTheme.OverlapSystemBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".controllers.deals.DealsActivity" />
         </activity>
 
     </application>

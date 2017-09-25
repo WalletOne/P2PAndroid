@@ -30,4 +30,8 @@ public class PayoutResult implements Mapper.Mappable {
         result.totalCount = Mapper.map(object.opt("TotalCount"), totalCount);
         return (T) result;
     }
+
+    public List<Payout> getPayouts() {
+        return payouts;
+    }
 }

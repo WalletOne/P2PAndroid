@@ -2,22 +2,21 @@ package com.aronskiy_anton.sdk.managers;
 
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.aronskiy_anton.sdk.Manager;
 import com.aronskiy_anton.sdk.P2PCore;
+import com.aronskiy_anton.sdk.library.CompleteErrorOnlyHandler;
 import com.aronskiy_anton.sdk.library.CompleteHandler;
 import com.aronskiy_anton.sdk.library.URLComposer;
 import com.aronskiy_anton.sdk.models.BankCard;
 import com.aronskiy_anton.sdk.models.RequestBuilder;
 
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by aaronskiy on 25.08.2017.
@@ -53,23 +52,21 @@ public class BeneficiariesCardsManager extends Manager {
      * @param cardId Id card
      */
 
-    public void delete(int cardId){
-        core.networkManager.request(composer.beneficiariesCardsCard(core.getBenificaryId(), cardId), NetworkManager.MethodType.DELETE, null, null, null);
+    public void delete(int cardId, CompleteErrorOnlyHandler<Throwable> callback){
+        core.networkManager.request(composer.beneficiariesCardsCard(core.getBenificaryId(), cardId), NetworkManager.MethodType.DELETE, null,  callback);
     }
 
     /**
      * Link new bank card request
      * @param returnUrl Url to back user redirect
      * @return request to API
-     * @throws MalformedURLException
      */
-    public RequestBuilder linkNewCardRequest(String returnUrl) throws MalformedURLException, UnsupportedEncodingException {
+    public RequestBuilder linkNewCardRequest(String returnUrl){
 
         final String urlString = "https://api.dev.walletone.com/p2p/beneficiary/card";
-        final URL url = new URL(urlString);
         final String timestamp = NetworkManager.ISO8601TimeStamp.getISO8601TimeStamp(new Date());
 
-        Map<String, String> items = new HashMap<>();
+        Map<String, String> items = new TreeMap<>();
         items.put("PhoneNumber", core.getBenificaryPhoneNumber());
         items.put("PlatformBeneficiaryId", core.getBenificaryId());
         items.put("PlatformId", core.getPlatformId());
@@ -88,18 +85,16 @@ public class BeneficiariesCardsManager extends Manager {
 
         final  String queryString = TextUtils.join("&", params);
         System.out.print(queryString);
+        Log.d("REQUESTS", queryString);
 
-        queryString.getBytes("UTF-8");
-
-        RequestBuilder builder = RequestBuilder.newBuilder()
+        RequestBuilder.Builder builder = RequestBuilder.newBuilder()
                 .setMethodType(NetworkManager.MethodType.POST)
                 .setSignature(signature)
                 .setTimestamp(timestamp)
                 .setUrlString(urlString)
-                //.setHttpBody(queryString)
-                .build();
+                .setHttpBody(queryString);
 
-        return builder;
+        return builder.build();
     }
 
     class Composer extends URLComposer{

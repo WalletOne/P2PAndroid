@@ -3,6 +3,7 @@ package com.aronskiy_anton.p2pui.bankcard;
 import android.support.annotation.NonNull;
 
 import com.aronskiy_anton.sdk.P2PCore;
+import com.aronskiy_anton.sdk.library.CompleteErrorOnlyHandler;
 import com.aronskiy_anton.sdk.library.CompleteHandler;
 import com.aronskiy_anton.sdk.models.BankCard;
 
@@ -28,6 +29,8 @@ public class BankCardPresenter implements BankCardContract.Presenter {
 
     private boolean isLoading = false;
 
+    private boolean isAddCardAvailable = false;
+
     private List<BankCard> cards;
 
     public BankCardPresenter(@NonNull Owner owner, @NonNull BankCardContract.View view) {
@@ -50,12 +53,23 @@ public class BankCardPresenter implements BankCardContract.Presenter {
 
     private void loadCards(boolean forceUpdate, final boolean showLoadingUI) {
 
+        bankCardView.setLoadingIndicator(true);
+
         CompleteHandler<List<BankCard>, Throwable> handler = new CompleteHandler<List<BankCard>, Throwable>() {
             @Override
-            public void completed(List<BankCard> list, Throwable var2) {
+            public void completed(List<BankCard> list, Throwable error) {
+                bankCardView.setLoadingIndicator(false);
                 isLoading = false;
-                cards = list != null ? list : new ArrayList<BankCard>();
-                bankCardView.showCards(cards);
+                if(error == null) {
+                    cards = list != null ? list : new ArrayList<BankCard>();
+                    if (cards.size() > 0) {
+                        bankCardView.showCards(cards);
+                    } else {
+                        bankCardView.showEmptyList();
+                    }
+                } else {
+                    bankCardView.showError(error);
+                }
             }
         };
 
@@ -63,14 +77,58 @@ public class BankCardPresenter implements BankCardContract.Presenter {
 
         cards = new ArrayList<>();
 
-        bankCardView.showCards(cards);
-
         switch (owner) {
             case BENEFICIARY:
                 P2PCore.INSTANCE.beneficiariesCards.cards(handler);
                 break;
             case PAYER:
                 P2PCore.INSTANCE.payersCards.cards(handler);
+                break;
+        }
+    }
+
+    @Override
+    public void addNewCard() {
+        switch (owner) {
+            case BENEFICIARY:
+                bankCardView.showLinkCardActivity();
+                break;
+            case PAYER:
+                bankCardView.closeBankCardAndShowPayDealActivity();
+                break;
+        }
+    }
+
+    @Override
+    public boolean isAddNewCardAvailable() {
+        return isAddCardAvailable || owner == Owner.BENEFICIARY;
+    }
+
+    @Override
+    public void setAddCardAvailable(boolean isAvailable) {
+        this.isAddCardAvailable = isAvailable;
+    }
+
+    @Override
+    public void deleteCard(final BankCard card) {
+
+        CompleteErrorOnlyHandler<Throwable> callback = new CompleteErrorOnlyHandler<Throwable>() {
+            @Override
+            public void completed(Throwable error) {
+                if (error == null){
+                    cards.remove(card);
+                } else {
+                    bankCardView.showError(error);
+                }
+            }
+        };
+
+        switch (owner) {
+            case BENEFICIARY:
+                P2PCore.INSTANCE.beneficiariesCards.delete(card.getCardId(), callback);
+                break;
+            case PAYER:
+                P2PCore.INSTANCE.payersCards.delete(card.getCardId(), callback);
                 break;
         }
     }

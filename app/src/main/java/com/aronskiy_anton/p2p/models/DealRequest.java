@@ -8,11 +8,11 @@ import java.math.BigDecimal;
 
 public class DealRequest {
 
-    enum DealStateId {
+    public enum DealStateId {
         created, paymentProcessing, paid, canceling, canceled, paymentError, done, confirming, payoutProcessing, payoutProcessingError, completed;
     }
 
-    private Deal deal;
+    private String dealId;
 
     private Freelancer freelancer;
 
@@ -22,8 +22,8 @@ public class DealRequest {
 
     private DealStateId stateId = DealStateId.created;
 
-    DealRequest (Deal deal, Freelancer freelancer, BigDecimal amount) {
-        this.deal = deal;
+    public DealRequest (String dealId, Freelancer freelancer, BigDecimal amount) {
+        this.dealId = dealId;
         this.freelancer = freelancer;
         this.amount = amount;
     }
@@ -35,7 +35,34 @@ public class DealRequest {
         if (o == null || getClass() != o.getClass()) return false;
 
         DealRequest that = (DealRequest) o;
-        return that.deal == this.deal && that.freelancer == this.freelancer;
+        return that.dealId.equals(this.dealId) && that.freelancer == this.freelancer;
     }
 
+    public String getDealId() {
+        return dealId;
+    }
+
+    public Freelancer getFreelancer() {
+        return freelancer;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public Integer getFreelancerCardId() {
+        return freelancerCardId;
+    }
+
+    public DealStateId getStateId() {
+        return stateId;
+    }
+
+    public void setFreelancerCardId(Integer freelancerCardId) {
+        this.freelancerCardId = freelancerCardId;
+    }
+
+    public void setStateId(DealStateId stateId) {
+        this.stateId = stateId;
+    }
 }

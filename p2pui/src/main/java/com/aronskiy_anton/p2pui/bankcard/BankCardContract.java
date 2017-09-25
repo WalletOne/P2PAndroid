@@ -14,9 +14,27 @@ public interface BankCardContract {
 
     interface Presenter extends BasePresenter{
         void loadCards(boolean forceUpdate);
+
+        void addNewCard();
+
+        boolean isAddNewCardAvailable();
+
+        void setAddCardAvailable(boolean isAvailable);
+
+        void deleteCard(BankCard card);
     }
 
     interface View extends BaseView<Presenter>{
         void showCards(List<BankCard> tasks);
+
+        void showEmptyList();
+
+        void showLinkCardActivity();
+
+        void setLoadingIndicator(boolean show);
+
+        void closeBankCardAndShowPayDealActivity();
+
+        void showError(Throwable error);
     }
 }

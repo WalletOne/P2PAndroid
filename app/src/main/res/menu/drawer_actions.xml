@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/freelancer_mode"
+        android:icon="@drawable/ic_accessible_black_24dp"
+        android:title="@string/freelancer_activity_title" />
+    <item
+        android:id="@+id/employer_mode"
+        android:icon="@drawable/ic_work_black_24dp"
+        android:title="@string/employer_activity_title" />
+</menu>

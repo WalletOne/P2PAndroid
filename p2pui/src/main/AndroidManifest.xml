@@ -4,8 +4,24 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <application>
-        <activity android:label="@string/app_name" android:name=".bankcard.BankCardActivity"/>
+    <application android:theme="@style/AppTheme">
+        <activity android:label="@string/bank_cards_activity_title" android:name=".bankcard.BankCardActivity"/>
+        <activity android:label="@string/link_card_activity_title" android:name=".linkcard.LinkCardActivity">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".bankcard.BankCardActivity" />
+    </activity>
+
+        <activity android:label="@string/activity_title_pay_deal" android:name=".paydeal.PayDealActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".bankcard.BankCardActivity" />
+        </activity>
+
+
+        <activity android:label="@string/payouts_activity_title" android:name=".payouts.PayoutsActivity"/>
+        <activity android:label="@string/refunds_activity_title" android:name=".refunds.RefundsActivity"/>
+
     </application>
 
 </manifest>

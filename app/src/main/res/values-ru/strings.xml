@@ -1,0 +1,47 @@
+<resources>
+    <string name="app_name">P2P</string>
+    <string name="freelancer_activity_title">Freelancer</string>
+    <string name="employer_activity_title">Employer</string>
+    <string name="get_work">Get work</string>
+    <string name="deals">Deals</string>
+    <string name="Account">Account</string>
+    <string name="bank_cards">Bank Cards</string>
+    <string name="Payouts">Payouts</string>
+    <string name="refunds">Refunds</string>
+    <string name="menu_add_deal">Add deal</string>
+    <string name="no_deals">You have no Deals</string>
+    <string name="no_deals_add">Add a deal item +</string>
+    <string name="title_deal_hint">Title</string>
+    <string name="description_deal_hint">Enter description</string>
+    <string name="enter_deal_data">Enter deal information</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="example_app">Example App</string>
+    <string name="no_data">No data</string>
+    <string name="deal">Deal</string>
+    <string name="freelancer_requests">Freelancer requests</string>
+    <string name="no_requests">No requests</string>
+    <string name="create">Create</string>
+    <string name="create_request">Create request</string>
+    <string name="what_amount_you_do_this_deal">What amount you do this deal?</string>
+    <string name="change_deal_request_status">Change deal request status?</string>
+    <string name="enter_cvv">Enter CVV</string>
+    <string name="cvv_cvc_3_digits">CVV/CVC - 3 digits</string>
+
+    <string name="payment_precessing_status">Payment Processing… : %s ₽</string>
+    <string name="paid_status">Paid: %s ₽</string>
+    <string name="canceling_status">Canceling…</string>
+    <string name="canceled_status">Canceled: %s ₽</string>
+    <string name="payment_error_status">Payment Error %s</string>
+    <string name="completed_status">Freelancer Completed</string>
+    <string name="confirming_status">Confirming…</string>
+    <string name="payout_processing_status">Payout processing…</string>
+    <string name="payout_processing_error_status">Payout Processing Error</string>
+    <string name="paid_to_freelancer_status">Paid to Freelancer</string>
+    <string name="complete">Complete</string>
+    <string name="cancel_request">Cancel Request</string>
+
+    <string name="deal_employer_view_title">Deal Employer View</string>
+    <string name="deal_freelancer_view_title">Deal Freelancer View</string>
+
+</resources>

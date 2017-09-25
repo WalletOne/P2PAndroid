@@ -42,4 +42,20 @@ public class Refund implements Mapper.Mappable {
         refund.platformDealId = Mapper.map("PlatformDealId", platformDealId);
         return (T) refund;
     }
+
+    public String getRefundStateId() {
+        return refundStateId;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public CurrencyId getCurrencyId() {
+        return currencyId;
+    }
 }

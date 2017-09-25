@@ -7,6 +7,7 @@ import com.aronskiy_anton.sdk.P2PCore;
 import com.aronskiy_anton.sdk.W1P2PException;
 import com.aronskiy_anton.sdk.internal.Utility;
 import com.aronskiy_anton.sdk.library.Base64;
+import com.aronskiy_anton.sdk.library.CompleteErrorOnlyHandler;
 import com.aronskiy_anton.sdk.library.CompleteHandler;
 import com.aronskiy_anton.sdk.library.Mapper;
 import com.aronskiy_anton.sdk.library.ModelFactory;
@@ -19,6 +20,7 @@ import org.json.JSONTokener;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -31,6 +33,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.TreeMap;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -121,7 +124,7 @@ public class NetworkManager extends Manager {
     }
 
 
-    private byte[] getSha256(String base) {
+    public static byte[] getSha256(String base) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             return digest.digest(base.getBytes("UTF-8"));
@@ -133,46 +136,52 @@ public class NetworkManager extends Manager {
     @SuppressWarnings("unchecked")
     public <T extends Mapper.Mappable> List<T> requestList(final String urlString, final MethodType method, final Map<String, Object> parameters, final Class<T> cls, final CompleteHandler<List<T>, Throwable> callback) {
 
-        AsyncTask.execute((new Runnable() {
+        requestWithPrint(urlString, method, parameters, new CompleteHandler<Object, Throwable>() {
             @Override
-            public void run() {
-                requestWithPrint(urlString, method, parameters, new CompleteHandler<Object, Throwable>() {
-                    @Override
-                    public void completed(Object json, Throwable var2) {
-                        ArrayList<T> listT = new ArrayList<>();
-                        JSONArray jArray = (JSONArray) json;
-                        if (jArray != null) {
-                            for (int i = 0; i < jArray.length(); i++) {
-                                T t = (T) ModelFactory.newInstance(cls, (JSONObject) jArray.opt(i));
-                                listT.add(t);
-                            }
+            public void completed(Object json, Throwable error) {
+                if (error == null) {
+                    ArrayList<T> listT = new ArrayList<>();
+                    JSONArray jArray = (JSONArray) json;
+                    if (jArray != null) {
+                        for (int i = 0; i < jArray.length(); i++) {
+                            T t = (T) ModelFactory.newInstance(cls, (JSONObject) jArray.opt(i));
+                            listT.add(t);
                         }
-                        callback.completed(listT, var2);
                     }
-                });
+                    callback.completed(listT, null);
+                } else {
+                    callback.completed(null, error);
+                }
             }
-        }));
-
+        });
         return null;
     }
 
     @SuppressWarnings("unchecked")
     public <T extends Mapper.Mappable> T request(final String urlString, final MethodType method, final Map<String, Object> parameters, final Class<?> cls, final CompleteHandler<T, Throwable> callback) {
 
-        AsyncTask.execute((new Runnable() {
+        requestWithPrint(urlString, method, parameters, new CompleteHandler<Object, Throwable>() {
             @Override
-            public void run() {
-                requestWithPrint(urlString, method, parameters, new CompleteHandler<Object, Throwable>() {
-                    @Override
-                    public void completed(Object json, Throwable var2) {
-                        T instance = (T) ModelFactory.newInstance(cls, (JSONObject) json);
-                        callback.completed(instance, var2);
-                    }
-                });
+            public void completed(Object json, Throwable error) {
+                if (error == null) {
+                    T instance = (T) ModelFactory.newInstance(cls, (JSONObject) json);
+                    callback.completed(instance, null);
+                } else {
+                    callback.completed(null, error);
+                }
             }
-        }));
+        });
 
         return null;
+    }
+
+    public void request(final String urlString, final MethodType method, final Map<String, Object> parameters, final CompleteErrorOnlyHandler<Throwable> callback) {
+        requestWithPrint(urlString, method, parameters, new CompleteHandler<Object, Throwable>() {
+            @Override
+            public void completed(Object json, Throwable error) {
+                callback.completed(error);
+            }
+        });
     }
 
     private JSONObject requestWithPrint(String urlString, MethodType method, Map<String, Object> parameters, final CompleteHandler<Object, Throwable> callback) {
@@ -186,20 +195,21 @@ public class NetworkManager extends Manager {
                 .setTimestamp(timestamp)
                 .setUrlString(urlString);
 
+
         try {
             if (parameters != null) {
+
                 JSONObject jsonObject = new JSONObject();
                 for (Map.Entry<String, Object> entry : parameters.entrySet()) {
                     jsonObject.put(entry.getKey(), entry.getValue());
                 }
                 bodyAsString = jsonObject.toString();
+                requestBuilder.setHttpBody(bodyAsString);
 
-                String base64 = Base64.encode(getSha256(bodyAsString));
-                requestBuilder.setHttpBody(base64);
             }
         } catch (JSONException ex) {
             ex.printStackTrace();
-        } catch (RuntimeException ex){
+        } catch (RuntimeException ex) {
             ex.printStackTrace();
         }
 
@@ -207,40 +217,12 @@ public class NetworkManager extends Manager {
 
         requestBuilder.setSignature(signature);
 
-        //urlConnection = toHttpConnection(requestBuilder.build());
-
         LoadDataAsync task = new LoadDataAsync(callback);
         task.execute(requestBuilder.build());
 
-        //return lowLevelRequestJson(urlConnection, callback);
         return null;
     }
-/*
-    private JSONObject lowLevelRequestJson(HttpURLConnection connection, CompleteHandler<Object, Throwable> callback) {
 
-        InputStream stream = null;
-
-        try {
-            if (connection.getResponseCode() >= 400) {
-                stream = connection.getErrorStream();
-            } else {
-
-                stream = connection.getInputStream();
-                String responseString = Utility.readStreamToString(stream);
-                JSONTokener tokener = new JSONTokener(responseString);
-                Object resultObject = tokener.nextValue();
-                callback.completed(resultObject, null);
-            }
-        } catch (JSONException exception) {
-            exception.printStackTrace();
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        } finally {
-            Utility.closeQuietly(stream);
-        }
-        return null;
-    }
-*/
     private HttpURLConnection toHttpConnection(RequestBuilder requests) {
 
         URL url;
@@ -253,12 +235,19 @@ public class NetworkManager extends Manager {
         HttpURLConnection connection;
         try {
             connection = createConnection(url);
-            connection.setConnectTimeout(2000);
+            connection.setConnectTimeout(5000);
             connection.setRequestMethod(requests.getMethodType().getMethodTypeId());
 
             connection.setRequestProperty("X-Wallet-PlatformId", core.getPlatformId());
             connection.setRequestProperty("X-Wallet-Timestamp", requests.getTimestamp());
             connection.setRequestProperty("X-Wallet-Signature", requests.getSignature());
+
+            // Add POST body
+            if (requests.getHttpBody() != null) {
+                OutputStream os = connection.getOutputStream();
+                os.write(requests.getHttpBody().getBytes("UTF-8"));
+                os.close();
+            }
         } catch (IOException e) {
             throw new W1P2PException("could not construct request body", e);
         }
@@ -273,18 +262,11 @@ public class NetworkManager extends Manager {
         return connection;
     }
 
-    static class ISO8601TimeStamp {
-
-        public static String getISO8601TimeStamp(Date date) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
-            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-            return dateFormat.format(date);
-        }
-    }
-
     class LoadDataAsync extends AsyncTask<RequestBuilder, Void, Object> {
 
         private final CompleteHandler<Object, Throwable> callback;
+
+        private W1P2PException exception;
 
         private LoadDataAsync(CompleteHandler<Object, Throwable> callback) {
             this.callback = callback;
@@ -292,6 +274,12 @@ public class NetworkManager extends Manager {
 
         @Override
         protected Object doInBackground(RequestBuilder... request) {
+
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             HttpURLConnection urlConnection = toHttpConnection(request[0]);
 
@@ -301,6 +289,11 @@ public class NetworkManager extends Manager {
             try {
                 if (urlConnection.getResponseCode() >= 400) {
                     stream = urlConnection.getErrorStream();
+                    String responseString = Utility.readStreamToString(stream);
+                    JSONTokener tokener = new JSONTokener(responseString);
+                    resultObject = tokener.nextValue();
+
+                    exception = new W1P2PException(((JSONObject) resultObject).getString("ErrorDescription"));
                 } else {
 
                     stream = urlConnection.getInputStream();
@@ -308,10 +301,10 @@ public class NetworkManager extends Manager {
                     JSONTokener tokener = new JSONTokener(responseString);
                     resultObject = tokener.nextValue();
                 }
-            } catch (JSONException exception) {
-                exception.printStackTrace();
-            } catch (IOException exception) {
-                exception.printStackTrace();
+            } catch (JSONException e) {
+                exception = new W1P2PException("could not parse json data", e);
+            } catch (IOException e) {
+                exception = new W1P2PException("could not get data", e);
             } finally {
                 Utility.closeQuietly(stream);
             }
@@ -320,9 +313,22 @@ public class NetworkManager extends Manager {
 
         @Override
         protected void onPostExecute(Object result) {
-            if(callback != null) {
-                callback.completed(result, null);
+            if (callback != null) {
+                if (exception == null) {
+                    callback.completed(result, null);
+                } else {
+                    callback.completed(null, exception);
+                }
             }
+        }
+    }
+
+    static class ISO8601TimeStamp {
+
+        public static String getISO8601TimeStamp(Date date) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
+            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            return dateFormat.format(date);
         }
     }
 

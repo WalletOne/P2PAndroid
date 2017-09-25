@@ -3,6 +3,7 @@ package com.aronskiy_anton.sdk.managers;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.aronskiy_anton.sdk.Manager;
 import com.aronskiy_anton.sdk.P2PCore;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by aaronskiy on 30.08.2017.
@@ -151,16 +153,23 @@ public class DealsManager extends Manager {
         return core.networkManager.request(composer.dealsBeneficiaryCard(dealId), NetworkManager.MethodType.PUT, params, Deal.class, callback);
     }
 
-    // Pay deal
+    /**
+     * Pay Deal
+     * @param dealId
+     * @param redirectToCardAddition
+     * @param authData
+     * @param returnUrl
+     * @return
+     * @throws MalformedURLException
+     * @throws UnsupportedEncodingException
+     */
 
-    public RequestBuilder payRequest(String dealId, boolean redirectToCardAddition, @Nullable String authData, String returnUrl)
-            throws MalformedURLException, UnsupportedEncodingException {
+    public RequestBuilder payRequest(String dealId, boolean redirectToCardAddition, @Nullable String authData, String returnUrl){
 
         final String urlString = composer.dealPay();
-        final URL url = new URL(urlString);
         final String timestamp = NetworkManager.ISO8601TimeStamp.getISO8601TimeStamp(new Date());
 
-        Map<String, String> items = new HashMap<>();
+        Map<String, String> items = new TreeMap<>();
         items.put("PlatformDealId", dealId);
         items.put("PlatformId", core.getPlatformId());
         items.put("RedirectToCardAddition", redirectToCardAddition ? "true" : "false");
@@ -180,18 +189,17 @@ public class DealsManager extends Manager {
         }
 
         final  String queryString = TextUtils.join("&", params);
-
         System.out.print(queryString);
+        Log.d("REQUESTS", queryString);
 
-        queryString.getBytes("UTF-8");
-
-        RequestBuilder builder = RequestBuilder.newBuilder()
+        RequestBuilder.Builder builder = RequestBuilder.newBuilder()
                 .setMethodType(NetworkManager.MethodType.POST)
+                .setSignature(signature)
+                .setTimestamp(timestamp)
                 .setUrlString(urlString)
-                //.setHttpBody(queryString)
-                .build();
+                .setHttpBody(queryString);
 
-        return builder;
+        return builder.build();
     }
 
 }

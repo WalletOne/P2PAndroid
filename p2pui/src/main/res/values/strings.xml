@@ -1,4 +1,38 @@
 <resources>
-    <string name="app_name">P2PUI</string>
-    <string name="unknown_card_type">Unknown Card Type</string>
+
+    <string name="unknown_card_type">Unknown card type</string>
+    <string name="attached_cards">Linked cards</string>
+    <string name="add_new_card">Link new card</string>
+    <string name="no_cards">You have not linked card</string>
+
+
+    <string name="bank_cards_activity_title">Bank cards</string>
+    <string name="link_card_activity_title">Привязка новой карты</string>
+
+
+    <string name="menu_link_card">Добавить новую карту</string>
+    <string name="delete_card">Delete card</string>
+    <string name="delete_card_confirmation">Are you really want to delete this card?</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="payouts_activity_title">Payouts</string>
+    <string name="no_payouts">No payouts</string>
+
+    <string name="payout_accepted_state">Successful payout</string>
+    <string name="payout_precessing_state">Payout processing…</string>
+    <string name="payout_error_state">Process error</string>
+    <string name="refunds_activity_title">Refunds</string>
+    <string name="no_refunds">No refunds</string>
+    <string name="refund_error_state">Refund error</string>
+    <string name="refund_precessing_state">Refund processing</string>
+    <string name="refund_accepted_state">Successful refund</string>
+
+    <string name="activity_title_link_card">Привязка карты</string>
+    <string name="activity_title_pay_deal">Идет создание сделки</string>
+
+    <public type="string" name="public_string_in_lib2" />
+    <string name="public_string_in_lib2">public string in lib2</string>
+
+    <string name="private_string_in_lib2">private string in lib2</string>
+
 </resources>
