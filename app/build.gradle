@@ -20,10 +20,6 @@ android {
     }
 }
 
-repositories {
-    maven { url 'https://zendesk.jfrog.io/zendesk/repo' }
-}
-
 dependencies {
 
     implementation fileTree(include: ['*.jar'], dir: 'libs')
