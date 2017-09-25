@@ -15,7 +15,6 @@ import com.aronskiy_anton.p2p.controllers.deals.DealsActivity;
 import com.aronskiy_anton.p2p.models.Employer;
 import com.aronskiy_anton.p2p.models.UserTypeId;
 import com.aronskiy_anton.p2pui.bankcard.BankCardActivity;
-import com.aronskiy_anton.p2pui.payouts.PayoutsActivity;
 import com.aronskiy_anton.p2pui.refunds.RefundsActivity;
 
 import static com.aronskiy_anton.p2p.controllers.deals.DealsActivity.ARG_USER_TYPE_ID;
@@ -34,10 +33,6 @@ public class EmployerFragment extends Fragment implements EmployerContract.View,
 
     private TextView employerPhone;
 
-    private ViewGroup dealsButton;
-    private ViewGroup bankCardsButton;
-    private ViewGroup refundsButton;
-
     private EmployerContract.Presenter presenter;
 
     public EmployerFragment() {
@@ -55,7 +50,7 @@ public class EmployerFragment extends Fragment implements EmployerContract.View,
     @Override
     public void showUserData(Employer employer) {
         employerName.setText(employer.getTitle());
-        employerPhone.setText(employer.getPhoneNumber());
+        employerPhone.setText(employer.getFormattedPhoneNumber());
     }
 
     @Override
@@ -77,9 +72,9 @@ public class EmployerFragment extends Fragment implements EmployerContract.View,
         employerName = root.findViewById(R.id.employer_name);
         employerPhone = root.findViewById(R.id.employer_phone);
 
-        dealsButton = root.findViewById(R.id.deals_button);
-        bankCardsButton = root.findViewById(R.id.bank_card_button);
-        refundsButton = root.findViewById(R.id.refunds_button);
+        ViewGroup dealsButton = root.findViewById(R.id.deals_button);
+        ViewGroup bankCardsButton = root.findViewById(R.id.bank_card_button);
+        ViewGroup refundsButton = root.findViewById(R.id.refunds_button);
 
         dealsButton.setOnClickListener(this);
         bankCardsButton.setOnClickListener(this);
@@ -87,7 +82,6 @@ public class EmployerFragment extends Fragment implements EmployerContract.View,
 
         return root;
     }
-
 
     @Override
     public void onClick(View view) {

@@ -1,13 +1,12 @@
 package com.aronskiy_anton.p2p.controllers.deal;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.aronskiy_anton.p2p.R;
-import com.aronskiy_anton.p2p.data.RemoteDataSource;
 import com.aronskiy_anton.p2p.data.Repository;
 import com.aronskiy_anton.p2p.models.UserTypeId;
 import com.aronskiy_anton.p2p.utils.ActivityUtils;
@@ -31,8 +30,14 @@ public class DealActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
-        ab.setDisplayShowHomeEnabled(true);
+        if (ab == null) {
+            String errorMsg = "This activity requires an AppCompat theme with an action bar, finishing activity...";
+            Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+            this.finish();
+        } else {
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setDisplayShowHomeEnabled(true);
+        }
 
         // Get the requested deal id
         String dealId = getIntent().getStringExtra(ARG_DEAL_ID);
@@ -50,7 +55,7 @@ public class DealActivity extends AppCompatActivity {
                     dealDetailFragment, R.id.contentFrame);
         }
 
-        new DealPresenter(Repository.getInstance(RemoteDataSource.getInstance()), dealDetailFragment, dealId, UserTypeId.getUserTypeById(userTypeId));
+        new DealPresenter(Repository.getInstance(), dealDetailFragment, dealId, UserTypeId.getUserTypeById(userTypeId));
     }
 
     @Override

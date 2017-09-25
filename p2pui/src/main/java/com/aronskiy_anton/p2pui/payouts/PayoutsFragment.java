@@ -16,11 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by anton on 12.09.2017.
+ * Created by Aronskiy Anton on 12.09.2017.
  */
 
 public class PayoutsFragment extends android.support.v4.app.Fragment implements PayoutsContract.View,
-        PayoutsAdapter.OnScrolledToBottomListener{
+        PayoutsAdapter.OnScrolledToBottomListener {
 
     private View noPayoutsView;
 
@@ -28,11 +28,7 @@ public class PayoutsFragment extends android.support.v4.app.Fragment implements 
 
     private PayoutsAdapter payoutsAdapter;
 
-    private LinearLayoutManager layoutManager;
-
-    private boolean isLoading = false;
-
-    PayoutsContract.Presenter presenter;
+    private PayoutsContract.Presenter presenter;
 
     public PayoutsFragment() {
     }
@@ -44,8 +40,6 @@ public class PayoutsFragment extends android.support.v4.app.Fragment implements 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //payoutsAdapter = new PayoutsAdapter(new ArrayList<Payout>(0));
-
         payoutsAdapter = new PayoutsAdapter(new ArrayList<Payout>(0));
         payoutsAdapter.setOnScrolledToBottomListener(this);
 
@@ -57,22 +51,13 @@ public class PayoutsFragment extends android.support.v4.app.Fragment implements 
         View root = inflater.inflate(R.layout.payouts_fragment_layout, container, false);
 
         // Set up payouts view
-        layoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         payoutsListView = root.findViewById(R.id.payouts_list2);
         payoutsListView.setLayoutManager(layoutManager);
         payoutsListView.setAdapter(payoutsAdapter);
 
         // Set up no payouts view
         noPayoutsView = root.findViewById(R.id.no_payouts);
-/*
-        link_card_item = root.findViewById(R.id.link_card_item);
-        link_card_item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.addNewCard();
-            }
-        });
-*/
         return root;
     }
 
@@ -96,7 +81,8 @@ public class PayoutsFragment extends android.support.v4.app.Fragment implements 
 
     @Override
     public void showEmptyList() {
-
+        payoutsListView.setVisibility(View.GONE);
+        noPayoutsView.setVisibility(View.VISIBLE);
     }
 
     @Override

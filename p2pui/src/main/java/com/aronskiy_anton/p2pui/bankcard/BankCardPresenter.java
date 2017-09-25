@@ -3,6 +3,7 @@ package com.aronskiy_anton.p2pui.bankcard;
 import android.support.annotation.NonNull;
 
 import com.aronskiy_anton.sdk.P2PCore;
+import com.aronskiy_anton.sdk.library.CompleteErrorOnlyHandler;
 import com.aronskiy_anton.sdk.library.CompleteHandler;
 import com.aronskiy_anton.sdk.models.BankCard;
 
@@ -56,16 +57,19 @@ public class BankCardPresenter implements BankCardContract.Presenter {
 
         CompleteHandler<List<BankCard>, Throwable> handler = new CompleteHandler<List<BankCard>, Throwable>() {
             @Override
-            public void completed(List<BankCard> list, Throwable var2) {
+            public void completed(List<BankCard> list, Throwable error) {
                 bankCardView.setLoadingIndicator(false);
                 isLoading = false;
-                cards = list != null ? list : new ArrayList<BankCard>();
-                if (cards.size() > 0) {
-                    bankCardView.showCards(cards);
+                if(error == null) {
+                    cards = list != null ? list : new ArrayList<BankCard>();
+                    if (cards.size() > 0) {
+                        bankCardView.showCards(cards);
+                    } else {
+                        bankCardView.showEmptyList();
+                    }
                 } else {
-                    bankCardView.showEmptyList();
+                    bankCardView.showError(error);
                 }
-
             }
         };
 
@@ -85,14 +89,13 @@ public class BankCardPresenter implements BankCardContract.Presenter {
 
     @Override
     public void addNewCard() {
-        switch (owner){
+        switch (owner) {
             case BENEFICIARY:
                 bankCardView.showLinkCardActivity();
                 break;
             case PAYER:
                 bankCardView.closeBankCardAndShowPayDealActivity();
                 break;
-
         }
     }
 
@@ -106,5 +109,27 @@ public class BankCardPresenter implements BankCardContract.Presenter {
         this.isAddCardAvailable = isAvailable;
     }
 
+    @Override
+    public void deleteCard(final BankCard card) {
 
+        CompleteErrorOnlyHandler<Throwable> callback = new CompleteErrorOnlyHandler<Throwable>() {
+            @Override
+            public void completed(Throwable error) {
+                if (error == null){
+                    cards.remove(card);
+                } else {
+                    bankCardView.showError(error);
+                }
+            }
+        };
+
+        switch (owner) {
+            case BENEFICIARY:
+                P2PCore.INSTANCE.beneficiariesCards.delete(card.getCardId(), callback);
+                break;
+            case PAYER:
+                P2PCore.INSTANCE.payersCards.delete(card.getCardId(), callback);
+                break;
+        }
+    }
 }

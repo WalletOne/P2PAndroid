@@ -20,6 +20,8 @@ public interface BankCardContract {
         boolean isAddNewCardAvailable();
 
         void setAddCardAvailable(boolean isAvailable);
+
+        void deleteCard(BankCard card);
     }
 
     interface View extends BaseView<Presenter>{
@@ -32,5 +34,7 @@ public interface BankCardContract {
         void setLoadingIndicator(boolean show);
 
         void closeBankCardAndShowPayDealActivity();
+
+        void showError(Throwable error);
     }
 }

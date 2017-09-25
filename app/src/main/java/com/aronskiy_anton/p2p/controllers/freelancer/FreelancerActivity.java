@@ -13,9 +13,7 @@ import android.view.MenuItem;
 
 import com.aronskiy_anton.p2p.R;
 import com.aronskiy_anton.p2p.controllers.employer.EmployerActivity;
-import com.aronskiy_anton.p2p.data.RemoteDataSource;
 import com.aronskiy_anton.p2p.data.Repository;
-import com.aronskiy_anton.p2p.models.Freelancer;
 import com.aronskiy_anton.p2p.utils.ActivityUtils;
 
 /**
@@ -25,8 +23,6 @@ import com.aronskiy_anton.p2p.utils.ActivityUtils;
 public class FreelancerActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
-
-    private FreelancerPresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,7 +53,7 @@ public class FreelancerActivity extends AppCompatActivity {
                     getSupportFragmentManager(), freelancerFragment, R.id.contentFrame);
         }
 
-        presenter = new FreelancerPresenter(freelancerFragment, Repository.getInstance(RemoteDataSource.getInstance()));
+        new FreelancerPresenter(freelancerFragment, Repository.getInstance());
 
     }
 
@@ -65,7 +61,6 @@ public class FreelancerActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // Open the navigation drawer when the home icon is selected from the toolbar.
                 drawerLayout.openDrawer(GravityCompat.START);
                 return true;
         }

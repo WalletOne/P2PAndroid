@@ -10,9 +10,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -23,13 +20,11 @@ import android.widget.ProgressBar;
 import com.aronskiy_anton.p2p.R;
 import com.aronskiy_anton.p2p.controllers.deal.DealActivity;
 import com.aronskiy_anton.p2p.models.Deal;
-import com.aronskiy_anton.p2p.models.UserTypeId;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.aronskiy_anton.p2p.controllers.deal.DealActivity.ARG_DEAL_ID;
-import static com.aronskiy_anton.p2p.controllers.deals.DealsActivity.ARG_USER_TYPE_ID;
 
 
 /**
@@ -139,7 +134,7 @@ public class DealsFragment extends Fragment implements DealsContract.View {
 
     @Override
     public void showLoadingDealsError() {
-        Snackbar.make(getView(), "Error", Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(getView(), "Loading deals error", Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

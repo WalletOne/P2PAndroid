@@ -1,5 +1,8 @@
 package com.aronskiy_anton.p2p.models;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by aaronskiy on 05.09.2017.
  */
@@ -38,6 +41,15 @@ public class Freelancer {
     }
 
     public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getFormattedPhoneNumber() {
+        Pattern phoneNumberPattern = Pattern.compile("(\\d{1})(\\d{3})(\\d{3})(\\d{4})");
+        Matcher matcher = phoneNumberPattern.matcher(phoneNumber);
+        if (matcher.matches()) {
+            return "+" + matcher.group(1) + " (" + matcher.group(2) + ") " +matcher.group(3) + "-" + matcher.group(4);
+        }
         return phoneNumber;
     }
 

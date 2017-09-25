@@ -5,10 +5,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.aronskiy_anton.p2pui.R;
-import com.aronskiy_anton.p2pui.bankcard.BankCardFragment;
-import com.aronskiy_anton.p2pui.bankcard.BankCardPresenter;
 import com.aronskiy_anton.p2pui.util.ActivityUtils;
 
 /**
@@ -19,10 +18,6 @@ public class PayoutsActivity extends AppCompatActivity {
 
     public static final String ARG_DEAL_ID = "PayoutsActivity.ARG_DEAL_ID";
 
-    private boolean isLoading = false;
-
-    private PayoutsPresenter presenter;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +27,14 @@ public class PayoutsActivity extends AppCompatActivity {
         setTitle(getResources().getString(R.string.payouts_activity_title));
 
         ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
+
+        if (ab == null) {
+            String errorMsg = "This activity requires an AppCompat theme with an action bar, finishing activity...";
+            Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+            this.finish();
+        } else {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
 
         PayoutsFragment payoutsFragment =
                 (PayoutsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
@@ -43,7 +45,7 @@ public class PayoutsActivity extends AppCompatActivity {
                     getSupportFragmentManager(), payoutsFragment, R.id.contentFrame);
         }
 
-        presenter = new PayoutsPresenter("", payoutsFragment);
+        new PayoutsPresenter("", payoutsFragment);
     }
 
 

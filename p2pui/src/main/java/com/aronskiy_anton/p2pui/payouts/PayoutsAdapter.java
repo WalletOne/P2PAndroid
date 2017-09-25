@@ -24,7 +24,7 @@ import static com.aronskiy_anton.sdk.models.Payout.PAYOUT_STATE_ID_PROCESSING;
 import static com.aronskiy_anton.sdk.models.Payout.PAYOUT_STATE_ID_PROCESS_ERROR;
 
 /**
- * Created by anton on 12.09.2017.
+ * Created by Aronskiy Anton on 12.09.2017.
  */
 
 public class PayoutsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -61,8 +61,7 @@ public class PayoutsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        if (holder instanceof ProgressViewHolder) {
-        } else if (payouts.size() > 0 && position < payouts.size()) {
+        if (payouts.size() > 0 && position < payouts.size()) {
             ((ViewHolder) holder).setData(payouts.get(position));
         }
 

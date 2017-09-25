@@ -2,7 +2,6 @@ package com.aronskiy_anton.p2pui.paydeal;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
@@ -16,7 +15,6 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.aronskiy_anton.p2pui.R;
-import com.aronskiy_anton.p2pui.bankcard.BankCardPresenter;
 import com.aronskiy_anton.sdk.P2PCore;
 import com.aronskiy_anton.sdk.models.RequestBuilder;
 
@@ -40,10 +38,6 @@ public class PayDealActivity extends AppCompatActivity {
     private boolean isVisible = false;
     private boolean needFinish = false;
 
-    private String authData;
-
-    private String dealId;
-
     private WebView payDealWebView;
 
     private ProgressBar progressBar;
@@ -65,10 +59,10 @@ public class PayDealActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress);
         progressBar.setMax(100);
 
-        this.authData =  getIntent().getStringExtra(ARG_AUTH_DATA);
-        this.dealId =  getIntent().getStringExtra(ARG_DEAL_ID);
+        String authData = getIntent().getStringExtra(ARG_AUTH_DATA);
+        String dealId = getIntent().getStringExtra(ARG_DEAL_ID);
 
-        final RequestBuilder request = P2PCore.INSTANCE.dealsManager.payRequest(dealId, redirectToCardAddition, authData,  "http://" + RETURN_HOST);
+        final RequestBuilder request = P2PCore.INSTANCE.dealsManager.payRequest(dealId, redirectToCardAddition, authData, "http://" + RETURN_HOST);
 
         try {
             String postData = request.getHttpBody();
@@ -97,11 +91,11 @@ public class PayDealActivity extends AppCompatActivity {
             }
         });
 
-        payDealWebView.setWebChromeClient(new WebChromeClient(){
+        payDealWebView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 progressBar.setProgress(newProgress);
-                if (newProgress == 100){
+                if (newProgress == 100) {
                     progressFrame.setVisibility(View.GONE);
                 }
                 super.onProgressChanged(view, newProgress);
@@ -170,12 +164,11 @@ public class PayDealActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         isVisible = true;
-        if(needFinish) {
+        if (needFinish) {
             finish();
             needFinish = false;
         }
     }
-
 
     @Override
     protected void onPause() {
@@ -185,7 +178,7 @@ public class PayDealActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(isVisible) {
+        if (isVisible) {
             super.onBackPressed();
         } else {
             needFinish = true;

@@ -55,8 +55,6 @@ public interface DealContract {
 
         void showAddRequestDialog();
 
-        void setTitle(String title);
-
         void showDealInfo(Deal deal);
 
         void showMissingDeal();
@@ -80,5 +78,11 @@ public interface DealContract {
         void showPayDealActivity(String authData, String dealId);
 
         void updateAdapter();
+
+        void setEmployerDealTitle();
+
+        void setFreelancerDealTitle();
+
+        void setRequestLoadingIndicator(boolean show);
     }
 }

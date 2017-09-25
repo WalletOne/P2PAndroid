@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.aronskiy_anton.p2pui.R;
 import com.aronskiy_anton.sdk.models.Refund;
-import com.aronskiy_anton.sdk.models.Refund;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -25,7 +24,7 @@ import static com.aronskiy_anton.sdk.models.Refund.REFUND_STATE_ID_PROCESSING;
 import static com.aronskiy_anton.sdk.models.Refund.REFUND_STATE_ID_PROCESS_ERROR;
 
 /**
- * Created by anton on 12.09.2017.
+ * Created by Aronskiy Anton on 12.09.2017.
  */
 
 public class RefundsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -62,19 +61,18 @@ public class RefundsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        if (holder instanceof ProgressViewHolder) {
-        } else if (refunds.size() > 0 && position < refunds.size()) {
+        if (refunds.size() > 0 && position < refunds.size()) {
             ((ViewHolder) holder).setData(refunds.get(position));
         }
 
-        if(position > 0 && position >= refunds.size() && onScrolledToBottomListener != null) {
+        if (position > 0 && position >= refunds.size() && onScrolledToBottomListener != null) {
             onScrolledToBottomListener.onScrolledToBottom();
         }
     }
 
     @Override
     public int getItemCount() {
-        return  (isFooterEnabled) ? refunds.size() + 1 : refunds.size();
+        return (isFooterEnabled) ? refunds.size() + 1 : refunds.size();
     }
 
     @Override
@@ -98,9 +96,7 @@ public class RefundsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         private TextView date;
         private TextView amount;
 
-        private Refund refund;
-
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
 
             state = itemView.findViewById(R.id.refund_state);
@@ -109,7 +105,6 @@ public class RefundsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
 
         public void setData(Refund refund) {
-            this.refund = refund;
 
             switch (refund.getRefundStateId()) {
                 case REFUND_STATE_ID_ACCEPTED:

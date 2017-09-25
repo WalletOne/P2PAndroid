@@ -1,15 +1,12 @@
 package com.aronskiy_anton.p2p.controllers.deal;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.widget.Toast;
 
 import com.aronskiy_anton.p2p.data.P2PDataSource;
 import com.aronskiy_anton.p2p.data.Repository;
 import com.aronskiy_anton.p2p.models.Deal;
 import com.aronskiy_anton.p2p.models.DealRequest;
 import com.aronskiy_anton.p2p.models.UserTypeId;
-import com.aronskiy_anton.p2pui.linkcard.LinkCardActivity;
 import com.aronskiy_anton.sdk.P2PCore;
 import com.aronskiy_anton.sdk.constants.CurrencyId;
 import com.aronskiy_anton.sdk.library.CompleteHandler;
@@ -17,10 +14,8 @@ import com.aronskiy_anton.sdk.library.CompleteHandler;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static android.app.Activity.RESULT_OK;
 import static com.aronskiy_anton.p2pui.bankcard.BankCardPresenter.Owner.PAYER;
 import static com.aronskiy_anton.sdk.models.Deal.DEAL_STATE_ID_COMPLETED;
-import static com.aronskiy_anton.sdk.models.Deal.DEAL_STATE_ID_CREATED;
 import static com.aronskiy_anton.sdk.models.Deal.DEAL_STATE_ID_PAID;
 import static com.aronskiy_anton.sdk.models.Deal.DEAL_STATE_ID_PAYMENT_PROCESS_ERROR;
 import static com.aronskiy_anton.sdk.models.Deal.DEAL_STATE_ID_PAYOUT_PROCESSING;
@@ -65,7 +60,19 @@ public class DealPresenter implements DealContract.Presenter {
     @Override
     public void start() {
         openDeal();
-        loadRequests(false);
+        loadRequests(true);
+        setViewTitle();
+    }
+
+    private void setViewTitle() {
+        switch (userTypeId) {
+            case EMPLOYER:
+                detailView.setEmployerDealTitle();
+                break;
+            case FREELANCER:
+                detailView.setFreelancerDealTitle();
+                break;
+        }
     }
 
     private void openDeal() {
@@ -109,12 +116,13 @@ public class DealPresenter implements DealContract.Presenter {
 
     private void loadRequests(boolean forceUpdate, final boolean showLoadingUI) {
         if (showLoadingUI) {
-            detailView.setLoadingIndicator(true);
+            detailView.setRequestLoadingIndicator(true);
         }
+        /*
         if (forceUpdate) {
             //repository.refreshDeals();
         }
-
+*/
         repository.getDealRequests(dealId, new P2PDataSource.LoadDealRequestsCallback() {
 
             @Override
@@ -127,7 +135,7 @@ public class DealPresenter implements DealContract.Presenter {
                 processRequests(requests);
 
                 if (showLoadingUI) {
-                    detailView.setLoadingIndicator(false);
+                    detailView.setRequestLoadingIndicator(false);
                 }
             }
 
@@ -149,14 +157,6 @@ public class DealPresenter implements DealContract.Presenter {
             // Show the list of requests
             detailView.showRequests(requests);
         }
-    }
-
-    public DealRequest getSelectedRequest() {
-        return selectedRequest;
-    }
-
-    public void setSelectedRequest(DealRequest selectedRequest) {
-        this.selectedRequest = selectedRequest;
     }
 
     @Override
@@ -191,7 +191,11 @@ public class DealPresenter implements DealContract.Presenter {
 
     @Override
     public boolean isFabShouldShown() {
-        return userTypeId == UserTypeId.FREELANCER;
+        if (userTypeId == UserTypeId.FREELANCER) {
+            return !repository.isDealRequestAlreadyExist(dealId);
+        } else {
+            return false;
+        }
     }
 
     @Override

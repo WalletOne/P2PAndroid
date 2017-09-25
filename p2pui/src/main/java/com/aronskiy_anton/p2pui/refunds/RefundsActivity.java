@@ -5,23 +5,18 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.aronskiy_anton.p2pui.R;
-import com.aronskiy_anton.p2pui.refunds.RefundsFragment;
-import com.aronskiy_anton.p2pui.refunds.RefundsPresenter;
 import com.aronskiy_anton.p2pui.util.ActivityUtils;
 
 /**
- * Created by anton on 12.09.2017.
+ * Created by Aronskiy Anton on 12.09.2017.
  */
 
 public class RefundsActivity extends AppCompatActivity {
 
     public static final String ARG_DEAL_ID = "PayoutsActivity.ARG_DEAL_ID";
-
-    private boolean isLoading = false;
-
-    private RefundsPresenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,7 +27,13 @@ public class RefundsActivity extends AppCompatActivity {
         setTitle(getResources().getString(R.string.refunds_activity_title));
 
         ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
+        if (ab == null) {
+            String errorMsg = "This activity requires an AppCompat theme with an action bar, finishing activity...";
+            Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+            this.finish();
+        } else {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
 
         RefundsFragment refundsFragment =
                 (RefundsFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
@@ -43,7 +44,7 @@ public class RefundsActivity extends AppCompatActivity {
                     getSupportFragmentManager(), refundsFragment, R.id.contentFrame);
         }
 
-        presenter = new RefundsPresenter("", refundsFragment);
+        new RefundsPresenter("", refundsFragment);
     }
 
     @Override

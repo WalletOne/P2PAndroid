@@ -1,0 +1,31 @@
+<resources>
+    <string name="unknown_card_type">Неизвестный тип карты</string>
+    <string name="attached_cards">Привязанные карты</string>
+    <string name="add_new_card">Привязать новую карту</string>
+    <string name="no_cards">У вас нет привязанных карт</string>
+
+
+    <string name="bank_cards_activity_title">Банковские карты</string>
+    <string name="link_card_activity_title">Привязка новой карты</string>
+
+
+    <string name="menu_link_card">Добавить новую карту</string>
+    <string name="delete_card">Удалить карту</string>
+    <string name="delete_card_confirmation">Вы уверены, что хотите удалить карту?</string>
+    <string name="delete">Удалить</string>
+    <string name="cancel">Отмена</string>
+    <string name="payouts_activity_title">Платежи</string>
+    <string name="no_payouts">Нет платежей</string>
+
+    <string name="payout_accepted_state">Платеж принят</string>
+    <string name="payout_precessing_state">Обработка платежа</string>
+    <string name="payout_error_state">Ошибка платежа</string>
+    <string name="refunds_activity_title">Возвраты</string>
+    <string name="no_refunds">Нет возвратов</string>
+    <string name="refund_error_state">Ошибка возврата</string>
+    <string name="refund_precessing_state">Возврат в процессе</string>
+    <string name="refund_accepted_state">Успешный возврат</string>
+    <string name="activity_title_link_card">Привязка карты</string>
+    <string name="activity_title_pay_deal">Создание сделки</string>
+
+</resources>

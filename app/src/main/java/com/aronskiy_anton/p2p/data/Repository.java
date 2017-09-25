@@ -27,16 +27,12 @@ public class Repository implements P2PDataSource {
 
     private Freelancer freelancer;
 
-    private final P2PDataSource localDataSource;
-
-    private List<DealRequest> requests;
-
     /**
      * This variable has package local visibility so it can be accessed from tests.
      */
     private Map<String, Deal> cachedDeals;
 
-    private Map<String, List<DealRequest>> cachedDealRequests;
+    private Map<String, List<DealRequest>> cachedDealRequests = new LinkedHashMap<>();
 
     /**
      * Marks the cache as invalid, to force an update the next time data is requested. This variable
@@ -44,17 +40,13 @@ public class Repository implements P2PDataSource {
      */
     boolean cacheIsDirty = false;
 
-    public Repository(@NonNull P2PDataSource localDataSource) {
-        this.localDataSource = localDataSource;
-
+    public Repository() {
         cachedDeals = new LinkedHashMap<>();
-       // addDeal("Build tower in Pisa", "Ground looks good, no foundation work required.");
-        //addDeal("Finish bridge in Tacoma", "Found awesome girders at half the cost!");
     }
 
-    public static Repository getInstance(P2PDataSource localDataSource) {
+    public static Repository getInstance() {
         if (INSTANCE == null) {
-            INSTANCE = new Repository(localDataSource);
+            INSTANCE = new Repository();
         }
         return INSTANCE;
     }
@@ -63,6 +55,16 @@ public class Repository implements P2PDataSource {
         INSTANCE = null;
     }
 
+    public boolean isDealRequestAlreadyExist(String dealId){
+        if(cachedDealRequests.containsKey(dealId)){
+            for (DealRequest request : cachedDealRequests.get(dealId)){
+                if(request.getFreelancer().equals(freelancer)){
+                    return true;
+                }
+            }
+            return false;
+        } else return false;
+    }
 
     @Override
     public void getDeals(final @NonNull LoadDealsCallback callback) {
@@ -76,12 +78,6 @@ public class Repository implements P2PDataSource {
                 }
             }, SERVICE_LATENCY_IN_MILLIS);
         }
-    }
-
-    private void addDeal(String title, String description) {
-        // TODO Может нужно изавиться
-        Deal newDeal = new Deal(title, description, employer);
-        cachedDeals.put(newDeal.getId(), newDeal);
     }
 
     @Override
@@ -150,7 +146,6 @@ public class Repository implements P2PDataSource {
             newList.add(request);
             cachedDealRequests.put(dealId, newList);
         }
-
     }
 
     @Override

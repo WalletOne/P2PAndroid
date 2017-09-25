@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.aronskiy_anton.p2pui.R;
 import com.aronskiy_anton.sdk.models.Refund;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by anton on 12.09.2017.
+ * Created by Aronskiy Anton on 12.09.2017.
  */
 
 public class RefundsFragment extends android.support.v4.app.Fragment implements RefundsContract.View,
@@ -29,11 +28,7 @@ public class RefundsFragment extends android.support.v4.app.Fragment implements 
 
     private RefundsAdapter refundsAdapter;
 
-    private LinearLayoutManager layoutManager;
-
-    private boolean isLoading = false;
-
-    RefundsContract.Presenter presenter;
+    private RefundsContract.Presenter presenter;
 
     public RefundsFragment() {
     }
@@ -55,22 +50,14 @@ public class RefundsFragment extends android.support.v4.app.Fragment implements 
         View root = inflater.inflate(R.layout.refunds_fragment_layout, container, false);
 
         // Set up refunds view
-        layoutManager = new LinearLayoutManager(getContext());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         refundsListView = root.findViewById(R.id.refunds_list);
         refundsListView.setLayoutManager(layoutManager);
+        refundsListView.setHasFixedSize(true);
         refundsListView.setAdapter(refundsAdapter);
 
         // Set up no refunds view
         noRefundsView = root.findViewById(R.id.no_refunds);
-/*
-        link_card_item = root.findViewById(R.id.link_card_item);
-        link_card_item.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                presenter.addNewCard();
-            }
-        });
-*/
         return root;
     }
 
@@ -94,7 +81,8 @@ public class RefundsFragment extends android.support.v4.app.Fragment implements 
 
     @Override
     public void showEmptyList() {
-
+        refundsListView.setVisibility(View.GONE);
+        noRefundsView.setVisibility(View.VISIBLE);
     }
 
     @Override

@@ -1,12 +1,9 @@
 package com.aronskiy_anton.p2pui.linkcard;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.ConsoleMessage;
@@ -18,7 +15,6 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.aronskiy_anton.p2pui.R;
-import com.aronskiy_anton.p2pui.bankcard.BankCardPresenter;
 import com.aronskiy_anton.sdk.P2PCore;
 import com.aronskiy_anton.sdk.models.RequestBuilder;
 
@@ -38,8 +34,6 @@ public class LinkCardActivity extends AppCompatActivity {
 
     private boolean isVisible = false;
     private boolean needFinish = false;
-
-    BankCardPresenter.Owner owner = BankCardPresenter.Owner.BENEFICIARY;
 
     WebView linkCardWebView;
 
@@ -90,11 +84,11 @@ public class LinkCardActivity extends AppCompatActivity {
             }
         });
 
-        linkCardWebView.setWebChromeClient(new WebChromeClient(){
+        linkCardWebView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 progressBar.setProgress(newProgress);
-                if (newProgress == 100){
+                if (newProgress == 100) {
                     progressFrame.setVisibility(View.GONE);
                 }
                 super.onProgressChanged(view, newProgress);
@@ -162,12 +156,11 @@ public class LinkCardActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         isVisible = true;
-        if(needFinish) {
+        if (needFinish) {
             finish();
             needFinish = false;
         }
     }
-
 
     @Override
     protected void onPause() {
@@ -177,7 +170,7 @@ public class LinkCardActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(isVisible) {
+        if (isVisible) {
             super.onBackPressed();
         } else {
             needFinish = true;

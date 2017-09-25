@@ -15,9 +15,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.aronskiy_anton.p2p.R;
 import com.aronskiy_anton.p2p.models.Deal;
@@ -52,11 +51,17 @@ public class DealFragment extends Fragment implements DealContract.View {
 
     private DealContract.Presenter presenter;
 
-    private LinearLayout deailInfoBlock;
+    private LinearLayout deailInfo;
 
     private ListView requestsList;
 
     private LinearLayout noRequestsBlock;
+
+    //private RelativeLayout requestsBlock;
+
+    private ProgressBar requestProgressBar;
+
+    private ProgressBar deailInfoProgressBar;
 
     private TextView detailTitle;
 
@@ -86,9 +91,13 @@ public class DealFragment extends Fragment implements DealContract.View {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.deal_detail_fragment, container, false);
 
-        deailInfoBlock = (LinearLayout) root.findViewById(R.id.deal_info_block);
+        deailInfo = (LinearLayout) root.findViewById(R.id.deal_info);
+        deailInfoProgressBar = (ProgressBar) root.findViewById(R.id.deal_info_progress_bar);
+        //requestsBlock = (RelativeLayout) root.findViewById(R.id.requests_block);
         requestsList = (ListView) root.findViewById(R.id.requests_list);
         requestsList.setAdapter(adapter);
+
+        requestProgressBar = root.findViewById(R.id.requests_progress_bar);
 
         noRequestsBlock = (LinearLayout) root.findViewById(R.id.no_requests);
 
@@ -101,8 +110,6 @@ public class DealFragment extends Fragment implements DealContract.View {
                 showAddRequestDialog();
             }
         });
-
-        fabAddRequest.setVisibility(isFabShouldShown() ? View.VISIBLE : View.GONE);
 
         detailTitle = (TextView) root.findViewById(R.id.deal_detail_title);
         detailDescription = (TextView) root.findViewById(R.id.deal_detail_description);
@@ -127,7 +134,7 @@ public class DealFragment extends Fragment implements DealContract.View {
 
     @Override
     public void setLoadingIndicator(boolean active) {
-
+        deailInfoProgressBar.setVisibility(active ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -187,20 +194,12 @@ public class DealFragment extends Fragment implements DealContract.View {
                     Snackbar.make(getView(), "Pay request result error", Snackbar.LENGTH_SHORT).show();
                 }
                 break;
-            /*case REQUEST_SELECT_CARD_FOR_EMPLOYER:
-                break;
-            case REQUEST_SELECT_CARD_FOR_FREELANCER:
-                break;*/
         }
     }
 
     @Override
-    public void setTitle(String title) {
-        ((DealActivity) getActivity()).setActionBarTitle(title);
-    }
-
-    @Override
     public void showDealInfo(Deal deal) {
+        deailInfo.setVisibility(View.VISIBLE);
         detailTitle.setText(deal.getTitle());
         detailDescription.setText(deal.getShortDescription());
     }
@@ -209,6 +208,7 @@ public class DealFragment extends Fragment implements DealContract.View {
     public void showMissingDeal() {
         detailTitle.setText("");
         detailDescription.setText(R.string.no_data);
+        deailInfo.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -218,13 +218,14 @@ public class DealFragment extends Fragment implements DealContract.View {
 
     @Override
     public void showLoadingRequestsError() {
-
+        Snackbar.make(getView(), "Loading requests error", Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
     public void showNoRequests() {
         requestsList.setVisibility(View.GONE);
         noRequestsBlock.setVisibility(View.VISIBLE);
+        fabAddRequest.setVisibility(isFabShouldShown() ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -232,6 +233,12 @@ public class DealFragment extends Fragment implements DealContract.View {
         adapter.replaceData(requests);
         noRequestsBlock.setVisibility(View.GONE);
         requestsList.setVisibility(View.VISIBLE);
+        fabAddRequest.setVisibility(isFabShouldShown() ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public void setRequestLoadingIndicator(boolean show) {
+        requestProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -260,22 +267,22 @@ public class DealFragment extends Fragment implements DealContract.View {
 
         switch (request.getStateId()) {
             case created:
-                builder.setPositiveButton("Accept", acceptListener);
+                builder.setPositiveButton(R.string.accept_button_label, acceptListener);
                 break;
             case paymentProcessing:
                 return;
             case paid:
-                builder.setNegativeButton("Cancel Deal", cancelListener);
+                builder.setNegativeButton(R.string.cancel_deal_button_label, cancelListener);
                 break;
             case canceling:
             case canceled:
                 return;
             case paymentError:
-                builder.setPositiveButton("Try again", acceptListener);
-                builder.setNegativeButton("Cancel Deal", cancelListener);
+                builder.setPositiveButton(R.string.try_again_button_label, acceptListener);
+                builder.setNegativeButton(R.string.cancel_deal_button_label, cancelListener);
                 break;
             case completed:
-                builder.setPositiveButton("Confirm Completion", confirmListener);
+                builder.setPositiveButton(R.string.confirm_completition_button_label, confirmListener);
                 break;
             case confirming:
             case payoutProcessing:
@@ -370,7 +377,7 @@ public class DealFragment extends Fragment implements DealContract.View {
                 }
             };
 
-            builder.setPositiveButton("Pay", payListener);
+            builder.setPositiveButton(R.string.pay_button_label, payListener);
             builder.setNegativeButton(R.string.cancel, cancelListener);
 
             builder.show();
@@ -392,6 +399,19 @@ public class DealFragment extends Fragment implements DealContract.View {
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void setEmployerDealTitle() {
+        setTitle(getString(R.string.deal_employer_view_title));
+    }
+
+    @Override
+    public void setFreelancerDealTitle() {
+        setTitle(getString(R.string.deal_freelancer_view_title));
+    }
+
+    public void setTitle(String title) {
+        ((DealActivity) getActivity()).setActionBarTitle(title);
+    }
 
     /**
      * Listener for clicks on tasks in the ListView.

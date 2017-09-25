@@ -40,12 +40,8 @@
     <string name="paid_to_freelancer_status">Paid to Freelancer</string>
     <string name="complete">Complete</string>
     <string name="cancel_request">Cancel Request</string>
+
     <string name="deal_employer_view_title">Deal Employer View</string>
     <string name="deal_freelancer_view_title">Deal Freelancer View</string>
-    <string name="accept_button_label">Accept</string>
-    <string name="cancel_deal_button_label">Cancel Deal</string>
-    <string name="try_again_button_label">Try again</string>
-    <string name="confirm_completition_button_label">Confirm Completion</string>
-    <string name="pay_button_label">Pay</string>
 
 </resources>

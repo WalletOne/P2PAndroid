@@ -1,17 +1,20 @@
 package com.aronskiy_anton.p2pui.bankcard;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -25,7 +28,6 @@ import java.util.List;
 import static android.app.Activity.RESULT_OK;
 import static android.support.v4.util.Preconditions.checkNotNull;
 import static com.aronskiy_anton.p2pui.bankcard.BankCardActivity.ARG_CARD_ID;
-import static com.aronskiy_anton.p2pui.bankcard.BankCardActivity.REQUEST_SELECT_CARD;
 
 /**
  * Created by aaronskiy on 07.09.2017.
@@ -37,9 +39,9 @@ public class BankCardFragment extends android.support.v4.app.Fragment implements
 
     private View cardsBlockView;
 
-    private ViewGroup link_card_item;
+    private ViewGroup linkCardItem;
 
-    private ListView cardsListView;
+    private RecyclerView cardsRecyclerView;
 
     private BankCardAdapter cardsAdapter;
 
@@ -57,7 +59,7 @@ public class BankCardFragment extends android.support.v4.app.Fragment implements
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        cardsAdapter = new BankCardAdapter(new ArrayList<BankCard>(0), itemListener);
+        cardsAdapter = new BankCardAdapter(new ArrayList<BankCard>(0), itemListener, getContext());
     }
 
     @Nullable
@@ -67,15 +69,18 @@ public class BankCardFragment extends android.support.v4.app.Fragment implements
 
         cardsBlockView = root.findViewById(R.id.cards_block);
 
-        // Set up bank cards view
-        cardsListView = root.findViewById(R.id.cards_list);
-        cardsListView.setAdapter(cardsAdapter);
+        // Set up recyclerView
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        cardsRecyclerView = root.findViewById(R.id.cards_list);
+        cardsRecyclerView.setLayoutManager(layoutManager);
+        cardsRecyclerView.setAdapter(cardsAdapter);
+        setupItemTouchHelper();
 
         // Set up no cards view
         noCardsView = root.findViewById(R.id.no_cards);
 
-        link_card_item = root.findViewById(R.id.link_card_item);
-        link_card_item.setOnClickListener(new View.OnClickListener() {
+        linkCardItem = root.findViewById(R.id.link_card_item);
+        linkCardItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 presenter.addNewCard();
@@ -90,8 +95,49 @@ public class BankCardFragment extends android.support.v4.app.Fragment implements
         return root;
     }
 
+    private void setupItemTouchHelper() {
+        ItemTouchHelper.SimpleCallback swipeCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
+                final int position = viewHolder.getAdapterPosition();
+                final BankCard card = ((BankCardAdapter.ItemViewHolder) viewHolder).getCard();
+
+                if (direction == ItemTouchHelper.LEFT) {
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage(R.string.delete_card_confirmation);
+
+                    builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+                            cardsAdapter.notifyItemRangeChanged(position, cardsAdapter.getItemCount());
+                        }
+                    }).setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            cardsAdapter.removeItem(position);
+                            presenter.deleteCard(card);
+                        }
+                    }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).show();
+                }
+            }
+        };
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeCallback);
+        itemTouchHelper.attachToRecyclerView(cardsRecyclerView);
+    }
+
     private void setLinkCardVisibility(boolean visibility) {
-        link_card_item.setVisibility(visibility ? View.VISIBLE : View.GONE);
+        linkCardItem.setVisibility(visibility ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -163,9 +209,13 @@ public class BankCardFragment extends android.support.v4.app.Fragment implements
     @Override
     public void closeBankCardAndShowPayDealActivity() {
         Intent intent = new Intent();
-        //intent.putExtra(ARG_CARD_ID, clickedCard.getCardId());
         getActivity().setResult(RESULT_OK, intent);
         getActivity().finish();
+    }
+
+    @Override
+    public void showError(Throwable error) {
+        Toast.makeText(getContext(), error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
     }
 
     /**

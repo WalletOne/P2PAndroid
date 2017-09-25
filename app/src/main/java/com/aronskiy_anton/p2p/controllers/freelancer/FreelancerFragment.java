@@ -4,16 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.aronskiy_anton.p2p.R;
@@ -21,7 +15,6 @@ import com.aronskiy_anton.p2p.controllers.deals.DealsActivity;
 import com.aronskiy_anton.p2p.models.Freelancer;
 import com.aronskiy_anton.p2p.models.UserTypeId;
 import com.aronskiy_anton.p2pui.bankcard.BankCardActivity;
-import com.aronskiy_anton.p2pui.bankcard.BankCardPresenter;
 import com.aronskiy_anton.p2pui.payouts.PayoutsActivity;
 
 import static com.aronskiy_anton.p2p.controllers.deals.DealsActivity.ARG_USER_TYPE_ID;
@@ -42,10 +35,6 @@ public class FreelancerFragment extends Fragment implements FreelancerContract.V
 
     private TextView freelancerPhone;
 
-    private ViewGroup dealsButton;
-    private ViewGroup bankCardsButton;
-    private ViewGroup payoutsButton;
-
     private FreelancerContract.Presenter presenter;
 
     public FreelancerFragment() {
@@ -63,7 +52,7 @@ public class FreelancerFragment extends Fragment implements FreelancerContract.V
     @Override
     public void showUserData(Freelancer freelancer) {
         freelancerName.setText(freelancer.getTitle());
-        freelancerPhone.setText(freelancer.getPhoneNumber());
+        freelancerPhone.setText(freelancer.getFormattedPhoneNumber());
     }
 
     @Override
@@ -85,9 +74,9 @@ public class FreelancerFragment extends Fragment implements FreelancerContract.V
         freelancerName = root.findViewById(R.id.freelancer_name);
         freelancerPhone = root.findViewById(R.id.freelancer_phone);
 
-        dealsButton = root.findViewById(R.id.deals_button);
-        bankCardsButton = root.findViewById(R.id.bank_card_button);
-        payoutsButton = root.findViewById(R.id.payouts_button);
+        ViewGroup dealsButton = root.findViewById(R.id.deals_button);
+        ViewGroup bankCardsButton = root.findViewById(R.id.bank_card_button);
+        ViewGroup payoutsButton = root.findViewById(R.id.payouts_button);
 
         dealsButton.setOnClickListener(this);
         bankCardsButton.setOnClickListener(this);

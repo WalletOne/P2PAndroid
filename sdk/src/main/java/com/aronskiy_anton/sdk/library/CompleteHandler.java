@@ -5,5 +5,5 @@ package com.aronskiy_anton.sdk.library;
  */
 
 public interface CompleteHandler<V, A> {
-    void completed(V var1, A var2);
+    void completed(V json, A error);
 }

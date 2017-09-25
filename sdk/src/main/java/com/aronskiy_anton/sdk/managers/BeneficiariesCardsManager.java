@@ -6,22 +6,14 @@ import android.util.Log;
 
 import com.aronskiy_anton.sdk.Manager;
 import com.aronskiy_anton.sdk.P2PCore;
-import com.aronskiy_anton.sdk.library.Base64;
+import com.aronskiy_anton.sdk.library.CompleteErrorOnlyHandler;
 import com.aronskiy_anton.sdk.library.CompleteHandler;
 import com.aronskiy_anton.sdk.library.URLComposer;
 import com.aronskiy_anton.sdk.models.BankCard;
 import com.aronskiy_anton.sdk.models.RequestBuilder;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -60,8 +52,8 @@ public class BeneficiariesCardsManager extends Manager {
      * @param cardId Id card
      */
 
-    public void delete(int cardId){
-        core.networkManager.request(composer.beneficiariesCardsCard(core.getBenificaryId(), cardId), NetworkManager.MethodType.DELETE, null, null, null);
+    public void delete(int cardId, CompleteErrorOnlyHandler<Throwable> callback){
+        core.networkManager.request(composer.beneficiariesCardsCard(core.getBenificaryId(), cardId), NetworkManager.MethodType.DELETE, null,  callback);
     }
 
     /**

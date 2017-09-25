@@ -1,14 +1,13 @@
 package com.aronskiy_anton.sdk.managers;
 
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.text.TextUtils;
 
 import com.aronskiy_anton.sdk.Manager;
 import com.aronskiy_anton.sdk.P2PCore;
 import com.aronskiy_anton.sdk.W1P2PException;
 import com.aronskiy_anton.sdk.internal.Utility;
 import com.aronskiy_anton.sdk.library.Base64;
+import com.aronskiy_anton.sdk.library.CompleteErrorOnlyHandler;
 import com.aronskiy_anton.sdk.library.CompleteHandler;
 import com.aronskiy_anton.sdk.library.Mapper;
 import com.aronskiy_anton.sdk.library.ModelFactory;
@@ -22,7 +21,6 @@ import org.json.JSONTokener;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -138,46 +136,52 @@ public class NetworkManager extends Manager {
     @SuppressWarnings("unchecked")
     public <T extends Mapper.Mappable> List<T> requestList(final String urlString, final MethodType method, final Map<String, Object> parameters, final Class<T> cls, final CompleteHandler<List<T>, Throwable> callback) {
 
-        AsyncTask.execute((new Runnable() {
+        requestWithPrint(urlString, method, parameters, new CompleteHandler<Object, Throwable>() {
             @Override
-            public void run() {
-                requestWithPrint(urlString, method, parameters, new CompleteHandler<Object, Throwable>() {
-                    @Override
-                    public void completed(Object json, Throwable var2) {
-                        ArrayList<T> listT = new ArrayList<>();
-                        JSONArray jArray = (JSONArray) json;
-                        if (jArray != null) {
-                            for (int i = 0; i < jArray.length(); i++) {
-                                T t = (T) ModelFactory.newInstance(cls, (JSONObject) jArray.opt(i));
-                                listT.add(t);
-                            }
+            public void completed(Object json, Throwable error) {
+                if (error == null) {
+                    ArrayList<T> listT = new ArrayList<>();
+                    JSONArray jArray = (JSONArray) json;
+                    if (jArray != null) {
+                        for (int i = 0; i < jArray.length(); i++) {
+                            T t = (T) ModelFactory.newInstance(cls, (JSONObject) jArray.opt(i));
+                            listT.add(t);
                         }
-                        callback.completed(listT, var2);
                     }
-                });
+                    callback.completed(listT, null);
+                } else {
+                    callback.completed(null, error);
+                }
             }
-        }));
-
+        });
         return null;
     }
 
     @SuppressWarnings("unchecked")
     public <T extends Mapper.Mappable> T request(final String urlString, final MethodType method, final Map<String, Object> parameters, final Class<?> cls, final CompleteHandler<T, Throwable> callback) {
 
-        AsyncTask.execute((new Runnable() {
+        requestWithPrint(urlString, method, parameters, new CompleteHandler<Object, Throwable>() {
             @Override
-            public void run() {
-                requestWithPrint(urlString, method, parameters, new CompleteHandler<Object, Throwable>() {
-                    @Override
-                    public void completed(Object json, Throwable var2) {
-                        T instance = (T) ModelFactory.newInstance(cls, (JSONObject) json);
-                        callback.completed(instance, var2);
-                    }
-                });
+            public void completed(Object json, Throwable error) {
+                if (error == null) {
+                    T instance = (T) ModelFactory.newInstance(cls, (JSONObject) json);
+                    callback.completed(instance, null);
+                } else {
+                    callback.completed(null, error);
+                }
             }
-        }));
+        });
 
         return null;
+    }
+
+    public void request(final String urlString, final MethodType method, final Map<String, Object> parameters, final CompleteErrorOnlyHandler<Throwable> callback) {
+        requestWithPrint(urlString, method, parameters, new CompleteHandler<Object, Throwable>() {
+            @Override
+            public void completed(Object json, Throwable error) {
+                callback.completed(error);
+            }
+        });
     }
 
     private JSONObject requestWithPrint(String urlString, MethodType method, Map<String, Object> parameters, final CompleteHandler<Object, Throwable> callback) {
@@ -190,8 +194,6 @@ public class NetworkManager extends Manager {
                 .setMethodType(method)
                 .setTimestamp(timestamp)
                 .setUrlString(urlString);
-
-
 
 
         try {
@@ -207,11 +209,9 @@ public class NetworkManager extends Manager {
             }
         } catch (JSONException ex) {
             ex.printStackTrace();
-        } catch (RuntimeException ex){
+        } catch (RuntimeException ex) {
             ex.printStackTrace();
         }
-
-
 
         final String signature = makeSignature(urlString, timestamp, bodyAsString);
 
@@ -243,7 +243,7 @@ public class NetworkManager extends Manager {
             connection.setRequestProperty("X-Wallet-Signature", requests.getSignature());
 
             // Add POST body
-            if(requests.getHttpBody() != null) {
+            if (requests.getHttpBody() != null) {
                 OutputStream os = connection.getOutputStream();
                 os.write(requests.getHttpBody().getBytes("UTF-8"));
                 os.close();
@@ -266,6 +266,8 @@ public class NetworkManager extends Manager {
 
         private final CompleteHandler<Object, Throwable> callback;
 
+        private W1P2PException exception;
+
         private LoadDataAsync(CompleteHandler<Object, Throwable> callback) {
             this.callback = callback;
         }
@@ -287,6 +289,11 @@ public class NetworkManager extends Manager {
             try {
                 if (urlConnection.getResponseCode() >= 400) {
                     stream = urlConnection.getErrorStream();
+                    String responseString = Utility.readStreamToString(stream);
+                    JSONTokener tokener = new JSONTokener(responseString);
+                    resultObject = tokener.nextValue();
+
+                    exception = new W1P2PException(((JSONObject) resultObject).getString("ErrorDescription"));
                 } else {
 
                     stream = urlConnection.getInputStream();
@@ -294,10 +301,10 @@ public class NetworkManager extends Manager {
                     JSONTokener tokener = new JSONTokener(responseString);
                     resultObject = tokener.nextValue();
                 }
-            } catch (JSONException exception) {
-                exception.printStackTrace();
-            } catch (IOException exception) {
-                exception.printStackTrace();
+            } catch (JSONException e) {
+                exception = new W1P2PException("could not parse json data", e);
+            } catch (IOException e) {
+                exception = new W1P2PException("could not get data", e);
             } finally {
                 Utility.closeQuietly(stream);
             }
@@ -306,8 +313,12 @@ public class NetworkManager extends Manager {
 
         @Override
         protected void onPostExecute(Object result) {
-            if(callback != null) {
-                callback.completed(result, null);
+            if (callback != null) {
+                if (exception == null) {
+                    callback.completed(result, null);
+                } else {
+                    callback.completed(null, exception);
+                }
             }
         }
     }

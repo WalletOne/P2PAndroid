@@ -2,11 +2,8 @@ package com.aronskiy_anton.p2pui.refunds;
 
 import android.support.annotation.NonNull;
 
-import com.aronskiy_anton.p2pui.payouts.PayoutsContract;
 import com.aronskiy_anton.sdk.P2PCore;
 import com.aronskiy_anton.sdk.library.CompleteHandler;
-import com.aronskiy_anton.sdk.models.Payout;
-import com.aronskiy_anton.sdk.models.PayoutResult;
 import com.aronskiy_anton.sdk.models.Refund;
 import com.aronskiy_anton.sdk.models.RefundsResult;
 
@@ -53,7 +50,6 @@ public class RefundsPresenter implements RefundsContract.Presenter {
         loadRefunds(forceUpdate || firstLoad, true);
         firstLoad = false;
     }
-
 
     private void loadRefunds(boolean forceUpdate, final boolean showLoadingUI) {
 
