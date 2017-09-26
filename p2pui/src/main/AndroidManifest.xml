@@ -1,26 +1,41 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.aronskiy_anton.p2pui" >
+    package="com.aronskiy_anton.p2pui">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
-    <application android:theme="@style/AppTheme">
-        <activity android:label="@string/bank_cards_activity_title" android:name=".bankcard.BankCardActivity"/>
-        <activity android:label="@string/link_card_activity_title" android:name=".linkcard.LinkCardActivity">
-        <meta-data
-            android:name="android.support.PARENT_ACTIVITY"
-            android:value=".bankcard.BankCardActivity" />
-    </activity>
+    <application>
+        <activity
+            android:name=".bankcard.BankCardActivity"
+            android:label="@string/bank_cards_activity_title"
+            android:theme="@style/AppTheme.OverlapSystemBar" />
+        <activity
+            android:name=".linkcard.LinkCardActivity"
+            android:label="@string/link_card_activity_title"
+            android:theme="@style/AppTheme.OverlapSystemBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".bankcard.BankCardActivity" />
+        </activity>
 
-        <activity android:label="@string/activity_title_pay_deal" android:name=".paydeal.PayDealActivity">
+        <activity
+            android:name=".paydeal.PayDealActivity"
+            android:label="@string/activity_title_pay_deal"
+            android:theme="@style/AppTheme.OverlapSystemBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".bankcard.BankCardActivity" />
         </activity>
 
 
-        <activity android:label="@string/payouts_activity_title" android:name=".payouts.PayoutsActivity"/>
-        <activity android:label="@string/refunds_activity_title" android:name=".refunds.RefundsActivity"/>
+        <activity
+            android:name=".payouts.PayoutsActivity"
+            android:label="@string/payouts_activity_title"
+            android:theme="@style/AppTheme.OverlapSystemBar" />
+        <activity
+            android:name=".refunds.RefundsActivity"
+            android:label="@string/refunds_activity_title"
+            android:theme="@style/AppTheme.OverlapSystemBar" />
 
     </application>
 

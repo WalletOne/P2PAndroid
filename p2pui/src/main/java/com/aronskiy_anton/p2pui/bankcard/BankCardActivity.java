@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.aronskiy_anton.p2pui.R;
+import com.aronskiy_anton.p2pui.W1P2PToolbar;
 import com.aronskiy_anton.p2pui.util.ActivityUtils;
 
 /**
@@ -23,19 +24,15 @@ public class BankCardActivity extends AppCompatActivity {
     public static final int REQUEST_SELECT_CARD = 1;
     public static final int RESULT_FAIL = RESULT_FIRST_USER + 1;
 
-    private BankCardPresenter.Owner owner;
-
-    private BankCardPresenter presenter;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bank_card_layout);
 
+        W1P2PToolbar.installToolBar(this);
         setTitle(getResources().getString(R.string.bank_cards_activity_title));
 
         ActionBar ab = getSupportActionBar();
-
         if(ab == null) {
             String errorMsg = "This activity requires an AppCompat theme with an action bar, finishing activity...";
             Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
@@ -47,15 +44,14 @@ public class BankCardActivity extends AppCompatActivity {
         BankCardFragment bankCardFragment =
                 (BankCardFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if (bankCardFragment == null) {
-            // Create the fragment
             bankCardFragment = BankCardFragment.newInstance();
             ActivityUtils.addFragmentToActivity(
                     getSupportFragmentManager(), bankCardFragment, R.id.contentFrame);
         }
 
-        owner = (BankCardPresenter.Owner) getIntent().getSerializableExtra(ARG_OWNER_ID);
+        BankCardPresenter.Owner owner = (BankCardPresenter.Owner) getIntent().getSerializableExtra(ARG_OWNER_ID);
 
-        presenter = new BankCardPresenter(owner, bankCardFragment);
+        BankCardPresenter presenter = new BankCardPresenter(owner, bankCardFragment);
         presenter.setAddCardAvailable(getIntent().getBooleanExtra(ARG_SHOW_USE_NEW_CARD_LINK, false));
     }
 

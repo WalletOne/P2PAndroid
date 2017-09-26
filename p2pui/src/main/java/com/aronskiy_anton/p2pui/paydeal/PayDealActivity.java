@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.aronskiy_anton.p2pui.R;
+import com.aronskiy_anton.p2pui.W1P2PToolbar;
 import com.aronskiy_anton.sdk.P2PCore;
 import com.aronskiy_anton.sdk.models.RequestBuilder;
 
@@ -52,6 +53,8 @@ public class PayDealActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pay_deal_activity_layout);
+
+        W1P2PToolbar.installToolBar(this);
 
         payDealWebView = findViewById(R.id.pay_deal_web_view);
         progressFrame = findViewById(R.id.progressFrame);
