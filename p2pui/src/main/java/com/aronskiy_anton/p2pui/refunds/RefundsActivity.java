@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.aronskiy_anton.p2pui.R;
+import com.aronskiy_anton.p2pui.W1P2PToolbar;
 import com.aronskiy_anton.p2pui.util.ActivityUtils;
 
 /**
@@ -24,6 +25,7 @@ public class RefundsActivity extends AppCompatActivity {
 
         setContentView(R.layout.refunds_layout);
 
+        W1P2PToolbar.installToolBar(this);
         setTitle(getResources().getString(R.string.refunds_activity_title));
 
         ActionBar ab = getSupportActionBar();

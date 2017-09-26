@@ -15,6 +15,7 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.aronskiy_anton.p2pui.R;
+import com.aronskiy_anton.p2pui.W1P2PToolbar;
 import com.aronskiy_anton.sdk.P2PCore;
 import com.aronskiy_anton.sdk.models.RequestBuilder;
 
@@ -48,6 +49,8 @@ public class LinkCardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.link_card_activity_layout);
+
+        W1P2PToolbar.installToolBar(this);
 
         linkCardWebView = findViewById(R.id.link_card_web_view);
         progressFrame = findViewById(R.id.progressFrame);

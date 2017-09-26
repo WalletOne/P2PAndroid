@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.aronskiy_anton.p2pui.R;
+import com.aronskiy_anton.p2pui.W1P2PToolbar;
 import com.aronskiy_anton.p2pui.util.ActivityUtils;
 
 /**
@@ -24,6 +25,7 @@ public class PayoutsActivity extends AppCompatActivity {
 
         setContentView(R.layout.payouts_layout);
 
+        W1P2PToolbar.installToolBar(this);
         setTitle(getResources().getString(R.string.payouts_activity_title));
 
         ActionBar ab = getSupportActionBar();

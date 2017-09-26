@@ -11,7 +11,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.aronskiy_anton.p2p.R;
 import com.aronskiy_anton.p2p.controllers.freelancer.FreelancerActivity;
@@ -35,15 +34,9 @@ public class EmployerActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
-
-        if(ab == null) {
-            String errorMsg = "This activity requires an AppCompat theme with an action bar, finishing activity...";
-            Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
-            this.finish();
-        } else {
-            ab.setHomeAsUpIndicator(R.drawable.ic_menu);
+        ab.setHomeAsUpIndicator(R.drawable.ic_menu);
             ab.setDisplayHomeAsUpEnabled(true);
-        }
+
 
         // Set up the navigation drawer.
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -63,7 +56,6 @@ public class EmployerActivity extends AppCompatActivity {
         }
 
         new EmployerPresenter(employerFragment, Repository.getInstance());
-
     }
 
     @Override
