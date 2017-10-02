@@ -3,6 +3,8 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include layout="@layout/w1_p2p_toolbar"/>
+
     <FrameLayout
         android:id="@+id/contentFrame"
         android:layout_width="match_parent"

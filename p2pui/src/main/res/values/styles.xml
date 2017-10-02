@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
-
-    <style name="W1P2PAppTheme" parent="Base.W1P2PAppTheme" />
-
-    <style name="AppTheme.OverlapSystemBar" parent="Base.W1P2PAppTheme" />
-
-    <style name="Base.W1P2PAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="W1SdkTheme" parent="Theme.AppCompat.Light">
+    </style>
+    <style name="W1SdkTheme.Dark" parent="Theme.AppCompat">
+    </style>
+    <style name="W1SdkTheme.Light" parent="W1SdkTheme">
+        <!-- Here for consistency -->
+    </style>
+    <style name="W1SdkTheme.Light.DarkActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+    </style>
+    <style name="W1SdkTheme.Light.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
     </style>
 
-    <style name="W1P2P_Toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="W1SdkToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
 </resources>
+

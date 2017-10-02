@@ -5,7 +5,7 @@
 
 package com.aronskiy_anton.p2pui;
 
-import android.os.Build.VERSION;
+import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -31,7 +31,7 @@ public class W1P2PToolbar {
                 toolBarContainer.setVisibility(View.VISIBLE);
                 Toolbar toolbar = (Toolbar)activity.findViewById(R.id.w1_p2p_toolbar);
                 activity.setSupportActionBar(toolbar);
-                if(VERSION.SDK_INT >= 21) {
+                if(Build.VERSION.SDK_INT >= 21) {
                     activity.getSupportActionBar().setElevation(4f);
                 } else {
                     Log.d(LOG_TAG, "Device pre-Lollipop. Enable Toolbar shadow workaround.");

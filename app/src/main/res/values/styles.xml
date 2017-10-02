@@ -1,15 +1,24 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="YourLightTheme" parent="W1SdkTheme.Light">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="AppTheme.NoToolBar" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="YourDarkTheme" parent="W1SdkTheme.Dark">
+
+    </style>
+
+    <style name="YourLightTheme.DarkActionBar" parent="W1SdkTheme.Light.DarkActionBar">
+
+    </style>
+
+    <style name="YourLightTheme.NoActionBar" parent="W1SdkTheme.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
 
 </resources>

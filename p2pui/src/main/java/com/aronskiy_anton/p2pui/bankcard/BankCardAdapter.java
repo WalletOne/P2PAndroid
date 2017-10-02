@@ -33,14 +33,12 @@ public class BankCardAdapter extends RecyclerView.Adapter<BankCardAdapter.ItemVi
     private List<BankCard> cards;
     private BankCardFragment.BankCardItemListener itemListener;
 
-
     public BankCardAdapter(@NonNull List<BankCard> cards, BankCardFragment.BankCardItemListener itemListener, Context context) {
         this.cards = cards;
         this.itemListener = itemListener;
         this.context = context;
         this.validator = new CreditCardValidator();
     }
-
 
     public void replaceData(List<BankCard> cards) {
         setList(cards);
@@ -76,7 +74,7 @@ public class BankCardAdapter extends RecyclerView.Adapter<BankCardAdapter.ItemVi
         holder.number.setText(formatMask(card.getCardMask()));
 
         holder.setCard(card);
-        holder.setOnBankCardItemListener(itemListener);
+        holder.setOnBankCardItemClickListener(itemListener);
 /*
         holder.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -121,7 +119,7 @@ public class BankCardAdapter extends RecyclerView.Adapter<BankCardAdapter.ItemVi
             return card;
         }
 
-        public void setOnBankCardItemListener(BankCardFragment.BankCardItemListener itemListener) {
+        public void setOnBankCardItemClickListener(BankCardFragment.BankCardItemListener itemListener) {
             this.itemListener = itemListener;
         }
 

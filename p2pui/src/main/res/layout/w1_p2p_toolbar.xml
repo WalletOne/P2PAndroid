@@ -5,17 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:visibility="gone"
-    >
+    android:visibility="gone">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/w1_p2p_toolbar"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        style="@style/W1P2P_Toolbar"
-        />
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/w1_p2p_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/W1SdkToolbar" />
+
+    </android.support.design.widget.AppBarLayout>
 
     <View
         android:id="@+id/w1_p2p_toolbar_shadow"

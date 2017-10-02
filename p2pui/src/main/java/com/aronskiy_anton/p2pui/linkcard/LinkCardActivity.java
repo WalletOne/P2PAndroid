@@ -3,6 +3,7 @@ package com.aronskiy_anton.p2pui.linkcard;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.aronskiy_anton.p2pui.R;
 import com.aronskiy_anton.p2pui.W1P2PToolbar;
@@ -51,6 +53,15 @@ public class LinkCardActivity extends AppCompatActivity {
         setContentView(R.layout.link_card_activity_layout);
 
         W1P2PToolbar.installToolBar(this);
+
+        ActionBar ab = getSupportActionBar();
+        if(ab == null) {
+            String errorMsg = "This activity requires an AppCompat theme with an action bar, finishing activity...";
+            Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+            this.finish();
+        } else {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
 
         linkCardWebView = findViewById(R.id.link_card_web_view);
         progressFrame = findViewById(R.id.progressFrame);
