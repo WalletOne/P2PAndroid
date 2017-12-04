@@ -75,6 +75,8 @@ public class BankCardAdapter extends RecyclerView.Adapter<BankCardAdapter.ItemVi
 
         holder.setCard(card);
         holder.setOnBankCardItemClickListener(itemListener);
+
+
 /*
         holder.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
