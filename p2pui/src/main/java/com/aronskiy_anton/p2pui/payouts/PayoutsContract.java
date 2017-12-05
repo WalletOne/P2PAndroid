@@ -2,8 +2,6 @@ package com.aronskiy_anton.p2pui.payouts;
 
 import com.aronskiy_anton.p2pui.BasePresenter;
 import com.aronskiy_anton.p2pui.BaseView;
-import com.aronskiy_anton.p2pui.bankcard.BankCardContract;
-import com.aronskiy_anton.sdk.models.BankCard;
 import com.aronskiy_anton.sdk.models.Payout;
 
 import java.util.List;

@@ -205,7 +205,6 @@ public class NetworkManager extends Manager {
                 }
                 bodyAsString = jsonObject.toString();
                 requestBuilder.setHttpBody(bodyAsString);
-
             }
         } catch (JSONException ex) {
             ex.printStackTrace();

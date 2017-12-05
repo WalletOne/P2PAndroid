@@ -1,9 +1,9 @@
 package com.aronskiy_anton.sdk;
 
-import com.aronskiy_anton.sdk.managers.BeneficiariesCardsManager;
+import com.aronskiy_anton.sdk.managers.BeneficiariesPaymentToolsManager;
 import com.aronskiy_anton.sdk.managers.DealsManager;
 import com.aronskiy_anton.sdk.managers.NetworkManager;
-import com.aronskiy_anton.sdk.managers.PayersCardsManager;
+import com.aronskiy_anton.sdk.managers.PayersPaymentToolsManager;
 import com.aronskiy_anton.sdk.managers.PayoutsManager;
 import com.aronskiy_anton.sdk.managers.RefundsManager;
 
@@ -63,18 +63,18 @@ public enum P2PCore {
 
     public NetworkManager networkManager = new NetworkManager(this);
 
-    public BeneficiariesCardsManager beneficiariesCards = new BeneficiariesCardsManager(this);
+    public BeneficiariesPaymentToolsManager beneficiariesPaymentTools = new BeneficiariesPaymentToolsManager(this);
 
     public DealsManager dealsManager = new DealsManager(this);
 
-    public PayersCardsManager payersCardsManager = new PayersCardsManager(this);
+    public PayersPaymentToolsManager payersPaymentToolsManager = new PayersPaymentToolsManager(this);
 
     public PayoutsManager payoutsManager = new PayoutsManager(this);
 
     public RefundsManager refundsManager = new RefundsManager(this);
 
-    /// Manager for working with payers cards
-    public PayersCardsManager payersCards = new PayersCardsManager(this);
+    /// Manager for working with payers payment tools
+    public PayersPaymentToolsManager payersPaymentTools = new PayersPaymentToolsManager(this);
 
     public boolean isInitialized() {
         return this.initialised;

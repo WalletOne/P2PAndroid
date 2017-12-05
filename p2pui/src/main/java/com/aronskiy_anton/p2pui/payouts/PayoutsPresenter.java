@@ -2,10 +2,8 @@ package com.aronskiy_anton.p2pui.payouts;
 
 import android.support.annotation.NonNull;
 
-import com.aronskiy_anton.p2pui.bankcard.BankCardContract;
 import com.aronskiy_anton.sdk.P2PCore;
 import com.aronskiy_anton.sdk.library.CompleteHandler;
-import com.aronskiy_anton.sdk.models.BankCard;
 import com.aronskiy_anton.sdk.models.Payout;
 import com.aronskiy_anton.sdk.models.PayoutResult;
 

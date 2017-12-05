@@ -31,7 +31,7 @@ public class LinkCardActivity extends AppCompatActivity {
 
     public static final int RESULT_FAIL = RESULT_FIRST_USER + 1;
 
-    private final String RETURN_HOST = "p2p-success-link-new-card";
+    private final String RETURN_HOST = "p2p-success-link-new-paymentTool";
 
     public static final int REQUEST_LINK_CARD = 1;
 
@@ -69,7 +69,7 @@ public class LinkCardActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progress);
         progressBar.setMax(100);
 
-        final RequestBuilder request = P2PCore.INSTANCE.beneficiariesCards.linkNewCardRequest("http://" + RETURN_HOST);
+        final RequestBuilder request = P2PCore.INSTANCE.beneficiariesPaymentTools.linkNewCardRequest("http://" + RETURN_HOST);
 
         try {
             String postData = request.getHttpBody();

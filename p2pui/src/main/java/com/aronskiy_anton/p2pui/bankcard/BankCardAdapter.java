@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.aronskiy_anton.p2pui.R;
 import com.aronskiy_anton.p2pui.library.CreditCardValidator.CreditCardType;
 import com.aronskiy_anton.p2pui.library.CreditCardValidator.CreditCardValidator;
-import com.aronskiy_anton.sdk.models.BankCard;
 
 import java.util.List;
 

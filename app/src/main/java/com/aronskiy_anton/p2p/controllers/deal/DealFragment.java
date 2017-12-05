@@ -184,7 +184,7 @@ public class DealFragment extends Fragment implements DealContract.View {
                             break;
                     }
                 } else if (resultCode == BankCardActivity.RESULT_FAIL) {
-                    Snackbar.make(getView(), "Select card result error", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(getView(), "Select paymentTool result error", Snackbar.LENGTH_SHORT).show();
                 }
                 break;
             case REQUEST_PAY_DEAL:
@@ -348,7 +348,7 @@ public class DealFragment extends Fragment implements DealContract.View {
     @Override
     public void showAlertToEnterCVV(boolean redirectToCardAddition) {
 
-        // Existing bank card
+        // Existing bank paymentTool
         if (!redirectToCardAddition) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 

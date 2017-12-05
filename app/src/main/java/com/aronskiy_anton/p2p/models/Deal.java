@@ -1,7 +1,5 @@
 package com.aronskiy_anton.p2p.models;
 
-import com.aronskiy_anton.sdk.models.BankCard;
-
 import java.util.UUID;
 
 /**

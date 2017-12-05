@@ -48,13 +48,13 @@ public class Deal implements Mapper.Mappable {
 
     private String platformPayerId = "";
 
-    private Integer payerCardId = 0;
+    private Integer payerPaymentToolId = 0;
 
     private String payerPhoneNumber = "";
 
     private String platformBeneficiaryId = "";
 
-    private Integer beneficiaryCardId = 0;
+    private Integer beneficiaryPaymentToolId = 0;
 
     private String shortDescription = "";
 
@@ -78,9 +78,9 @@ public class Deal implements Mapper.Mappable {
         deal.platformBonusAmount = Mapper.map(o.opt("PlatformBonusAmount"), platformBonusAmount);
         deal.platformPayerId = Mapper.map(o.opt("PlatformPayerId"), platformPayerId);
         deal.payerPhoneNumber = Mapper.map(o.opt("PayerPhoneNumber"), payerPhoneNumber);
-        deal.payerCardId = Mapper.map(o.opt("PayerCardId"), payerCardId);
+        deal.payerPaymentToolId = Mapper.map(o.opt("PayerPaymentToolId"), payerPaymentToolId);
         deal.platformBeneficiaryId = Mapper.map(o.opt("PlatformBeneficiaryId"), platformBeneficiaryId);
-        deal.beneficiaryCardId = Mapper.map(o.opt("BeneficiaryCardId"), beneficiaryCardId);
+        deal.beneficiaryPaymentToolId = Mapper.map(o.opt("BeneficiaryPaymentToolId"), beneficiaryPaymentToolId);
         deal.shortDescription = Mapper.map(o.opt("ShortDescription"), shortDescription);
         deal.fullDescription = Mapper.map(o.opt("FullDescription"), fullDescription);
         deal.dealTypeId = Mapper.map(o.opt("DealTypeId"), dealTypeId);

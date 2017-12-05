@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import com.aronskiy_anton.sdk.P2PCore;
 import com.aronskiy_anton.sdk.library.CompleteErrorOnlyHandler;
 import com.aronskiy_anton.sdk.library.CompleteHandler;
-import com.aronskiy_anton.sdk.models.BankCard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,10 +78,10 @@ public class BankCardPresenter implements BankCardContract.Presenter {
 
         switch (owner) {
             case BENEFICIARY:
-                P2PCore.INSTANCE.beneficiariesCards.cards(handler);
+                P2PCore.INSTANCE.beneficiariesPaymentTools.cards(handler);
                 break;
             case PAYER:
-                P2PCore.INSTANCE.payersCards.cards(handler);
+                P2PCore.INSTANCE.payersPaymentTools.cards(handler);
                 break;
         }
     }
@@ -125,10 +124,10 @@ public class BankCardPresenter implements BankCardContract.Presenter {
 
         switch (owner) {
             case BENEFICIARY:
-                P2PCore.INSTANCE.beneficiariesCards.delete(card.getCardId(), callback);
+                P2PCore.INSTANCE.beneficiariesPaymentTools.delete(card.getCardId(), callback);
                 break;
             case PAYER:
-                P2PCore.INSTANCE.payersCards.delete(card.getCardId(), callback);
+                P2PCore.INSTANCE.payersPaymentTools.delete(card.getCardId(), callback);
                 break;
         }
     }

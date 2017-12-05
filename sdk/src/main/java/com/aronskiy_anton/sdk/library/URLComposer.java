@@ -15,7 +15,7 @@ public class URLComposer {
 
     public static final String SANDBOX_URL = "https://api.dev.walletone.com/p2p/";
     public static final String PRODUCT_URL = "https://api.dev.walletone.com/p2p";
-    public static final String API_PATH = "api/v2";
+    public static final String API_PATH = "api/v3";
 
     public String getProtocol() {
         switch (mode) {

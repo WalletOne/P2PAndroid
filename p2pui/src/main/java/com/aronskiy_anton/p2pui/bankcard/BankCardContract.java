@@ -2,7 +2,6 @@ package com.aronskiy_anton.p2pui.bankcard;
 
 import com.aronskiy_anton.p2pui.BasePresenter;
 import com.aronskiy_anton.p2pui.BaseView;
-import com.aronskiy_anton.sdk.models.BankCard;
 
 import java.util.List;
 

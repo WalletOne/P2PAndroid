@@ -1,6 +1,5 @@
 package com.aronskiy_anton.sdk.library;
 
-import com.aronskiy_anton.sdk.models.BankCard;
 import com.aronskiy_anton.sdk.models.Deal;
 import com.aronskiy_anton.sdk.models.Payout;
 import com.aronskiy_anton.sdk.models.PayoutResult;

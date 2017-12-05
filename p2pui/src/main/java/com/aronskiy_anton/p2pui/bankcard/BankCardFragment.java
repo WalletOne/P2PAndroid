@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import com.aronskiy_anton.p2pui.R;
 import com.aronskiy_anton.p2pui.linkcard.LinkCardActivity;
-import com.aronskiy_anton.sdk.models.BankCard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -195,7 +194,7 @@ public class BankCardFragment extends android.support.v4.app.Fragment implements
                 if (resultCode == RESULT_OK) {
                     presenter.loadCards(true);
                 } else if (resultCode == LinkCardActivity.RESULT_FAIL) {
-                    Toast.makeText(getContext(), "Link card result error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Link paymentTool result error", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -219,7 +218,7 @@ public class BankCardFragment extends android.support.v4.app.Fragment implements
     }
 
     /**
-     * Listener for clicks on bank card in the ListView.
+     * Listener for clicks on bank paymentTool in the ListView.
      */
     BankCardItemListener itemListener = new BankCardItemListener() {
 
