@@ -58,6 +58,6 @@ ext {
     siteUrl = 'https://github.com/WalletOne/P2PAndroid'
     gitUrl = 'https://github.com/WalletOne/P2PAndroid.git'
 
-    libraryVersion = '0.1.2'
+    libraryVersion = '0.2.1'
 }
 

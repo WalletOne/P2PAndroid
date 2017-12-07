@@ -27,7 +27,7 @@ public interface DealContract {
 
         UserTypeId getUserTypeId();
 
-        void setSelectedCardId(int cardId);
+        void setSelectedPaymentToolId(int paymentToolId);
 
         boolean isFabShouldShown();
 
@@ -39,9 +39,7 @@ public interface DealContract {
 
         void confirmDeal(DealRequest request);
 
-        void createP2PDeal(Integer cardId);
-
-        void onPayDealButtonClicked(String authData);
+        void createP2PDeal(Integer paymentToolId);
 
         void onPayRequestResultOk();
 
@@ -72,8 +70,6 @@ public interface DealContract {
         void showFreelancerDialog(DealRequest request);
 
         void showPaymentToolActivityForSelect(PaymentToolPresenter.Owner owner);
-
-        void showAlertToEnterCVV(boolean redirectToCardAddition);
 
         void showPayDealActivity(String authData, String dealId);
 

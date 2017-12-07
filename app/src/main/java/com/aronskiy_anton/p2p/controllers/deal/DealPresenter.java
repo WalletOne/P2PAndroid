@@ -184,9 +184,9 @@ public class DealPresenter implements DealContract.Presenter {
     }
 
     @Override
-    public void setSelectedCardId(int cardId) {
+    public void setSelectedPaymentToolId(int paymentToolId) {
         if (creatingRequest != null) {
-            creatingRequest.setFreelancerCardId(cardId);
+            creatingRequest.setFreelancerCardId(paymentToolId);
         }
     }
 
@@ -287,14 +287,14 @@ public class DealPresenter implements DealContract.Presenter {
     }
 
     @Override
-    public void createP2PDeal(final Integer cardId) {
+    public void createP2PDeal(final Integer paymentToolId) {
         final DealRequest request = selectedRequest;
         P2PCore.INSTANCE.dealsManager.create(
                 dealId,
                 deal.getEmployer().getId(),
                 request.getFreelancer().getId(),
                 deal.getEmployer().getPhoneNumber(),
-                cardId,
+                paymentToolId,
                 request.getFreelancerCardId(),
                 request.getAmount(),
                 CurrencyId.RUB,
@@ -304,15 +304,10 @@ public class DealPresenter implements DealContract.Presenter {
                 new CompleteHandler<com.aronskiy_anton.sdk.models.Deal, Throwable>() {
                     @Override
                     public void completed(com.aronskiy_anton.sdk.models.Deal deal, Throwable var2) {
-                        detailView.showAlertToEnterCVV(cardId == null);
+                        detailView.showPayDealActivity("", dealId);
                     }
                 }
         );
-    }
-
-    @Override
-    public void onPayDealButtonClicked(String authData) {
-        detailView.showPayDealActivity(authData, dealId);
     }
 
     @Override

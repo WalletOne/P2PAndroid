@@ -8,7 +8,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -173,7 +172,7 @@ public class DealFragment extends Fragment implements DealContract.View {
             case REQUEST_SELECT_CARD:
                 if (resultCode == RESULT_OK) {
                     Integer cardId = data.getIntExtra(ARG_PAYMENT_TOOL_ID, 0);
-                    presenter.setSelectedCardId(cardId);
+                    presenter.setSelectedPaymentToolId(cardId);
 
                     switch (presenter.getUserTypeId()) {
                         case EMPLOYER:
@@ -347,47 +346,6 @@ public class DealFragment extends Fragment implements DealContract.View {
         intent.putExtra(ARG_OWNER_ID, owner);
         intent.putExtra(ARG_SHOW_USE_NEW_PAYMENT_TOOL_LINK, owner == PAYER);
         startActivityForResult(intent, REQUEST_SELECT_CARD);
-    }
-
-    @Override
-    public void showAlertToEnterCVV(boolean redirectToCardAddition) {
-
-        // Existing paymentTool
-        if (!redirectToCardAddition) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-            builder.setTitle(R.string.enter_cvv);
-
-            final EditText editText = new EditText(getContext());
-            editText.setInputType(TYPE_NUMBER_FLAG_SIGNED | TYPE_CLASS_NUMBER);
-
-            int maxLength = 3;
-            editText.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLength)});
-
-            editText.setHint(R.string.cvv_cvc_3_digits);
-
-            builder.setView(editText);
-
-            DialogInterface.OnClickListener payListener = new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    String authData = editText.getText().toString();
-                    presenter.onPayDealButtonClicked(authData);
-                }
-            };
-
-            DialogInterface.OnClickListener cancelListener = new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            };
-
-            builder.setPositiveButton(R.string.pay_button_label, payListener);
-            builder.setNegativeButton(R.string.cancel, cancelListener);
-
-            builder.show();
-        } else {
-            presenter.onPayDealButtonClicked("");
-        }
     }
 
     @Override

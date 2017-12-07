@@ -14,8 +14,9 @@ public class URLComposer {
     private Mode mode = Mode.SANDBOX;
 
     public static final String SANDBOX_URL = "https://api.dev.walletone.com/p2p/";
-    public static final String PRODUCT_URL = "https://api.dev.walletone.com/p2p";
-    public static final String API_PATH = "api/v3";
+    public static final String PRODUCT_URL = "https://api.w1.ru/p2p/";
+    public static final int CURRENT_API_VERSION = 3;
+    public static final String API_PATH = "api/v%s";
 
     public String getProtocol() {
         switch (mode) {
@@ -40,7 +41,7 @@ public class URLComposer {
     }
 
     public String getApiURL() {
-        return getBaseURL() + API_PATH;
+        return getBaseURL() + String.format(API_PATH, CURRENT_API_VERSION);
     }
 
     public String relativeToBase(String to){
