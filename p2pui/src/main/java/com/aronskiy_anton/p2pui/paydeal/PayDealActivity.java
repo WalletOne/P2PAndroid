@@ -45,7 +45,7 @@ public class PayDealActivity extends AppCompatActivity {
 
     private FrameLayout progressFrame;
 
-    private boolean redirectToCardAddition = false;
+    private Boolean redirectToPaymentToolAddition = false;
 
     private boolean finishEventDispatched = false;
 
@@ -65,7 +65,7 @@ public class PayDealActivity extends AppCompatActivity {
         String authData = getIntent().getStringExtra(ARG_AUTH_DATA);
         String dealId = getIntent().getStringExtra(ARG_DEAL_ID);
 
-        final RequestBuilder request = P2PCore.INSTANCE.dealsManager.payRequest(dealId, redirectToCardAddition, authData, "http://" + RETURN_HOST);
+        final RequestBuilder request = P2PCore.INSTANCE.dealsManager.payRequest(dealId, null, redirectToPaymentToolAddition, authData, "http://" + RETURN_HOST);
 
         try {
             String postData = request.getHttpBody();

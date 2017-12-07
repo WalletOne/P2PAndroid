@@ -36,14 +36,14 @@
         </activity>
 
         <activity
-            android:name="com.aronskiy_anton.p2pui.bankcard.BankCardActivity"
-            android:label="@string/bank_cards_activity_title" />
+            android:name="com.aronskiy_anton.p2pui.paymenttool.PaymentToolActivity"
+            android:label="@string/payment_tools_activity_title" />
         <activity
-            android:name="com.aronskiy_anton.p2pui.linkcard.LinkCardActivity"
-            android:label="@string/link_card_activity_title">
+            android:name="com.aronskiy_anton.p2pui.linkpaymenttool.LinkPaymentToolActivity"
+            android:label="@string/link_payment_tool_activity_title">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.aronskiy_anton.p2pui.bankcard.BankCardActivity" />
+                android:value="com.aronskiy_anton.p2pui.paymenttool.PaymentToolActivity" />
         </activity>
 
         <activity
@@ -51,7 +51,7 @@
             android:label="@string/activity_title_pay_deal">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.aronskiy_anton.p2pui.bankcard.BankCardActivity" />
+                android:value="com.aronskiy_anton.p2pui.paymenttool.PaymentToolActivity" />
         </activity>
 
         <activity

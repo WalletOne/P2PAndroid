@@ -1,4 +1,4 @@
-package com.aronskiy_anton.p2pui.bankcard;
+package com.aronskiy_anton.p2pui.paymenttool;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,11 +15,11 @@ import com.aronskiy_anton.p2pui.util.ActivityUtils;
  * Created by aaronskiy on 07.09.2017.
  */
 
-public class BankCardActivity extends AppCompatActivity {
+public class PaymentToolActivity extends AppCompatActivity {
 
-    public static final String ARG_OWNER_ID = "BankCardActivity.ARG_OWNER_ID";
-    public static final String ARG_CARD_ID = "BankCardActivity.ARG_CARD_ID";
-    public static final String ARG_SHOW_USE_NEW_CARD_LINK = "BankCardActivity.ARG_SHOW_USE_NEW_CARD_LINK";
+    public static final String ARG_OWNER_ID = "PaymentToolActivity.ARG_OWNER_ID";
+    public static final String ARG_PAYMENT_TOOL_ID = "PaymentToolActivity.ARG_PAYMENT_TOOL_ID";
+    public static final String ARG_SHOW_USE_NEW_PAYMENT_TOOL_LINK = "PaymentToolActivity.ARG_SHOW_USE_NEW_PAYMENT_TOOL_LINK";
 
     public static final int REQUEST_SELECT_CARD = 1;
     public static final int RESULT_FAIL = RESULT_FIRST_USER + 1;
@@ -27,10 +27,10 @@ public class BankCardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.bank_card_layout);
+        setContentView(R.layout.payment_tool_layout);
 
         W1P2PToolbar.installToolBar(this);
-        setTitle(getResources().getString(R.string.bank_cards_activity_title));
+        setTitle(getResources().getString(R.string.payment_tools_activity_title));
 
         ActionBar ab = getSupportActionBar();
         if(ab == null) {
@@ -41,18 +41,18 @@ public class BankCardActivity extends AppCompatActivity {
             ab.setDisplayHomeAsUpEnabled(true);
         }
 
-        BankCardFragment bankCardFragment =
-                (BankCardFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
-        if (bankCardFragment == null) {
-            bankCardFragment = BankCardFragment.newInstance();
+        PaymentToolFragment paymentToolFragment =
+                (PaymentToolFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        if (paymentToolFragment == null) {
+            paymentToolFragment = PaymentToolFragment.newInstance();
             ActivityUtils.addFragmentToActivity(
-                    getSupportFragmentManager(), bankCardFragment, R.id.contentFrame);
+                    getSupportFragmentManager(), paymentToolFragment, R.id.contentFrame);
         }
 
-        BankCardPresenter.Owner owner = (BankCardPresenter.Owner) getIntent().getSerializableExtra(ARG_OWNER_ID);
+        PaymentToolPresenter.Owner owner = (PaymentToolPresenter.Owner) getIntent().getSerializableExtra(ARG_OWNER_ID);
 
-        BankCardPresenter presenter = new BankCardPresenter(owner, bankCardFragment);
-        presenter.setAddCardAvailable(getIntent().getBooleanExtra(ARG_SHOW_USE_NEW_CARD_LINK, false));
+        PaymentToolPresenter presenter = new PaymentToolPresenter(owner, paymentToolFragment);
+        presenter.setAddPaymentToolAvailable(getIntent().getBooleanExtra(ARG_SHOW_USE_NEW_PAYMENT_TOOL_LINK, false));
     }
 
     @Override

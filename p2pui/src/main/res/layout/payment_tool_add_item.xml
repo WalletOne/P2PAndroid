@@ -45,7 +45,7 @@
             android:layout_toLeftOf="@id/card_number"
             android:layout_toRightOf="@id/card_logo"
             android:layout_toStartOf="@id/card_number"
-            android:text="@string/add_new_card"
+            android:text="@string/add_new_payment_tool"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
     </RelativeLayout>

@@ -46,11 +46,11 @@ public enum CreditCardType {
     }
 
     /**
-     Get paymentTool type from string
+     Get bank card type from string
 
-     @param from paymentTool number string
+     @param from bank card number string
 
-     @return type of paymentTool
+     @return type of bank card
      */
     public static CreditCardType type(String from){
         Pattern pattern;

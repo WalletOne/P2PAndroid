@@ -114,7 +114,7 @@
             android:background="#cccccc" />
 
         <RelativeLayout
-            android:id="@+id/bank_card_button"
+            android:id="@+id/payment_tool_button"
             android:clickable="true"
             android:focusable="true"
             android:background="@android:color/white"
@@ -125,7 +125,7 @@
             android:layout_height="48dp">
 
             <TextView
-                android:text="@string/bank_cards"
+                android:text="@string/payment_tools"
                 android:gravity="center_vertical"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="match_parent"

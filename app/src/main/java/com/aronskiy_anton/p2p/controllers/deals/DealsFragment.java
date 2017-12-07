@@ -101,28 +101,9 @@ public class DealsFragment extends Fragment implements DealsContract.View {
         ListView listView = (ListView) root.findViewById(R.id.deals_list);
         listView.setAdapter(adapter);
 
-        //setHasOptionsMenu(true);
-
         return root;
     }
-/*
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if(presenter.isAddButtonAvailable()) {
-            inflater.inflate(R.menu.deals_menu, menu);
-        }
-    }
-*/
-/*
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        final Integer itemId = item.getItemId();
-        if (itemId.equals(R.id.menu_add_deal)) {
-            showAddDealDialog();
-        }
-        return true;
-    }
-*/
+
     @Override
     public void setLoadingIndicator(boolean show) {
         if(show) {

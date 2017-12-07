@@ -37,4 +37,16 @@ public class PaymentTool implements Mapper.Mappable {
         PaymentTool that = (PaymentTool) o;
         return that.paymentToolId.equals(this.paymentToolId) && this.paymentToolId != 0;
     }
+
+    public Integer getPaymentToolId() {
+        return paymentToolId;
+    }
+
+    public String getPaymentTypeId() {
+        return paymentTypeId;
+    }
+
+    public String getMask() {
+        return mask;
+    }
 }

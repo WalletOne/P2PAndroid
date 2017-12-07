@@ -43,7 +43,7 @@ public class PayersPaymentToolsManager extends Manager {
      * Get all payments tools of payer
      * @return all payments tools of payer
      */
-    public PaymentToolsResult cards(CompleteHandler<PaymentToolsResult, Throwable> callback){
+    public PaymentToolsResult paymentTools(CompleteHandler<PaymentToolsResult, Throwable> callback){
         return core.networkManager.request(composer.payersTools(core.getPayerId()), NetworkManager.MethodType.GET, null, PaymentToolsResult.class, callback);
     }
 

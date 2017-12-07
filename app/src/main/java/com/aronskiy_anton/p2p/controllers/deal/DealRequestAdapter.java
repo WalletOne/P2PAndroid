@@ -1,6 +1,5 @@
 package com.aronskiy_anton.p2p.controllers.deal;
 
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.aronskiy_anton.p2p.R;
-import com.aronskiy_anton.p2p.controllers.deals.DealsFragment;
-import com.aronskiy_anton.p2p.models.Deal;
 import com.aronskiy_anton.p2p.models.DealRequest;
 
 import java.text.DecimalFormat;
@@ -93,6 +90,9 @@ public class DealRequestAdapter extends BaseAdapter {
                 break;
             case paymentProcessing:
                 text = String.format(textView.getResources().getString(R.string.payment_precessing_status), number);
+                break;
+            case paymentHold:
+                text = String.format(textView.getResources().getString(R.string.payment_hold_status), number);
                 break;
             case paid:
                 text = String.format(textView.getResources().getString(R.string.paid_status), number);

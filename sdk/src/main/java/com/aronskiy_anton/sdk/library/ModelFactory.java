@@ -1,6 +1,8 @@
 package com.aronskiy_anton.sdk.library;
 
 import com.aronskiy_anton.sdk.models.Deal;
+import com.aronskiy_anton.sdk.models.PaymentTool;
+import com.aronskiy_anton.sdk.models.PaymentToolsResult;
 import com.aronskiy_anton.sdk.models.Payout;
 import com.aronskiy_anton.sdk.models.PayoutResult;
 import com.aronskiy_anton.sdk.models.Refund;
@@ -14,14 +16,16 @@ import org.json.JSONObject;
 
 public class ModelFactory {
     static public Object newInstance(Class<?> cls, JSONObject json){
-        if (cls.equals(BankCard.class)){
-            return json != null ? new BankCard().init(json) : new BankCard();
+        if (cls.equals(PaymentTool.class)){
+            return json != null ? new PaymentTool().init(json) : new PaymentTool();
         } else if (cls.equals(Deal.class)) {
             return json != null ? new Deal().init(json) : new Deal();
         } else if (cls.equals(PayoutResult.class)) {
             return json != null ? new PayoutResult().init(json) : new PayoutResult();
         } else if (cls.equals(RefundsResult.class)) {
             return json != null ? new RefundsResult().init(json) : new RefundsResult();
+        } else if (cls.equals(PaymentToolsResult.class)) {
+            return json != null ? new PaymentToolsResult().init(json) : new PaymentToolsResult();
         } else if (cls.equals(Payout.class)) {
             return json != null ? new Payout().init(json) : new Payout();
         } else if (cls.equals(Refund.class)) {

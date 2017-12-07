@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 public class DealRequest {
 
     public enum DealStateId {
-        created, paymentProcessing, paid, canceling, canceled, paymentError, done, confirming, payoutProcessing, payoutProcessingError, completed;
+        created, paymentProcessing, paymentHold, paid, canceling, canceled, paymentError, done, confirming, payoutProcessing, payoutProcessingError, completed
     }
 
     private String dealId;

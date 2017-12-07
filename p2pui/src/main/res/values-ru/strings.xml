@@ -1,17 +1,17 @@
 <resources>
     <string name="unknown_card_type">Неизвестный тип карты</string>
-    <string name="attached_cards">Привязанные карты</string>
-    <string name="add_new_card">Привязать новую карту</string>
-    <string name="no_cards">У вас нет привязанных карт</string>
+    <string name="attached_payment_tools">Привязанные способы оплаты</string>
+    <string name="add_new_payment_tool">Добавить способ оплаты</string>
+    <string name="no_payment_tools">У вас нет добавленных способов оплаты</string>
 
 
-    <string name="bank_cards_activity_title">Банковские карты</string>
-    <string name="link_card_activity_title">Привязка новой карты</string>
+    <string name="payment_tools_activity_title">Способы оплаты</string>
+    <string name="link_payment_tool_activity_title">Привязка способа оплаты</string>
 
 
-    <string name="menu_link_card">Добавить новую карту</string>
-    <string name="delete_card">Удалить карту</string>
-    <string name="delete_card_confirmation">Вы уверены, что хотите удалить карту?</string>
+    <string name="menu_link_payment_tool">Добавить новый способ оплаты</string>
+    <string name="delete_payment_tool">Удалить способ оплаты</string>
+    <string name="delete_payment_tool_confirmation">Вы уверены, что хотите удалить способ оплаты?</string>
     <string name="delete">Удалить</string>
     <string name="cancel">Отмена</string>
     <string name="payouts_activity_title">Платежи</string>
@@ -27,5 +27,14 @@
     <string name="refund_accepted_state">Успешный возврат</string>
     <string name="activity_title_link_card">Привязка карты</string>
     <string name="activity_title_pay_deal">Создание сделки</string>
+
+    <!-- Payment Tools Identifiers -->
+    <string name="payment_tool_id_alfaclick_rub">Альфа-клик</string>
+    <string name="payment_tool_id_beeline_rub">Билайн</string>
+    <string name="payment_tool_id_credit_card_rub">Кредитная карта</string>
+    <string name="payment_tool_id_psb_retail_rub">Промсвязьбанк</string>
+    <string name="payment_tool_id_qiwi_wallet_rub">Qiwi Кошелек</string>
+    <string name="payment_tool_id_yandex_money_rub">Яндекс.Деньги</string>
+    <string name="payment_tool_id_undefined">Не определен</string>
 
 </resources>

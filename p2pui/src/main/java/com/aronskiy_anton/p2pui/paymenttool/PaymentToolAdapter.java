@@ -1,10 +1,8 @@
-package com.aronskiy_anton.p2pui.bankcard;
+package com.aronskiy_anton.p2pui.paymenttool;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,10 +11,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.aronskiy_anton.p2pui.R;
-import com.aronskiy_anton.p2pui.library.CreditCardValidator.CreditCardType;
 import com.aronskiy_anton.p2pui.library.CreditCardValidator.CreditCardValidator;
+import com.aronskiy_anton.p2pui.library.PaymentToolType;
+import com.aronskiy_anton.p2pui.loaders.DownloadImageTask;
+import com.aronskiy_anton.sdk.models.PaymentTool;
 
 import java.util.List;
+import java.util.Locale;
 
 import static android.support.v4.util.Preconditions.checkNotNull;
 
@@ -24,44 +25,47 @@ import static android.support.v4.util.Preconditions.checkNotNull;
  * Created by aaronskiy on 21.09.2017.
  */
 
-public class BankCardAdapter extends RecyclerView.Adapter<BankCardAdapter.ItemViewHolder> {
+public class PaymentToolAdapter extends RecyclerView.Adapter<PaymentToolAdapter.ItemViewHolder> {
+
+    public static final String IMAGE_URL_FOR_DOWNLOAD = "https://www.walletone.com/logo/paymenttype/%s.png?type=pt&w=50&h=50";
 
     private Context context;
     private CreditCardValidator validator;
 
-    private List<BankCard> cards;
-    private BankCardFragment.BankCardItemListener itemListener;
+    private List<PaymentTool> paymentTools;
+    private PaymentToolFragment.PaymentToolItemListener itemListener;
 
-    public BankCardAdapter(@NonNull List<BankCard> cards, BankCardFragment.BankCardItemListener itemListener, Context context) {
-        this.cards = cards;
+    public PaymentToolAdapter(@NonNull List<PaymentTool> paymentTools, PaymentToolFragment.PaymentToolItemListener itemListener, Context context) {
+        this.paymentTools = paymentTools;
         this.itemListener = itemListener;
         this.context = context;
         this.validator = new CreditCardValidator();
     }
 
-    public void replaceData(List<BankCard> cards) {
-        setList(cards);
+    public void replaceData(List<PaymentTool> paymentTools) {
+        setList(paymentTools);
         notifyDataSetChanged();
     }
 
     @SuppressLint("RestrictedApi")
-    private void setList(List<BankCard> cards) {
-        this.cards = checkNotNull(cards);
+    private void setList(List<PaymentTool> paymentTools) {
+        this.paymentTools = checkNotNull(paymentTools);
     }
 
     @Override
-    public BankCardAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PaymentToolAdapter.ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ItemViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.bank_card_item, parent, false)) {
+                .inflate(R.layout.payment_tool_item, parent, false)) {
         };
     }
 
     @Override
-    public void onBindViewHolder(BankCardAdapter.ItemViewHolder holder, int position) {
+    public void onBindViewHolder(PaymentToolAdapter.ItemViewHolder holder, int position) {
 
-        final BankCard card = cards.get(position);
+        final PaymentTool paymentTool = paymentTools.get(position);
 
-        CreditCardType type = validator.type(card.getCardMask());
+/*
+        CreditCardType type = validator.type(paymentTool.getMask());
         if (type != CreditCardType.UNDEFINED) {
             Drawable drawable = ContextCompat.getDrawable(context, getCardTypeLogo(type.getTitle()));
             holder.image.setImageDrawable(drawable);
@@ -70,29 +74,27 @@ public class BankCardAdapter extends RecyclerView.Adapter<BankCardAdapter.ItemVi
             holder.title.setText(R.string.unknown_card_type);
         }
 
-        holder.number.setText(formatMask(card.getCardMask()));
+        holder.number.setText(formatMask(paymentTool.getMask()));
+*/
+        PaymentToolType toolType = PaymentToolType.getPaymentToolNameByPaymentTypeId(paymentTool.getPaymentTypeId());
+        holder.title.setText(context.getString(toolType.getLocalizedName()));
 
-        holder.setCard(card);
-        holder.setOnBankCardItemClickListener(itemListener);
+        String imageUrl = String.format(Locale.US, IMAGE_URL_FOR_DOWNLOAD, paymentTool.getPaymentTypeId());
+        new DownloadImageTask(holder.image).execute(imageUrl);
 
+        holder.number.setText(paymentTool.getMask());
+        holder.setPaymentTool(paymentTool);
+        holder.setOnPaymentToolItemClickListener(itemListener);
 
-/*
-        holder.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View view) {
-                Toast.makeText(view.getContext(), "Toast", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });*/
     }
 
     @Override
     public int getItemCount() {
-        return cards.size();
+        return paymentTools.size();
     }
 
     public void removeItem(int position) {
-        cards.remove(position);
+        paymentTools.remove(position);
         notifyItemRemoved(position);
     }
 
@@ -101,8 +103,8 @@ public class BankCardAdapter extends RecyclerView.Adapter<BankCardAdapter.ItemVi
         ImageView image;
         TextView title;
         TextView number;
-        BankCardFragment.BankCardItemListener itemListener;
-        BankCard card;
+        PaymentToolFragment.PaymentToolItemListener itemListener;
+        PaymentTool paymentTool;
 
         ItemViewHolder(View v) {
             super(v);
@@ -112,22 +114,22 @@ public class BankCardAdapter extends RecyclerView.Adapter<BankCardAdapter.ItemVi
             v.setOnClickListener(this);
         }
 
-        public void setCard(BankCard card) {
-            this.card = card;
+        public void setPaymentTool(PaymentTool paymentTool) {
+            this.paymentTool = paymentTool;
         }
 
-        public BankCard getCard() {
-            return card;
+        public PaymentTool getPaymentTool() {
+            return paymentTool;
         }
 
-        public void setOnBankCardItemClickListener(BankCardFragment.BankCardItemListener itemListener) {
+        public void setOnPaymentToolItemClickListener(PaymentToolFragment.PaymentToolItemListener itemListener) {
             this.itemListener = itemListener;
         }
 
         @Override
         public void onClick(View view) {
             if(itemListener != null) {
-                itemListener.onCardClick(card);
+                itemListener.onPaymentToolClick(paymentTool);
             }
         }
     }

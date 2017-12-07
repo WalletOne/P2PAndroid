@@ -14,12 +14,12 @@ import com.aronskiy_anton.p2p.R;
 import com.aronskiy_anton.p2p.controllers.deals.DealsActivity;
 import com.aronskiy_anton.p2p.models.Employer;
 import com.aronskiy_anton.p2p.models.UserTypeId;
-import com.aronskiy_anton.p2pui.bankcard.BankCardActivity;
+import com.aronskiy_anton.p2pui.paymenttool.PaymentToolActivity;
 import com.aronskiy_anton.p2pui.refunds.RefundsActivity;
 
 import static com.aronskiy_anton.p2p.controllers.deals.DealsActivity.ARG_USER_TYPE_ID;
-import static com.aronskiy_anton.p2pui.bankcard.BankCardActivity.ARG_OWNER_ID;
-import static com.aronskiy_anton.p2pui.bankcard.BankCardPresenter.Owner.PAYER;
+import static com.aronskiy_anton.p2pui.paymenttool.PaymentToolActivity.ARG_OWNER_ID;
+import static com.aronskiy_anton.p2pui.paymenttool.PaymentToolPresenter.Owner.PAYER;
 import static com.aronskiy_anton.p2pui.refunds.RefundsActivity.ARG_DEAL_ID;
 
 
@@ -73,7 +73,7 @@ public class EmployerFragment extends Fragment implements EmployerContract.View,
         employerPhone = root.findViewById(R.id.employer_phone);
 
         ViewGroup dealsButton = root.findViewById(R.id.deals_button);
-        ViewGroup bankCardsButton = root.findViewById(R.id.bank_card_button);
+        ViewGroup bankCardsButton = root.findViewById(R.id.payment_tool_button);
         ViewGroup refundsButton = root.findViewById(R.id.refunds_button);
 
         dealsButton.setOnClickListener(this);
@@ -92,8 +92,8 @@ public class EmployerFragment extends Fragment implements EmployerContract.View,
                 intent.putExtra(ARG_USER_TYPE_ID, UserTypeId.EMPLOYER.getId());
                 startActivity(intent);
                 break;
-            case R.id.bank_card_button:
-                intent = new Intent(getContext(), BankCardActivity.class);
+            case R.id.payment_tool_button:
+                intent = new Intent(getContext(), PaymentToolActivity.class);
                 intent.putExtra(ARG_OWNER_ID, PAYER);
                 startActivity(intent);
                 break;

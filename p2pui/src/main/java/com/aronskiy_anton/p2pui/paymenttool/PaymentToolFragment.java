@@ -1,4 +1,4 @@
-package com.aronskiy_anton.p2pui.bankcard;
+package com.aronskiy_anton.p2pui.paymenttool;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -19,73 +19,74 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.aronskiy_anton.p2pui.R;
-import com.aronskiy_anton.p2pui.linkcard.LinkCardActivity;
+import com.aronskiy_anton.p2pui.linkpaymenttool.LinkPaymentToolActivity;
+import com.aronskiy_anton.sdk.models.PaymentTool;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
 import static android.support.v4.util.Preconditions.checkNotNull;
-import static com.aronskiy_anton.p2pui.bankcard.BankCardActivity.ARG_CARD_ID;
+import static com.aronskiy_anton.p2pui.paymenttool.PaymentToolActivity.ARG_PAYMENT_TOOL_ID;
 
 /**
  * Created by aaronskiy on 07.09.2017.
  */
 
-public class BankCardFragment extends android.support.v4.app.Fragment implements BankCardContract.View {
+public class PaymentToolFragment extends android.support.v4.app.Fragment implements PaymentToolContract.View {
 
-    private View noCardsView;
+    private View noPaymentToolsView;
 
-    private View cardsBlockView;
+    private View paymentToolsBlockView;
 
-    private ViewGroup linkCardItem;
+    private ViewGroup linkPaymentToolItem;
 
-    private RecyclerView cardsRecyclerView;
+    private RecyclerView paymentToolsRecyclerView;
 
-    private BankCardAdapter cardsAdapter;
+    private PaymentToolAdapter paymentToolsAdapter;
 
-    private BankCardContract.Presenter presenter;
+    private PaymentToolContract.Presenter presenter;
 
     private ProgressBar progressBar;
 
-    public BankCardFragment() {
+    public PaymentToolFragment() {
     }
 
-    public static BankCardFragment newInstance() {
-        return new BankCardFragment();
+    public static PaymentToolFragment newInstance() {
+        return new PaymentToolFragment();
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        cardsAdapter = new BankCardAdapter(new ArrayList<BankCard>(0), itemListener, getContext());
+        paymentToolsAdapter = new PaymentToolAdapter(new ArrayList<PaymentTool>(0), itemListener, getContext());
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.bank_card_fragment_layout, container, false);
+        View root = inflater.inflate(R.layout.payment_tool_fragment_layout, container, false);
 
-        cardsBlockView = root.findViewById(R.id.cards_block);
+        paymentToolsBlockView = root.findViewById(R.id.payment_tools_block);
 
         // Set up recyclerView
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        cardsRecyclerView = root.findViewById(R.id.cards_list);
-        cardsRecyclerView.setLayoutManager(layoutManager);
-        cardsRecyclerView.setAdapter(cardsAdapter);
+        paymentToolsRecyclerView = root.findViewById(R.id.payment_tools_list);
+        paymentToolsRecyclerView.setLayoutManager(layoutManager);
+        paymentToolsRecyclerView.setAdapter(paymentToolsAdapter);
         setupItemTouchHelper();
 
-        // Set up no cards view
-        noCardsView = root.findViewById(R.id.no_cards);
+        // Set up no paymentTools view
+        noPaymentToolsView = root.findViewById(R.id.no_payment_tools);
 
-        linkCardItem = root.findViewById(R.id.link_card_item);
-        linkCardItem.setOnClickListener(new View.OnClickListener() {
+        linkPaymentToolItem = root.findViewById(R.id.link_card_item);
+        linkPaymentToolItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.addNewCard();
+                presenter.addNewPaymentTool();
             }
         });
-        setLinkCardVisibility(presenter.isAddNewCardAvailable());
+        setLinkPaymentToolVisibility(presenter.isAddNewPaymentToolAvailable());
 
         progressBar = root.findViewById(R.id.progress_bar);
 
@@ -104,23 +105,23 @@ public class BankCardFragment extends android.support.v4.app.Fragment implements
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction) {
                 final int position = viewHolder.getAdapterPosition();
-                final BankCard card = ((BankCardAdapter.ItemViewHolder) viewHolder).getCard();
+                final PaymentTool paymentTool = ((PaymentToolAdapter.ItemViewHolder) viewHolder).getPaymentTool();
 
                 if (direction == ItemTouchHelper.LEFT) {
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                    builder.setMessage(R.string.delete_card_confirmation);
+                    builder.setMessage(R.string.delete_payment_tool_confirmation);
 
                     builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
                         @Override
                         public void onDismiss(DialogInterface dialogInterface) {
-                            cardsAdapter.notifyItemRangeChanged(position, cardsAdapter.getItemCount());
+                            paymentToolsAdapter.notifyItemRangeChanged(position, paymentToolsAdapter.getItemCount());
                         }
                     }).setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            cardsAdapter.removeItem(position);
-                            presenter.deleteCard(card);
+                            paymentToolsAdapter.removeItem(position);
+                            presenter.deletePaymentTool(paymentTool);
                         }
                     }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                         @Override
@@ -132,17 +133,17 @@ public class BankCardFragment extends android.support.v4.app.Fragment implements
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(swipeCallback);
-        itemTouchHelper.attachToRecyclerView(cardsRecyclerView);
+        itemTouchHelper.attachToRecyclerView(paymentToolsRecyclerView);
     }
 
-    private void setLinkCardVisibility(boolean visibility) {
-        linkCardItem.setVisibility(visibility ? View.VISIBLE : View.GONE);
+    private void setLinkPaymentToolVisibility(boolean visibility) {
+        linkPaymentToolItem.setVisibility(visibility ? View.VISIBLE : View.GONE);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        if(presenter.isAddNewCardAvailable()) {
-            inflater.inflate(R.menu.bank_cards_menu, menu);
+        if(presenter.isAddNewPaymentToolAvailable()) {
+            inflater.inflate(R.menu.payment_tools_menu, menu);
         }
     }
 
@@ -150,7 +151,7 @@ public class BankCardFragment extends android.support.v4.app.Fragment implements
     public boolean onOptionsItemSelected(MenuItem item) {
         final Integer itemId = item.getItemId();
         if (itemId.equals(R.id.menu_link_card)) {
-            presenter.addNewCard();
+            presenter.addNewPaymentTool();
         }
         return true;
     }
@@ -163,37 +164,37 @@ public class BankCardFragment extends android.support.v4.app.Fragment implements
 
     @SuppressLint("RestrictedApi")
     @Override
-    public void setPresenter(BankCardContract.Presenter presenter) {
+    public void setPresenter(PaymentToolContract.Presenter presenter) {
         this.presenter = checkNotNull(presenter);
     }
 
     @Override
-    public void showCards(List<BankCard> bankCards) {
-        cardsAdapter.replaceData(bankCards);
-        cardsBlockView.setVisibility(View.VISIBLE);
-        noCardsView.setVisibility(View.GONE);
+    public void showPaymentTools(List<PaymentTool> paymentTools) {
+        paymentToolsAdapter.replaceData(paymentTools);
+        paymentToolsBlockView.setVisibility(View.VISIBLE);
+        noPaymentToolsView.setVisibility(View.GONE);
     }
 
     @Override
     public void showEmptyList() {
-        noCardsView.setVisibility(View.VISIBLE);
-        cardsBlockView.setVisibility(View.GONE);
+        noPaymentToolsView.setVisibility(View.VISIBLE);
+        paymentToolsBlockView.setVisibility(View.GONE);
     }
 
     @Override
-    public void showLinkCardActivity() {
-        Intent intent = new Intent(getContext(), LinkCardActivity.class);
-        startActivityForResult(intent, LinkCardActivity.REQUEST_LINK_CARD);
+    public void showLinkPaymentToolActivity() {
+        Intent intent = new Intent(getContext(), LinkPaymentToolActivity.class);
+        startActivityForResult(intent, LinkPaymentToolActivity.REQUEST_LINK_PAYMENT_TOOL);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode){
-            case LinkCardActivity.REQUEST_LINK_CARD:
+            case LinkPaymentToolActivity.REQUEST_LINK_PAYMENT_TOOL:
                 if (resultCode == RESULT_OK) {
-                    presenter.loadCards(true);
-                } else if (resultCode == LinkCardActivity.RESULT_FAIL) {
+                    presenter.loadPaymentTools(true);
+                } else if (resultCode == LinkPaymentToolActivity.RESULT_FAIL) {
                     Toast.makeText(getContext(), "Link paymentTool result error", Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -206,7 +207,7 @@ public class BankCardFragment extends android.support.v4.app.Fragment implements
     }
 
     @Override
-    public void closeBankCardAndShowPayDealActivity() {
+    public void closePaymentToolAndShowPayDealActivity() {
         Intent intent = new Intent();
         getActivity().setResult(RESULT_OK, intent);
         getActivity().finish();
@@ -220,19 +221,19 @@ public class BankCardFragment extends android.support.v4.app.Fragment implements
     /**
      * Listener for clicks on bank paymentTool in the ListView.
      */
-    BankCardItemListener itemListener = new BankCardItemListener() {
+    PaymentToolItemListener itemListener = new PaymentToolItemListener() {
 
         @Override
-        public void onCardClick(BankCard clickedCard) {
+        public void onPaymentToolClick(PaymentTool clickedPaymentTool) {
             Intent intent = new Intent();
-            intent.putExtra(ARG_CARD_ID, clickedCard.getCardId());
+            intent.putExtra(ARG_PAYMENT_TOOL_ID, clickedPaymentTool.getPaymentToolId());
             getActivity().setResult(RESULT_OK, intent);
             getActivity().finish();
         }
     };
 
-    public interface BankCardItemListener {
+    public interface PaymentToolItemListener {
 
-        void onCardClick(BankCard clickedCard);
+        void onPaymentToolClick(PaymentTool clickedPaymentTool);
     }
 }

@@ -14,9 +14,10 @@ import com.aronskiy_anton.sdk.library.CompleteHandler;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static com.aronskiy_anton.p2pui.bankcard.BankCardPresenter.Owner.PAYER;
+import static com.aronskiy_anton.p2pui.paymenttool.PaymentToolPresenter.Owner.PAYER;
 import static com.aronskiy_anton.sdk.models.Deal.DEAL_STATE_ID_COMPLETED;
 import static com.aronskiy_anton.sdk.models.Deal.DEAL_STATE_ID_PAID;
+import static com.aronskiy_anton.sdk.models.Deal.DEAL_STATE_ID_PAYMENT_HOLD;
 import static com.aronskiy_anton.sdk.models.Deal.DEAL_STATE_ID_PAYMENT_PROCESS_ERROR;
 import static com.aronskiy_anton.sdk.models.Deal.DEAL_STATE_ID_PAYOUT_PROCESSING;
 import static com.aronskiy_anton.sdk.models.Deal.DEAL_STATE_ID_PAYOUT_PROCESS_ERROR;
@@ -213,7 +214,7 @@ public class DealPresenter implements DealContract.Presenter {
     @Override
     public void acceptDeal(DealRequest request) {
         this.selectedRequest = request;
-        detailView.showBankCardActivityForSelect(PAYER);
+        detailView.showPaymentToolActivityForSelect(PAYER);
     }
 
     @Override
@@ -258,6 +259,9 @@ public class DealPresenter implements DealContract.Presenter {
                         selectedRequest.setStateId(DealRequest.DealStateId.paymentProcessing);
                         detailView.updateAdapter();
                         checkStatus();
+                        break;
+                    case DEAL_STATE_ID_PAYMENT_HOLD:
+                        selectedRequest.setStateId(DealRequest.DealStateId.paymentHold);
                         break;
                     case DEAL_STATE_ID_PAYMENT_PROCESS_ERROR:
                         selectedRequest.setStateId(DealRequest.DealStateId.paymentError);

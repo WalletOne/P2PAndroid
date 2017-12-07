@@ -5,7 +5,7 @@ import com.aronskiy_anton.p2p.BaseView;
 import com.aronskiy_anton.p2p.models.Deal;
 import com.aronskiy_anton.p2p.models.DealRequest;
 import com.aronskiy_anton.p2p.models.UserTypeId;
-import com.aronskiy_anton.p2pui.bankcard.BankCardPresenter;
+import com.aronskiy_anton.p2pui.paymenttool.PaymentToolPresenter;
 
 import java.util.List;
 
@@ -71,7 +71,7 @@ public interface DealContract {
 
         void showFreelancerDialog(DealRequest request);
 
-        void showBankCardActivityForSelect(BankCardPresenter.Owner owner);
+        void showPaymentToolActivityForSelect(PaymentToolPresenter.Owner owner);
 
         void showAlertToEnterCVV(boolean redirectToCardAddition);
 

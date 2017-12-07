@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".linkcard.LinkCardActivity">
+    tools:context=".linkpaymenttool.LinkCardActivity">
 
     <include layout="@layout/w1_p2p_toolbar"/>
 
@@ -27,7 +27,7 @@
     </FrameLayout>
 
     <WebView
-        android:id="@+id/link_card_web_view"
+        android:id="@+id/link_payment_tool_web_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

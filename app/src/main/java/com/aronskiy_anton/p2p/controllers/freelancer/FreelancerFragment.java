@@ -14,12 +14,12 @@ import com.aronskiy_anton.p2p.R;
 import com.aronskiy_anton.p2p.controllers.deals.DealsActivity;
 import com.aronskiy_anton.p2p.models.Freelancer;
 import com.aronskiy_anton.p2p.models.UserTypeId;
-import com.aronskiy_anton.p2pui.bankcard.BankCardActivity;
+import com.aronskiy_anton.p2pui.paymenttool.PaymentToolActivity;
 import com.aronskiy_anton.p2pui.payouts.PayoutsActivity;
 
 import static com.aronskiy_anton.p2p.controllers.deals.DealsActivity.ARG_USER_TYPE_ID;
-import static com.aronskiy_anton.p2pui.bankcard.BankCardActivity.ARG_OWNER_ID;
-import static com.aronskiy_anton.p2pui.bankcard.BankCardPresenter.Owner.BENEFICIARY;
+import static com.aronskiy_anton.p2pui.paymenttool.PaymentToolActivity.ARG_OWNER_ID;
+import static com.aronskiy_anton.p2pui.paymenttool.PaymentToolPresenter.Owner.BENEFICIARY;
 
 
 /**
@@ -29,7 +29,6 @@ import static com.aronskiy_anton.p2pui.bankcard.BankCardPresenter.Owner.BENEFICI
 public class FreelancerFragment extends Fragment implements FreelancerContract.View, View.OnClickListener {
 
     static final String ARG_DEAL_ID = "DealsFragment.ARG_DEAL_ID";
-
 
     private TextView freelancerName;
 
@@ -75,16 +74,15 @@ public class FreelancerFragment extends Fragment implements FreelancerContract.V
         freelancerPhone = root.findViewById(R.id.freelancer_phone);
 
         ViewGroup dealsButton = root.findViewById(R.id.deals_button);
-        ViewGroup bankCardsButton = root.findViewById(R.id.bank_card_button);
+        ViewGroup paymentToolsButton = root.findViewById(R.id.payment_tool_button);
         ViewGroup payoutsButton = root.findViewById(R.id.payouts_button);
 
         dealsButton.setOnClickListener(this);
-        bankCardsButton.setOnClickListener(this);
+        paymentToolsButton.setOnClickListener(this);
         payoutsButton.setOnClickListener(this);
 
         return root;
     }
-
 
     @Override
     public void onClick(View view) {
@@ -95,9 +93,8 @@ public class FreelancerFragment extends Fragment implements FreelancerContract.V
                 intent.putExtra(ARG_USER_TYPE_ID, UserTypeId.FREELANCER.getId());
                 startActivity(intent);
                 break;
-            case R.id.bank_card_button:
-
-                intent = new Intent(getContext(), BankCardActivity.class);
+            case R.id.payment_tool_button:
+                intent = new Intent(getContext(), PaymentToolActivity.class);
                 intent.putExtra(ARG_OWNER_ID, BENEFICIARY);
                 startActivity(intent);
                 break;

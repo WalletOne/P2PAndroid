@@ -1,18 +1,18 @@
 <resources>
 
     <string name="unknown_card_type">Unknown card type</string>
-    <string name="attached_cards">Linked cards</string>
-    <string name="add_new_card">Link new card</string>
-    <string name="no_cards">You have not linked card</string>
+    <string name="attached_payment_tools">Payment tools</string>
+    <string name="add_new_payment_tool">Link new payment tool</string>
+    <string name="no_payment_tools">You have not linked payment tools</string>
 
 
-    <string name="bank_cards_activity_title">Bank cards</string>
-    <string name="link_card_activity_title">Привязка новой карты</string>
+    <string name="payment_tools_activity_title">Payment tools</string>
+    <string name="link_payment_tool_activity_title">Привязка способа оплаты</string>
 
 
-    <string name="menu_link_card">Добавить новую карту</string>
-    <string name="delete_card">Delete card</string>
-    <string name="delete_card_confirmation">Are you really want to delete this card?</string>
+    <string name="menu_link_payment_tool">Add new payment tool</string>
+    <string name="delete_payment_tool">Delete payment tool</string>
+    <string name="delete_payment_tool_confirmation">Are you really want to delete this payment tool?</string>
     <string name="delete">Delete</string>
     <string name="cancel">Cancel</string>
     <string name="payouts_activity_title">Payouts</string>
@@ -30,9 +30,15 @@
     <string name="activity_title_link_card">Привязка карты</string>
     <string name="activity_title_pay_deal">Идет создание сделки</string>
 
-    <public type="string" name="public_string_in_lib2" />
-    <string name="public_string_in_lib2">public string in lib2</string>
 
-    <string name="private_string_in_lib2">private string in lib2</string>
+    <!-- Payment Tools Identifiers -->
+    <string name="payment_tool_id_alfaclick_rub">Alfa click</string>
+    <string name="payment_tool_id_beeline_rub">Beeline</string>
+    <string name="payment_tool_id_credit_card_rub">Credit card</string>
+    <string name="payment_tool_id_psb_retail_rub">Promsvyazbank</string>
+    <string name="payment_tool_id_qiwi_wallet_rub">Qiwi wallet</string>
+    <string name="payment_tool_id_yandex_money_rub">Yandex money</string>
+    <string name="payment_tool_id_undefined">Unknown payment tool</string>
+
 
 </resources>

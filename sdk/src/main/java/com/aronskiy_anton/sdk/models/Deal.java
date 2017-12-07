@@ -16,6 +16,7 @@ public class Deal implements Mapper.Mappable {
 
     public static final String DEAL_STATE_ID_CREATED = "Created";
     public static final String DEAL_STATE_ID_PROCESSING = "PaymentProcessing";
+    public static final String DEAL_STATE_ID_PAYMENT_HOLD = "PaymentHold";
     public static final String DEAL_STATE_ID_PAYMENT_PROCESS_ERROR = "PaymentProcessError";
     public static final String DEAL_STATE_ID_PAID = "Paid";
     public static final String DEAL_STATE_ID_PAYOUT_PROCESSING = "PayoutProcessing";

@@ -1,4 +1,4 @@
-package com.aronskiy_anton.p2pui.linkcard;
+package com.aronskiy_anton.p2pui.linkpaymenttool;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -27,18 +27,18 @@ import java.io.UnsupportedEncodingException;
  * Created by anton on 11.09.2017.
  */
 
-public class LinkCardActivity extends AppCompatActivity {
+public class LinkPaymentToolActivity extends AppCompatActivity {
 
     public static final int RESULT_FAIL = RESULT_FIRST_USER + 1;
 
-    private final String RETURN_HOST = "p2p-success-link-new-paymentTool";
+    private final String RETURN_HOST = "p2p-success-link-new-paymenttool";
 
-    public static final int REQUEST_LINK_CARD = 1;
+    public static final int REQUEST_LINK_PAYMENT_TOOL = 1;
 
     private boolean isVisible = false;
     private boolean needFinish = false;
 
-    WebView linkCardWebView;
+    WebView linkPaymentToolWebView;
 
     FrameLayout progressFrame;
 
@@ -50,7 +50,7 @@ public class LinkCardActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.link_card_activity_layout);
+        setContentView(R.layout.link_payment_tool_activity_layout);
 
         W1P2PToolbar.installToolBar(this);
 
@@ -63,26 +63,26 @@ public class LinkCardActivity extends AppCompatActivity {
             ab.setDisplayHomeAsUpEnabled(true);
         }
 
-        linkCardWebView = findViewById(R.id.link_card_web_view);
+        linkPaymentToolWebView = findViewById(R.id.link_payment_tool_web_view);
         progressFrame = findViewById(R.id.progressFrame);
 
         progressBar = findViewById(R.id.progress);
         progressBar.setMax(100);
 
-        final RequestBuilder request = P2PCore.INSTANCE.beneficiariesPaymentTools.linkNewCardRequest("http://" + RETURN_HOST);
+        final RequestBuilder request = P2PCore.INSTANCE.beneficiariesPaymentTools.addNewPaymentToolRequest("http://" + RETURN_HOST, null, true);
 
         try {
             String postData = request.getHttpBody();
-            linkCardWebView.setWebViewClient(new MyWebViewClient());
+            linkPaymentToolWebView.setWebViewClient(new MyWebViewClient());
             setupWebView();
-            linkCardWebView.postUrl(request.getUrlString(), postData.getBytes("UTF-8"));
+            linkPaymentToolWebView.postUrl(request.getUrlString(), postData.getBytes("UTF-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
     }
 
     private void setupWebView() {
-        final WebSettings wbs = linkCardWebView.getSettings();
+        final WebSettings wbs = linkPaymentToolWebView.getSettings();
         wbs.setPluginState(WebSettings.PluginState.ON);
         wbs.setSaveFormData(true);
         wbs.setDomStorageEnabled(true);
@@ -90,15 +90,15 @@ public class LinkCardActivity extends AppCompatActivity {
         wbs.setBuiltInZoomControls(true);
         wbs.setAllowFileAccess(true);
         wbs.setSupportZoom(true);
-        linkCardWebView.setWebViewClient(new MyWebViewClient());
-        linkCardWebView.setWebChromeClient(new WebChromeClient() {
+        linkPaymentToolWebView.setWebViewClient(new MyWebViewClient());
+        linkPaymentToolWebView.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
                 return true;
             }
         });
 
-        linkCardWebView.setWebChromeClient(new WebChromeClient() {
+        linkPaymentToolWebView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 progressBar.setProgress(newProgress);

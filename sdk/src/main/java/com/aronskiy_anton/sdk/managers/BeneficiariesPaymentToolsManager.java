@@ -113,7 +113,7 @@ public class BeneficiariesPaymentToolsManager extends Manager {
 
     class Composer extends URLComposer {
         String beneficiary() {
-            return relativeToBase("beneficiary");
+            return relativeToBase("v2/beneficiary");
         }
 
         String beneficiaries() {

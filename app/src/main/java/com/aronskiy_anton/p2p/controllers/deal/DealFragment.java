@@ -21,9 +21,9 @@ import android.widget.TextView;
 import com.aronskiy_anton.p2p.R;
 import com.aronskiy_anton.p2p.models.Deal;
 import com.aronskiy_anton.p2p.models.DealRequest;
-import com.aronskiy_anton.p2pui.bankcard.BankCardActivity;
-import com.aronskiy_anton.p2pui.bankcard.BankCardPresenter;
 import com.aronskiy_anton.p2pui.paydeal.PayDealActivity;
+import com.aronskiy_anton.p2pui.paymenttool.PaymentToolActivity;
+import com.aronskiy_anton.p2pui.paymenttool.PaymentToolPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,15 +32,15 @@ import static android.app.Activity.RESULT_OK;
 import static android.text.InputType.TYPE_CLASS_NUMBER;
 import static android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL;
 import static android.text.InputType.TYPE_NUMBER_FLAG_SIGNED;
-import static com.aronskiy_anton.p2pui.bankcard.BankCardActivity.ARG_CARD_ID;
-import static com.aronskiy_anton.p2pui.bankcard.BankCardActivity.ARG_OWNER_ID;
-import static com.aronskiy_anton.p2pui.bankcard.BankCardActivity.ARG_SHOW_USE_NEW_CARD_LINK;
-import static com.aronskiy_anton.p2pui.bankcard.BankCardActivity.REQUEST_SELECT_CARD;
-import static com.aronskiy_anton.p2pui.bankcard.BankCardPresenter.Owner.BENEFICIARY;
-import static com.aronskiy_anton.p2pui.bankcard.BankCardPresenter.Owner.PAYER;
 import static com.aronskiy_anton.p2pui.paydeal.PayDealActivity.ARG_AUTH_DATA;
 import static com.aronskiy_anton.p2pui.paydeal.PayDealActivity.ARG_DEAL_ID;
 import static com.aronskiy_anton.p2pui.paydeal.PayDealActivity.REQUEST_PAY_DEAL;
+import static com.aronskiy_anton.p2pui.paymenttool.PaymentToolActivity.ARG_OWNER_ID;
+import static com.aronskiy_anton.p2pui.paymenttool.PaymentToolActivity.ARG_PAYMENT_TOOL_ID;
+import static com.aronskiy_anton.p2pui.paymenttool.PaymentToolActivity.ARG_SHOW_USE_NEW_PAYMENT_TOOL_LINK;
+import static com.aronskiy_anton.p2pui.paymenttool.PaymentToolActivity.REQUEST_SELECT_CARD;
+import static com.aronskiy_anton.p2pui.paymenttool.PaymentToolPresenter.Owner.BENEFICIARY;
+import static com.aronskiy_anton.p2pui.paymenttool.PaymentToolPresenter.Owner.PAYER;
 
 
 /**
@@ -153,7 +153,7 @@ public class DealFragment extends Fragment implements DealContract.View {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String value = editText.getText().toString();
                 presenter.createDealRequest(value);
-                showBankCardActivityForSelect(BENEFICIARY);
+                showPaymentToolActivityForSelect(BENEFICIARY);
 
             }
         });
@@ -172,7 +172,7 @@ public class DealFragment extends Fragment implements DealContract.View {
         switch (requestCode) {
             case REQUEST_SELECT_CARD:
                 if (resultCode == RESULT_OK) {
-                    Integer cardId = data.getIntExtra(ARG_CARD_ID, 0);
+                    Integer cardId = data.getIntExtra(ARG_PAYMENT_TOOL_ID, 0);
                     presenter.setSelectedCardId(cardId);
 
                     switch (presenter.getUserTypeId()) {
@@ -183,14 +183,14 @@ public class DealFragment extends Fragment implements DealContract.View {
                             presenter.addCreatedDealRequest();
                             break;
                     }
-                } else if (resultCode == BankCardActivity.RESULT_FAIL) {
+                } else if (resultCode == PaymentToolActivity.RESULT_FAIL) {
                     Snackbar.make(getView(), "Select paymentTool result error", Snackbar.LENGTH_SHORT).show();
                 }
                 break;
             case REQUEST_PAY_DEAL:
                 if (resultCode == RESULT_OK) {
                     presenter.onPayRequestResultOk();
-                } else if (resultCode == BankCardActivity.RESULT_FAIL) {
+                } else if (resultCode == PaymentToolActivity.RESULT_FAIL) {
                     Snackbar.make(getView(), "Pay request result error", Snackbar.LENGTH_SHORT).show();
                 }
                 break;
@@ -271,6 +271,8 @@ public class DealFragment extends Fragment implements DealContract.View {
                 break;
             case paymentProcessing:
                 return;
+            case paymentHold:
+                return;
             case paid:
                 builder.setNegativeButton(R.string.cancel_deal_button_label, cancelListener);
                 break;
@@ -319,6 +321,8 @@ public class DealFragment extends Fragment implements DealContract.View {
                 break;
             case paymentProcessing:
                 return;
+            case paymentHold:
+                return;
             case paid:
                 builder.setPositiveButton(R.string.complete, completeListener);
                 break;
@@ -338,17 +342,17 @@ public class DealFragment extends Fragment implements DealContract.View {
     }
 
     @Override
-    public void showBankCardActivityForSelect(BankCardPresenter.Owner owner) {
-        Intent intent = new Intent(getContext(), BankCardActivity.class);
+    public void showPaymentToolActivityForSelect(PaymentToolPresenter.Owner owner) {
+        Intent intent = new Intent(getContext(), PaymentToolActivity.class);
         intent.putExtra(ARG_OWNER_ID, owner);
-        intent.putExtra(ARG_SHOW_USE_NEW_CARD_LINK, owner == PAYER);
+        intent.putExtra(ARG_SHOW_USE_NEW_PAYMENT_TOOL_LINK, owner == PAYER);
         startActivityForResult(intent, REQUEST_SELECT_CARD);
     }
 
     @Override
     public void showAlertToEnterCVV(boolean redirectToCardAddition) {
 
-        // Existing bank paymentTool
+        // Existing paymentTool
         if (!redirectToCardAddition) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
