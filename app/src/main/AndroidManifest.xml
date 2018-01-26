@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.aronskiy_anton.p2p">
+    package="com.walletone.p2p">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:theme="@style/YourLightTheme.NoActionBar"
-        android:name=".P2PApplication"
+        android:name="com.walletone.p2p.P2PApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
-        <activity android:name=".controllers.freelancer.FreelancerActivity"
+        <activity android:name="com.walletone.p2p.controllers.freelancer.FreelancerActivity"
             android:label="@string/freelancer_activity_title">
         </activity>
 
-        <activity android:name=".controllers.employer.EmployerActivity"
+        <activity android:name="com.walletone.p2p.controllers.employer.EmployerActivity"
             android:label="@string/employer_activity_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,41 +24,41 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".controllers.deals.DealsActivity"
+        <activity android:name="com.walletone.p2p.controllers.deals.DealsActivity"
             android:label="@string/deals">
         </activity>
 
-        <activity android:name=".controllers.deal.DealActivity"
+        <activity android:name="com.walletone.p2p.controllers.deal.DealActivity"
             android:label="@string/deal">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".controllers.deals.DealsActivity" />
+                android:value="com.walletone.p2p.controllers.deals.DealsActivity" />
         </activity>
 
         <activity
-            android:name="com.aronskiy_anton.p2pui.paymenttool.PaymentToolActivity"
+            android:name="com.walletone.p2pui.paymenttool.PaymentToolActivity"
             android:label="@string/payment_tools_activity_title" />
         <activity
-            android:name="com.aronskiy_anton.p2pui.linkpaymenttool.LinkPaymentToolActivity"
+            android:name="com.walletone.p2pui.linkpaymenttool.LinkPaymentToolActivity"
             android:label="@string/link_payment_tool_activity_title">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.aronskiy_anton.p2pui.paymenttool.PaymentToolActivity" />
+                android:value="com.walletone.p2pui.paymenttool.PaymentToolActivity" />
         </activity>
 
         <activity
-            android:name="com.aronskiy_anton.p2pui.paydeal.PayDealActivity"
+            android:name="com.walletone.p2pui.paydeal.PayDealActivity"
             android:label="@string/activity_title_pay_deal">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.aronskiy_anton.p2pui.paymenttool.PaymentToolActivity" />
+                android:value="com.walletone.p2pui.paymenttool.PaymentToolActivity" />
         </activity>
 
         <activity
-            android:name="com.aronskiy_anton.p2pui.payouts.PayoutsActivity"
+            android:name="com.walletone.p2pui.payouts.PayoutsActivity"
             android:label="@string/payouts_activity_title" />
         <activity
-            android:name="com.aronskiy_anton.p2pui.refunds.RefundsActivity"
+            android:name="com.walletone.p2pui.refunds.RefundsActivity"
             android:label="@string/refunds_activity_title"/>
 
     </application>
