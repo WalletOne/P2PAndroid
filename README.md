@@ -68,7 +68,7 @@ P2PCore.INSTANCE.setBeneficiary("PLATFORM_USER_ID", "PLATFORM_USER_TITLE", "PLAT
 
 ```java
 Intent intent = new Intent(getContext(), PaymentToolActivity.class);
-intent.putExtra(ARG_OWNER_ID, owner);
+intent.putExtra(ARG_OWNER_ID, BENEFICIARY);
 intent.putExtra(ARG_SHOW_USE_NEW_PAYMENT_TOOL_LINK, true);
 startActivityForResult(intent, REQUEST_SELECT_PAYMENT_TOOL);
 ```
