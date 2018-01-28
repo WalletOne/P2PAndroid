@@ -7,7 +7,7 @@
 
 
     <string name="payment_tools_activity_title">Payment tools</string>
-    <string name="link_payment_tool_activity_title">Привязка способа оплаты</string>
+    <string name="link_payment_tool_activity_title">Link payment tool</string>
 
 
     <string name="menu_link_payment_tool">Add new payment tool</string>

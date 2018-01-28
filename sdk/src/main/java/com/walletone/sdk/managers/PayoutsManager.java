@@ -24,11 +24,11 @@ public class PayoutsManager extends Manager {
     class Composer extends URLComposer {
 
         String beneficiaries(){
-            return relativeToApi("beneficiaries");
+            return getInstance().relativeToApi("beneficiaries");
         }
 
         String beneficiaries(String id){
-            return relative(beneficiaries(), id);
+            return getInstance().relative(beneficiaries(), id);
         }
 
         String beneficiariesPayouts(@NonNull String id, int pageNumber, int itemsPerPage, String dealId){
@@ -42,7 +42,7 @@ public class PayoutsManager extends Manager {
                 items.add(String.format(Locale.US, "dealId=%s", dealId));
             }
 
-            return relative(beneficiaries(id), "payouts?" + TextUtils.join("&", items));
+            return getInstance().relative(beneficiaries(id), "payouts?" + TextUtils.join("&", items));
         }
     }
 

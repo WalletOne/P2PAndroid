@@ -35,31 +35,7 @@
                 android:value="com.walletone.p2p.controllers.deals.DealsActivity" />
         </activity>
 
-        <activity
-            android:name="com.walletone.p2pui.paymenttool.PaymentToolActivity"
-            android:label="@string/payment_tools_activity_title" />
-        <activity
-            android:name="com.walletone.p2pui.linkpaymenttool.LinkPaymentToolActivity"
-            android:label="@string/link_payment_tool_activity_title">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.walletone.p2pui.paymenttool.PaymentToolActivity" />
-        </activity>
 
-        <activity
-            android:name="com.walletone.p2pui.paydeal.PayDealActivity"
-            android:label="@string/activity_title_pay_deal">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.walletone.p2pui.paymenttool.PaymentToolActivity" />
-        </activity>
-
-        <activity
-            android:name="com.walletone.p2pui.payouts.PayoutsActivity"
-            android:label="@string/payouts_activity_title" />
-        <activity
-            android:name="com.walletone.p2pui.refunds.RefundsActivity"
-            android:label="@string/refunds_activity_title"/>
 
     </application>
 

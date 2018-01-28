@@ -4,4 +4,31 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <application>
+        <activity
+            android:name=".paymenttool.PaymentToolActivity"
+            android:label="@string/payment_tools_activity_title" />
+        <activity
+            android:name=".linkpaymenttool.LinkPaymentToolActivity"
+            android:label="@string/link_payment_tool_activity_title">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".paymenttool.PaymentToolActivity" />
+        </activity>
+
+        <activity
+            android:name=".paydeal.PayDealActivity"
+            android:label="@string/activity_title_pay_deal">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".paymenttool.PaymentToolActivity" />
+        </activity>
+
+        <activity
+            android:name=".payouts.PayoutsActivity"
+            android:label="@string/payouts_activity_title" />
+        <activity
+            android:name=".refunds.RefundsActivity"
+            android:label="@string/refunds_activity_title" />
+    </application>
 </manifest>

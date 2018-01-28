@@ -1,5 +1,7 @@
 package com.walletone.sdk;
 
+import com.walletone.sdk.library.Environment;
+import com.walletone.sdk.library.URLComposer;
 import com.walletone.sdk.managers.BeneficiariesPaymentToolsManager;
 import com.walletone.sdk.managers.DealsManager;
 import com.walletone.sdk.managers.NetworkManager;
@@ -80,8 +82,9 @@ public enum P2PCore {
         return this.initialised;
     }
 
-    public void setPlatform(String platformId, String signatureKey){
+    public void setPlatform(String platformId, String signatureKey, Environment environment){
         if(!this.initialised) {
+            URLComposer.getInstance().setEnvironment(environment);
             this.platformId = platformId;
             this.signatureKey = signatureKey;
             this.initialised = true;
@@ -99,8 +102,6 @@ public enum P2PCore {
         this.payerTitle = title;
         this.payerPhoneNumber = phoneNumber;
     }
-
-
 }
 
 

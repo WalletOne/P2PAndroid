@@ -113,23 +113,23 @@ public class BeneficiariesPaymentToolsManager extends Manager {
 
     class Composer extends URLComposer {
         String beneficiary() {
-            return relativeToBase("v2/beneficiary");
+            return getInstance().relativeToBase("v2/beneficiary");
         }
 
         String beneficiaries() {
-            return relativeToApi("beneficiaries");
+            return getInstance().relativeToApi("beneficiaries");
         }
 
         String beneficiaries(String id) {
-            return relative(beneficiaries(), id);
+            return getInstance().relative(beneficiaries(), id);
         }
 
         String beneficiariesTools(String id) {
-            return relative(beneficiaries(id), "tools");
+            return getInstance().relative(beneficiaries(id), "tools");
         }
 
         String beneficiariesToolsTool(String id, int card) {
-            return relative(beneficiariesTools(id), String.valueOf(card));
+            return getInstance().relative(beneficiariesTools(id), String.valueOf(card));
         }
     }
 }

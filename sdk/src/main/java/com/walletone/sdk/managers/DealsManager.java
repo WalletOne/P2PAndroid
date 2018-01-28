@@ -41,43 +41,43 @@ public class DealsManager extends Manager {
     class Composer extends URLComposer {
 
         String deal(){
-            return relativeToBase("deal");
+            return getInstance().relativeToBase("deal");
         }
 
         String dealPay(){
-            return relative(deal(), "pay");
+            return getInstance().relative(deal(), "pay");
         }
 
         String deals(){
-            return relativeToApi("deals");
+            return getInstance().relativeToApi("deals");
         }
 
         String deals(String dealId){
-            return relative(deals(), dealId);
+            return getInstance().relative(deals(), dealId);
         }
 
         String dealsComplete(String dealId){
-            return relative(deals(dealId), "complete");
+            return getInstance().relative(deals(dealId), "complete");
         }
 
         String dealsComplete(){
-            return relative(deals(), "complete");
+            return getInstance().relative(deals(), "complete");
         }
 
         String dealsCancel(String dealId){
-            return relative(deals(dealId), "cancel");
+            return getInstance().relative(deals(dealId), "cancel");
         }
 
         String dealsBeneficiaryCard(String dealId){
-            return relative(deals(dealId),  "beneficiaryCard");
+            return getInstance().relative(deals(dealId),  "beneficiaryCard");
         }
 
         String beneficiaries(){
-            return relativeToApi("beneficiaries");
+            return getInstance().relativeToApi("beneficiaries");
         }
 
         String beneficiaries(String id){
-            return relative(beneficiaries(), id);
+            return getInstance().relative(beneficiaries(), id);
         }
 
         String beneficiariesDeals(String beneficiaryId, Integer pageNumber, Integer itemsPerPage, @Nullable List<String> dealStates, @Nullable String searchString){
@@ -96,7 +96,7 @@ public class DealsManager extends Manager {
                 params.add(String.format(Locale.US, "searchString=%s", searchString));
             }
 
-            return relative(beneficiaries(beneficiaryId), "deals?" + TextUtils.join("&", params));
+            return getInstance().relative(beneficiaries(beneficiaryId), "deals?" + TextUtils.join("&", params));
         }
     }
 

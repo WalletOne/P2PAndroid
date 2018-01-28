@@ -21,14 +21,14 @@ public class RefundsManager extends Manager {
 
     private Composer composer = new Composer();
 
-    class Composer extends URLComposer {
+    class Composer extends URLComposer{
 
         String payers(){
-            return relativeToApi("payers");
+            return getInstance().relativeToApi("payers");
         }
 
         String payers(String id){
-            return relative(payers(), id);
+            return getInstance().relative(payers(), id);
         }
 
         String payersRefunds(@NonNull String id, int pageNumber, int itemsPerPage, String dealId){
@@ -42,7 +42,7 @@ public class RefundsManager extends Manager {
                 items.add(String.format(Locale.US, "dealId=%s", dealId));
             }
 
-            return relative(payers(id), "refunds?" + TextUtils.join("&", items));
+            return getInstance().relative(payers(id), "refunds?" + TextUtils.join("&", items));
         }
     }
 

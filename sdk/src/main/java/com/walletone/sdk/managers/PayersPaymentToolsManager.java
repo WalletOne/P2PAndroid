@@ -23,19 +23,19 @@ public class PayersPaymentToolsManager extends Manager {
     class Composer extends URLComposer {
 
         String payers(){
-            return relativeToApi("payers");
+            return getInstance().relativeToApi("payers");
         }
 
         String payers(String id){
-            return relative(payers(), id);
+            return getInstance().relative(payers(), id);
         }
 
         String payersTools(String id){
-            return relative(payers(id), "tools");
+            return getInstance().relative(payers(id), "tools");
         }
 
         String payersToolsTool(String id, Integer tool){
-            return relative(payersTools(id), String.valueOf(tool));
+            return getInstance().relative(payersTools(id), String.valueOf(tool));
         }
     }
 
