@@ -5,7 +5,7 @@
     <string name="get_work">Get work</string>
     <string name="deals">Deals</string>
     <string name="Account">Account</string>
-    <string name="bank_cards">Bank Cards</string>
+    <string name="payment_tools">Payment Tools</string>
     <string name="Payouts">Payouts</string>
     <string name="refunds">Refunds</string>
     <string name="menu_add_deal">Add deal</string>
@@ -29,6 +29,7 @@
     <string name="cvv_cvc_3_digits">CVV/CVC - 3 digits</string>
 
     <string name="payment_precessing_status">Payment Processing… : %s ₽</string>
+    <string name="payment_hold_status">Payment Hold… : %s ₽</string>
     <string name="paid_status">Paid: %s ₽</string>
     <string name="canceling_status">Canceling…</string>
     <string name="canceled_status">Canceled: %s ₽</string>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.aronskiy_anton.p2p.MainActivity">
+    tools:context="com.walletone.p2p.MainActivity">
 
     <TextView
         android:textColor="@color/accepted_state_color"
