@@ -14,13 +14,13 @@ allprojects {
 Для интеграции P2P в ваш проект, используя Gradle, укажите его в списке зависимостей в build.gradle файле.
 ```bash
 dependencies {
-		compile 'com.github.WalletOne:P2PAndroid:0.2.2'
+		compile 'com.github.WalletOne:P2PAndroid:0.3.0'
 	}
 ```
 
 ```ruby
 '0.1.2' # (Поддержка только банковских карт)
-'0.2.2' #  (Поддержка разных платежных средств (Карты, Альфа-Клик, Qiwi и т.д.))
+'0.3.0' #  (Поддержка разных платежных средств (Карты, Альфа-Клик, Qiwi и т.д.))
 ```
 
 
@@ -33,10 +33,10 @@ dependencies {
 В Application class вашего app, в код OnCreate() метода, добавьте код инициализации приложения: 
 
 ```java
-P2PCore.INSTANCE.setPlatform("PLATFORM_ID", "PLATFORM_SIGNATURE_KEY");
+P2PCore.INSTANCE.setPlatform("PLATFORM_ID", "PLATFORM_SIGNATURE_KEY", Environment.PRODUCT);
 ```
 
-Значения `PLATFORM_ID` и `PLATFORM_SIGNATURE_KEY` вы получите при регистрации в сервисе [P2P Wallet One](https://www.walletone.com/ru/p2p/).
+Значения `PLATFORM_ID` и `PLATFORM_SIGNATURE_KEY` вы получите при регистрации в сервисе [P2P Wallet One](https://www.walletone.com/ru/p2p/). Environment.PRODUCT используется в релизах, Environment.SANDBOX используется для тестирования.
 
 ### Шаг 2 (Конфигурация пользователя):
 
