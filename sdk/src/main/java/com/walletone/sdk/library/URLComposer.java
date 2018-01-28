@@ -21,7 +21,7 @@ public class URLComposer {
         return instance;
     }
 
-    private Environment environment;
+    private Environment environment = Environment.SANDBOX;
 
     private String getProtocol() {
         switch (environment) {
