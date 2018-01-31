@@ -337,7 +337,7 @@ startActivity(intent);
 CompleteHandler<PayoutResult, Throwable> handler = new CompleteHandler<PayoutResult, Throwable>() {
             @Override
             public void completed(PayoutResult result, Throwable error) {
-	        List<Payout> payoutsList = list.getPayouts();
+	        List<Payout> payoutsList = result.getPayouts();
 		// payoutsList: - Список с объектами выплат
 		// error: null в случае успешного запроса
             }
