@@ -25,8 +25,6 @@
     <string name="refund_error_state">Ошибка возврата</string>
     <string name="refund_precessing_state">Возврат в процессе</string>
     <string name="refund_accepted_state">Успешный возврат</string>
-    <string name="activity_title_link_card">Привязка карты</string>
-    <string name="activity_title_pay_deal">Создание сделки</string>
 
     <!-- Payment Tools Identifiers -->
     <string name="payment_tool_id_alfaclick_rub">Альфа-клик</string>

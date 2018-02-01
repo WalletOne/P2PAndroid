@@ -71,6 +71,12 @@ public class LinkPaymentToolActivity extends AppCompatActivity {
 
         final RequestBuilder request = P2PCore.INSTANCE.beneficiariesPaymentTools.addNewPaymentToolRequest("http://" + RETURN_HOST, null, true);
 
+        P2PCore.INSTANCE.printDebug("=======");
+        P2PCore.INSTANCE.printDebug("LinkPaymentTool");
+        P2PCore.INSTANCE.printDebug("Method: " + request.getMethodType().getMethodTypeId() + " / " + request.getUrlString());
+        P2PCore.INSTANCE.printDebug("Http body:");
+        P2PCore.INSTANCE.printDebug(request.getHttpBody());
+
         try {
             String postData = request.getHttpBody();
             linkPaymentToolWebView.setWebViewClient(new MyWebViewClient());

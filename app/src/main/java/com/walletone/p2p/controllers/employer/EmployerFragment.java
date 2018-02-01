@@ -14,12 +14,12 @@ import com.walletone.p2p.R;
 import com.walletone.p2p.controllers.deals.DealsActivity;
 import com.walletone.p2p.models.Employer;
 import com.walletone.p2p.models.UserTypeId;
+import com.walletone.p2pui.library.Owner;
 import com.walletone.p2pui.paymenttool.PaymentToolActivity;
 import com.walletone.p2pui.refunds.RefundsActivity;
 
 import static com.walletone.p2p.controllers.deals.DealsActivity.ARG_USER_TYPE_ID;
 import static com.walletone.p2pui.paymenttool.PaymentToolActivity.ARG_OWNER_ID;
-import static com.walletone.p2pui.paymenttool.PaymentToolPresenter.Owner.PAYER;
 import static com.walletone.p2pui.refunds.RefundsActivity.ARG_DEAL_ID;
 
 
@@ -73,11 +73,11 @@ public class EmployerFragment extends Fragment implements EmployerContract.View,
         employerPhone = root.findViewById(R.id.employer_phone);
 
         ViewGroup dealsButton = root.findViewById(R.id.deals_button);
-        ViewGroup bankCardsButton = root.findViewById(R.id.payment_tool_button);
+        ViewGroup paymentToolButton = root.findViewById(R.id.payment_tool_button);
         ViewGroup refundsButton = root.findViewById(R.id.refunds_button);
 
         dealsButton.setOnClickListener(this);
-        bankCardsButton.setOnClickListener(this);
+        paymentToolButton.setOnClickListener(this);
         refundsButton.setOnClickListener(this);
 
         return root;
@@ -94,7 +94,7 @@ public class EmployerFragment extends Fragment implements EmployerContract.View,
                 break;
             case R.id.payment_tool_button:
                 intent = new Intent(getContext(), PaymentToolActivity.class);
-                intent.putExtra(ARG_OWNER_ID, PAYER);
+                intent.putExtra(ARG_OWNER_ID, Owner.PAYER);
                 startActivity(intent);
                 break;
             case R.id.refunds_button:

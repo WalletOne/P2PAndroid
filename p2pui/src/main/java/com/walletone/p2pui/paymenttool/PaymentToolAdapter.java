@@ -108,8 +108,8 @@ public class PaymentToolAdapter extends RecyclerView.Adapter<PaymentToolAdapter.
 
         ItemViewHolder(View v) {
             super(v);
-            this.image = v.findViewById(R.id.card_logo);
-            this.title = v.findViewById(R.id.card_title);
+            this.image = v.findViewById(R.id.payment_tool_logo);
+            this.title = v.findViewById(R.id.payment_tool_title);
             this.number = v.findViewById(R.id.card_number);
             v.setOnClickListener(this);
         }

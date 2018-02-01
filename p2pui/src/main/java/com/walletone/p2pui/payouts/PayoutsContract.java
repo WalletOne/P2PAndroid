@@ -24,6 +24,8 @@ public interface PayoutsContract {
         void showEmptyList();
 
         void setAllDataAreLoaded();
+
+        void showError(Throwable error);
     }
 
 }

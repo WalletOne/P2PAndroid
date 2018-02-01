@@ -55,21 +55,24 @@ public class RefundsPresenter implements RefundsContract.Presenter {
 
         CompleteHandler<RefundsResult, Throwable> handler = new CompleteHandler<RefundsResult, Throwable>() {
             @Override
-            public void completed(RefundsResult list, Throwable var2) {
-
-                List<Refund> refundsList = list.getRefunds();
+            public void completed(RefundsResult list, Throwable error) {
 
                 isLoading = false;
-                pageNumber += 1;
-                isAllowLoadMore = refundsList.size() >= itemsPerPage;
-                if (!isAllowLoadMore) {
-                    refundsView.setAllDataAreLoaded();
-                }
-                refunds =  refundsList;
-                if (refunds.size() > 0) {
-                    refundsView.showRefunds(refunds);
+                if(error == null) {
+                    List<Refund> refundsList = list.getRefunds();
+                    pageNumber += 1;
+                    isAllowLoadMore = refundsList.size() >= itemsPerPage;
+                    if (!isAllowLoadMore) {
+                        refundsView.setAllDataAreLoaded();
+                    }
+                    refunds = refundsList;
+                    if (refunds.size() > 0) {
+                        refundsView.showRefunds(refunds);
+                    } else {
+                        refundsView.showEmptyList();
+                    }
                 } else {
-                    refundsView.showEmptyList();
+                    refundsView.showError(error);
                 }
             }
         };

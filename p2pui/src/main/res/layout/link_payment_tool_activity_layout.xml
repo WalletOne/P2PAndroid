@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".linkpaymenttool.LinkCardActivity">
+    tools:context=".linkpaymenttool.LinkPaymentToolActivity">
 
     <include layout="@layout/w1_p2p_toolbar"/>
 

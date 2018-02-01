@@ -4,7 +4,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.walletone.sdk.Manager;
 import com.walletone.sdk.P2PCore;
@@ -68,8 +67,8 @@ public class DealsManager extends Manager {
             return getInstance().relative(deals(dealId), "cancel");
         }
 
-        String dealsBeneficiaryCard(String dealId){
-            return getInstance().relative(deals(dealId),  "beneficiaryCard");
+        String dealsBeneficiaryPaymentTool(String platformDealId){
+            return getInstance().relative(deals(platformDealId),  "beneficiaryPaymentTool");
         }
 
         String beneficiaries(){
@@ -204,7 +203,7 @@ public class DealsManager extends Manager {
         params.put("PaymentToolId", paymentToolId);
         params.put("AutoComplete", autoComplete);
 
-        return core.networkManager.request(composer.dealsBeneficiaryCard(dealId), NetworkManager.MethodType.PUT, params, Deal.class, callback);
+        return core.networkManager.request(composer.dealsBeneficiaryPaymentTool(dealId), NetworkManager.MethodType.PUT, params, Deal.class, callback);
     }
 
     /**
@@ -238,7 +237,7 @@ public class DealsManager extends Manager {
             items.put("RedirectToPaymentToolAddition", redirectToPaymentToolAddition ? "true" : "false");
         }
 
-        if (authData != null){
+        if (authData != null && !authData.isEmpty()){
             items.put("AuthData", authData);
         }
 
@@ -251,8 +250,6 @@ public class DealsManager extends Manager {
         }
 
         final  String queryString = TextUtils.join("&", params);
-        System.out.print(queryString);
-        Log.d("REQUESTS", queryString);
 
         RequestBuilder.Builder builder = RequestBuilder.newBuilder()
                 .setMethodType(NetworkManager.MethodType.POST)

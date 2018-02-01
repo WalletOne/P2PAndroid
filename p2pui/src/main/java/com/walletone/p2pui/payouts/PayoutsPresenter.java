@@ -55,21 +55,24 @@ public class PayoutsPresenter implements PayoutsContract.Presenter {
 
         CompleteHandler<PayoutResult, Throwable> handler = new CompleteHandler<PayoutResult, Throwable>() {
             @Override
-            public void completed(PayoutResult list, Throwable var2) {
-
-                List<Payout> payoutsList = list.getPayouts();
+            public void completed(PayoutResult list, Throwable error) {
 
                 isLoading = false;
-                pageNumber += 1;
-                isAllowLoadMore = payoutsList.size() >= itemsPerPage;
-                if (!isAllowLoadMore) {
-                    payoutsView.setAllDataAreLoaded();
-                }
-                payouts =  payoutsList;
-                if (payouts.size() > 0) {
-                    payoutsView.showPayouts(payouts);
+                if(error == null) {
+                    List<Payout> payoutsList = list.getPayouts();
+                    pageNumber += 1;
+                    isAllowLoadMore = payoutsList.size() >= itemsPerPage;
+                    if (!isAllowLoadMore) {
+                        payoutsView.setAllDataAreLoaded();
+                    }
+                    payouts = payoutsList;
+                    if (payouts.size() > 0) {
+                        payoutsView.showPayouts(payouts);
+                    } else {
+                        payoutsView.showEmptyList();
+                    }
                 } else {
-                    payoutsView.showEmptyList();
+                    payoutsView.showError(error);
                 }
             }
         };

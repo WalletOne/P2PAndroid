@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <public type="layout" name="bank_card_fragment_layout" />
+    <public type="layout" name="payment_tool_fragment_layout" />
 </resources>

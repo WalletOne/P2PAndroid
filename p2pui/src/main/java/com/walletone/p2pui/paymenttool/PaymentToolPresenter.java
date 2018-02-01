@@ -2,6 +2,7 @@ package com.walletone.p2pui.paymenttool;
 
 import android.support.annotation.NonNull;
 
+import com.walletone.p2pui.library.Owner;
 import com.walletone.sdk.P2PCore;
 import com.walletone.sdk.library.CompleteErrorOnlyHandler;
 import com.walletone.sdk.library.CompleteHandler;
@@ -16,11 +17,6 @@ import java.util.List;
  */
 
 public class PaymentToolPresenter implements PaymentToolContract.Presenter {
-
-    public enum Owner {
-        BENEFICIARY,
-        PAYER
-    }
 
     private Owner owner;
 
@@ -59,16 +55,17 @@ public class PaymentToolPresenter implements PaymentToolContract.Presenter {
             @Override
             public void completed(PaymentToolsResult result, Throwable error) {
 
-                List<PaymentTool> paymentToolsList = result.getPaymentTools();
-
                 paymentToolView.setLoadingIndicator(false);
                 isLoading = false;
                 if(error == null) {
-                    paymentTools = paymentToolsList != null ? paymentToolsList : new ArrayList<PaymentTool>();
-                    if (paymentTools.size() > 0) {
-                        paymentToolView.showPaymentTools(paymentTools);
-                    } else {
-                        paymentToolView.showEmptyList();
+                    if(result != null) {
+                        List<PaymentTool> paymentToolsList = result.getPaymentTools();
+                        paymentTools = paymentToolsList != null ? paymentToolsList : new ArrayList<PaymentTool>();
+                        if (paymentTools.size() > 0) {
+                            paymentToolView.showPaymentTools(paymentTools);
+                        } else {
+                            paymentToolView.showEmptyList();
+                        }
                     }
                 } else {
                     paymentToolView.showError(error);

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.walletone.p2pui.R;
 import com.walletone.sdk.models.Refund;
@@ -83,6 +84,11 @@ public class RefundsFragment extends android.support.v4.app.Fragment implements 
     public void showEmptyList() {
         refundsListView.setVisibility(View.GONE);
         noRefundsView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showError(Throwable error) {
+        Toast.makeText(getContext(), error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -24,6 +24,8 @@ public interface RefundsContract {
         void showEmptyList();
 
         void setAllDataAreLoaded();
+
+        void showError(Throwable error);
     }
 
 }

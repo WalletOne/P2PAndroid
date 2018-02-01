@@ -14,6 +14,7 @@ public class P2PApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        P2PCore.INSTANCE.setPrintDebugEnabled(true);
         P2PCore.INSTANCE.setPlatform("testplatform", "TestPlatformSignatureKey", Environment.SANDBOX);
     }
 }

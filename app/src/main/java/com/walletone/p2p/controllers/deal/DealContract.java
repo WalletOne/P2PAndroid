@@ -5,7 +5,7 @@ import com.walletone.p2p.BaseView;
 import com.walletone.p2p.models.Deal;
 import com.walletone.p2p.models.DealRequest;
 import com.walletone.p2p.models.UserTypeId;
-import com.walletone.p2pui.paymenttool.PaymentToolPresenter;
+import com.walletone.p2pui.library.Owner;
 
 import java.util.List;
 
@@ -69,7 +69,7 @@ public interface DealContract {
 
         void showFreelancerDialog(DealRequest request);
 
-        void showPaymentToolActivityForSelect(PaymentToolPresenter.Owner owner);
+        void showPaymentToolActivityForSelect(Owner owner);
 
         void showPayDealActivity(String authData, String dealId);
 
@@ -80,5 +80,7 @@ public interface DealContract {
         void setFreelancerDealTitle();
 
         void setRequestLoadingIndicator(boolean show);
+
+        void showError(Throwable error);
     }
 }
