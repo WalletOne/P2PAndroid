@@ -144,7 +144,7 @@ final RequestBuilder request = P2PCore.INSTANCE.beneficiariesPaymentTools.addNew
 
 ```java
     Intent intent = new Intent(getContext(), PaymentToolActivity.class);
-    intent.putExtra(ARG_OWNER_ID, owner);
+    intent.putExtra(ARG_OWNER_ID, Owner.PAYER);
     intent.putExtra(ARG_SHOW_USE_NEW_PAYMENT_TOOL_LINK, true);
     startActivityForResult(intent, REQUEST_SELECT_PAYMENT_TOOL);
 ```
