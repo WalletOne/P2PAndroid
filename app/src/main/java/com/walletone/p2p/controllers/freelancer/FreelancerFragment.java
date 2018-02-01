@@ -14,12 +14,12 @@ import com.walletone.p2p.R;
 import com.walletone.p2p.controllers.deals.DealsActivity;
 import com.walletone.p2p.models.Freelancer;
 import com.walletone.p2p.models.UserTypeId;
+import com.walletone.p2pui.library.Owner;
 import com.walletone.p2pui.paymenttool.PaymentToolActivity;
 import com.walletone.p2pui.payouts.PayoutsActivity;
 
 import static com.walletone.p2p.controllers.deals.DealsActivity.ARG_USER_TYPE_ID;
 import static com.walletone.p2pui.paymenttool.PaymentToolActivity.ARG_OWNER_ID;
-import static com.walletone.p2pui.paymenttool.PaymentToolPresenter.Owner.BENEFICIARY;
 
 
 /**
@@ -95,7 +95,7 @@ public class FreelancerFragment extends Fragment implements FreelancerContract.V
                 break;
             case R.id.payment_tool_button:
                 intent = new Intent(getContext(), PaymentToolActivity.class);
-                intent.putExtra(ARG_OWNER_ID, BENEFICIARY);
+                intent.putExtra(ARG_OWNER_ID, Owner.BENEFICIARY);
                 startActivity(intent);
                 break;
             case R.id.payouts_button:

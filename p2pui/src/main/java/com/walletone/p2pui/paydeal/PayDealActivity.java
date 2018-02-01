@@ -67,6 +67,12 @@ public class PayDealActivity extends AppCompatActivity {
 
         final RequestBuilder request = P2PCore.INSTANCE.dealsManager.payRequest(dealId, null, redirectToPaymentToolAddition, authData, "http://" + RETURN_HOST);
 
+        P2PCore.INSTANCE.printDebug("=======");
+        P2PCore.INSTANCE.printDebug("PayDeal");
+        P2PCore.INSTANCE.printDebug("Method: " + request.getMethodType().getMethodTypeId() + " / " + request.getUrlString());
+        P2PCore.INSTANCE.printDebug("Http body:");
+        P2PCore.INSTANCE.printDebug(request.getHttpBody());
+
         try {
             String postData = request.getHttpBody();
             payDealWebView.setWebViewClient(new MyWebViewClient());

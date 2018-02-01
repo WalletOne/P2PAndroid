@@ -33,7 +33,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 import java.util.TreeMap;
-import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -92,10 +91,10 @@ public class NetworkManager extends Manager {
                 .append(core.getSignatureKey());
         String base64;
 
-        byte[] signatureValue2 = getSha256(sb.toString());
+        byte[] signatureValue = getSha256(sb.toString());
 
         try {
-            base64 = Base64.encode(signatureValue2);
+            base64 = Base64.encode(signatureValue);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -164,8 +163,12 @@ public class NetworkManager extends Manager {
             @Override
             public void completed(Object json, Throwable error) {
                 if (error == null) {
-                    T instance = (T) ModelFactory.newInstance(cls, (JSONObject) json);
-                    callback.completed(instance, null);
+                    try {
+                        T instance = (T) ModelFactory.newInstance(cls, (JSONObject) json);
+                        callback.completed(instance, null);
+                    } catch (ClassCastException ex) {
+                        callback.completed(null, ex);
+                    }
                 } else {
                     callback.completed(null, error);
                 }
@@ -185,7 +188,7 @@ public class NetworkManager extends Manager {
     }
 
     private JSONObject requestWithPrint(String urlString, MethodType method, Map<String, Object> parameters, final CompleteHandler<Object, Throwable> callback) {
-        HttpURLConnection urlConnection;
+
         String timestamp = ISO8601TimeStamp.getISO8601TimeStamp(new Date());
         String bodyAsString = "";
 
@@ -194,7 +197,6 @@ public class NetworkManager extends Manager {
                 .setMethodType(method)
                 .setTimestamp(timestamp)
                 .setUrlString(urlString);
-
 
         try {
             if (parameters != null) {
@@ -241,12 +243,6 @@ public class NetworkManager extends Manager {
             connection.setRequestProperty("X-Wallet-Timestamp", requests.getTimestamp());
             connection.setRequestProperty("X-Wallet-Signature", requests.getSignature());
 
-            // Add POST body
-            if (requests.getHttpBody() != null) {
-                OutputStream os = connection.getOutputStream();
-                os.write(requests.getHttpBody().getBytes("UTF-8"));
-                os.close();
-            }
         } catch (IOException e) {
             throw new W1P2PException("could not construct request body", e);
         }
@@ -274,18 +270,22 @@ public class NetworkManager extends Manager {
         @Override
         protected Object doInBackground(RequestBuilder... request) {
 
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
             HttpURLConnection urlConnection = toHttpConnection(request[0]);
+
+            printRequestDebugData(urlConnection, request[0]);
 
             InputStream stream = null;
             Object resultObject = null;
 
             try {
+
+                // Add POST body
+                if (request[0].getHttpBody() != null) {
+                    OutputStream os = urlConnection.getOutputStream();
+                    os.write(request[0].getHttpBody().getBytes("UTF-8"));
+                    os.close();
+                }
+
                 if (urlConnection.getResponseCode() >= 400) {
                     stream = urlConnection.getErrorStream();
                     String responseString = Utility.readStreamToString(stream);
@@ -293,17 +293,28 @@ public class NetworkManager extends Manager {
                     resultObject = tokener.nextValue();
 
                     exception = new W1P2PException(((JSONObject) resultObject).getString("ErrorDescription"));
+                    printErrorDebug(exception);
                 } else {
-
                     stream = urlConnection.getInputStream();
                     String responseString = Utility.readStreamToString(stream);
                     JSONTokener tokener = new JSONTokener(responseString);
                     resultObject = tokener.nextValue();
+                    /* При удалении сервер возвращает пустую строку c кавычками "", но это успешное выполнение */
+                    if (!"DELETE".equals(urlConnection.getRequestMethod())) {
+                        if (!(resultObject instanceof JSONObject) && !(resultObject instanceof JSONArray)) {
+                            exception = new W1P2PException("Server returned non-json data");
+                            printErrorDebug(exception);
+                        }
+                    }
+
+                    printResponseDebugData(urlConnection, responseString);
                 }
             } catch (JSONException e) {
                 exception = new W1P2PException("could not parse json data", e);
+                printErrorDebug(exception);
             } catch (IOException e) {
                 exception = new W1P2PException("could not get data", e);
+                printErrorDebug(exception);
             } finally {
                 Utility.closeQuietly(stream);
             }
@@ -320,6 +331,42 @@ public class NetworkManager extends Manager {
                 }
             }
         }
+    }
+
+    private void printResponseDebugData(HttpURLConnection urlConnection, String responseString) throws IOException {
+        P2PCore.INSTANCE.printDebug("=======");
+        P2PCore.INSTANCE.printDebug("SERVER RESPONSE");
+        P2PCore.INSTANCE.printDebug("Code:" + urlConnection.getResponseCode() + " Message: " + urlConnection.getResponseMessage());
+        P2PCore.INSTANCE.printDebug("Response string:");
+        P2PCore.INSTANCE.printDebug(responseString);
+        P2PCore.INSTANCE.printDebug("=======");
+    }
+
+    private void printRequestDebugData(HttpURLConnection connection, RequestBuilder request) {
+        P2PCore.INSTANCE.printDebug("=======");
+        P2PCore.INSTANCE.printDebug("BEGIN NEW REQUEST");
+        P2PCore.INSTANCE.printDebug(request.getMethodType().getMethodTypeId() + " \\ " + request.getUrlString());
+        P2PCore.INSTANCE.printDebug("BODY:(" + request.getHttpBody() + ")");
+        P2PCore.INSTANCE.printDebug("Headers:");
+
+        for (Map.Entry<String, List<String>> entries : connection.getRequestProperties().entrySet()) {
+            StringBuilder values = new StringBuilder();
+            for (String value : entries.getValue()) {
+                values.append(value);
+            }
+            P2PCore.INSTANCE.printDebug(entries.getKey() + " - " + values);
+        }
+
+        P2PCore.INSTANCE.printDebug("END NEW REQUEST");
+        P2PCore.INSTANCE.printDebug("=======");
+    }
+
+    private void printErrorDebug(W1P2PException exception) {
+        P2PCore.INSTANCE.printDebug("=======");
+        P2PCore.INSTANCE.printDebug("ERROR:");
+        P2PCore.INSTANCE.printDebug("Localized message: " + exception.getLocalizedMessage());
+        P2PCore.INSTANCE.printDebug("Message: " + exception.getMessage());
+        P2PCore.INSTANCE.printDebug("=======");
     }
 
     static class ISO8601TimeStamp {

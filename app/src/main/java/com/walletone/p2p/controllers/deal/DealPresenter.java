@@ -7,6 +7,7 @@ import com.walletone.p2p.data.Repository;
 import com.walletone.p2p.models.Deal;
 import com.walletone.p2p.models.DealRequest;
 import com.walletone.p2p.models.UserTypeId;
+import com.walletone.p2pui.library.Owner;
 import com.walletone.sdk.P2PCore;
 import com.walletone.sdk.constants.CurrencyId;
 import com.walletone.sdk.library.CompleteHandler;
@@ -14,7 +15,6 @@ import com.walletone.sdk.library.CompleteHandler;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static com.walletone.p2pui.paymenttool.PaymentToolPresenter.Owner.PAYER;
 import static com.walletone.sdk.models.Deal.DEAL_STATE_ID_COMPLETED;
 import static com.walletone.sdk.models.Deal.DEAL_STATE_ID_PAID;
 import static com.walletone.sdk.models.Deal.DEAL_STATE_ID_PAYMENT_HOLD;
@@ -186,7 +186,7 @@ public class DealPresenter implements DealContract.Presenter {
     @Override
     public void setSelectedPaymentToolId(int paymentToolId) {
         if (creatingRequest != null) {
-            creatingRequest.setFreelancerCardId(paymentToolId);
+            creatingRequest.setFreelancerPaymentToolId(paymentToolId);
         }
     }
 
@@ -214,7 +214,7 @@ public class DealPresenter implements DealContract.Presenter {
     @Override
     public void acceptDeal(DealRequest request) {
         this.selectedRequest = request;
-        detailView.showPaymentToolActivityForSelect(PAYER);
+        detailView.showPaymentToolActivityForSelect(Owner.PAYER);
     }
 
     @Override
@@ -250,36 +250,39 @@ public class DealPresenter implements DealContract.Presenter {
 
         P2PCore.INSTANCE.dealsManager.status(dealId, new CompleteHandler<com.walletone.sdk.models.Deal, Throwable>() {
             @Override
-            public void completed(com.walletone.sdk.models.Deal deal, Throwable var2) {
-
-                if (selectedRequest == null) return;
-                DealRequest request = selectedRequest;
-                switch (deal.getDealStateId()) {
-                    case DEAL_STATE_ID_PROCESSING:
-                        selectedRequest.setStateId(DealRequest.DealStateId.paymentProcessing);
-                        detailView.updateAdapter();
-                        checkStatus();
-                        break;
-                    case DEAL_STATE_ID_PAYMENT_HOLD:
-                        selectedRequest.setStateId(DealRequest.DealStateId.paymentHold);
-                        break;
-                    case DEAL_STATE_ID_PAYMENT_PROCESS_ERROR:
-                        selectedRequest.setStateId(DealRequest.DealStateId.paymentError);
-                        break;
-                    case DEAL_STATE_ID_PAID:
-                        selectedRequest.setStateId(DealRequest.DealStateId.paid);
-                        break;
-                    case DEAL_STATE_ID_PAYOUT_PROCESSING:
-                        selectedRequest.setStateId(DealRequest.DealStateId.payoutProcessing);
-                        detailView.updateAdapter();
-                        checkStatus();
-                        break;
-                    case DEAL_STATE_ID_PAYOUT_PROCESS_ERROR:
-                        selectedRequest.setStateId(DealRequest.DealStateId.payoutProcessingError);
-                        break;
-                    case DEAL_STATE_ID_COMPLETED:
-                        selectedRequest.setStateId(DealRequest.DealStateId.done);
-                        break;
+            public void completed(com.walletone.sdk.models.Deal deal, Throwable error) {
+                if(error == null) {
+                    if (selectedRequest == null) return;
+                    DealRequest request = selectedRequest;
+                    switch (deal.getDealStateId()) {
+                        case DEAL_STATE_ID_PROCESSING:
+                            selectedRequest.setStateId(DealRequest.DealStateId.paymentProcessing);
+                            detailView.updateAdapter();
+                            checkStatus();
+                            break;
+                        case DEAL_STATE_ID_PAYMENT_HOLD:
+                            selectedRequest.setStateId(DealRequest.DealStateId.paymentHold);
+                            break;
+                        case DEAL_STATE_ID_PAYMENT_PROCESS_ERROR:
+                            selectedRequest.setStateId(DealRequest.DealStateId.paymentError);
+                            break;
+                        case DEAL_STATE_ID_PAID:
+                            selectedRequest.setStateId(DealRequest.DealStateId.paid);
+                            break;
+                        case DEAL_STATE_ID_PAYOUT_PROCESSING:
+                            selectedRequest.setStateId(DealRequest.DealStateId.payoutProcessing);
+                            detailView.updateAdapter();
+                            checkStatus();
+                            break;
+                        case DEAL_STATE_ID_PAYOUT_PROCESS_ERROR:
+                            selectedRequest.setStateId(DealRequest.DealStateId.payoutProcessingError);
+                            break;
+                        case DEAL_STATE_ID_COMPLETED:
+                            selectedRequest.setStateId(DealRequest.DealStateId.done);
+                            break;
+                    }
+                } else {
+                    detailView.showError(error);
                 }
                 loadRequests(true);
             }
@@ -295,7 +298,7 @@ public class DealPresenter implements DealContract.Presenter {
                 request.getFreelancer().getId(),
                 deal.getEmployer().getPhoneNumber(),
                 paymentToolId,
-                request.getFreelancerCardId(),
+                request.getFreelancerPaymentToolId(),
                 request.getAmount(),
                 CurrencyId.RUB,
                 deal.getShortDescription(),

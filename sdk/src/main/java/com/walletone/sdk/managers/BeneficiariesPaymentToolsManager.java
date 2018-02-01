@@ -4,7 +4,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.walletone.sdk.Manager;
 import com.walletone.sdk.P2PCore;
@@ -98,8 +97,6 @@ public class BeneficiariesPaymentToolsManager extends Manager {
         }
 
         final String queryString = TextUtils.join("&", params);
-        System.out.print(queryString);
-        Log.d("REQUESTS", queryString);
 
         RequestBuilder.Builder builder = RequestBuilder.newBuilder()
                 .setMethodType(NetworkManager.MethodType.POST)
@@ -128,8 +125,8 @@ public class BeneficiariesPaymentToolsManager extends Manager {
             return getInstance().relative(beneficiaries(id), "tools");
         }
 
-        String beneficiariesToolsTool(String id, int card) {
-            return getInstance().relative(beneficiariesTools(id), String.valueOf(card));
+        String beneficiariesToolsTool(String id, int tool) {
+            return getInstance().relative(beneficiariesTools(id), String.valueOf(tool));
         }
     }
 }

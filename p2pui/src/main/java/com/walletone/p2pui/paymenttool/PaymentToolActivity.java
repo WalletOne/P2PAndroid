@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.walletone.p2pui.R;
 import com.walletone.p2pui.W1P2PToolbar;
+import com.walletone.p2pui.library.Owner;
 import com.walletone.p2pui.util.ActivityUtils;
 
 /**
@@ -21,7 +22,7 @@ public class PaymentToolActivity extends AppCompatActivity {
     public static final String ARG_PAYMENT_TOOL_ID = "PaymentToolActivity.ARG_PAYMENT_TOOL_ID";
     public static final String ARG_SHOW_USE_NEW_PAYMENT_TOOL_LINK = "PaymentToolActivity.ARG_SHOW_USE_NEW_PAYMENT_TOOL_LINK";
 
-    public static final int REQUEST_SELECT_CARD = 1;
+    public static final int REQUEST_SELECT_PAYMENT_TOOL = 1;
     public static final int RESULT_FAIL = RESULT_FIRST_USER + 1;
 
     @Override
@@ -49,7 +50,7 @@ public class PaymentToolActivity extends AppCompatActivity {
                     getSupportFragmentManager(), paymentToolFragment, R.id.contentFrame);
         }
 
-        PaymentToolPresenter.Owner owner = (PaymentToolPresenter.Owner) getIntent().getSerializableExtra(ARG_OWNER_ID);
+        Owner owner = (Owner) getIntent().getSerializableExtra(ARG_OWNER_ID);
 
         PaymentToolPresenter presenter = new PaymentToolPresenter(owner, paymentToolFragment);
         presenter.setAddPaymentToolAvailable(getIntent().getBooleanExtra(ARG_SHOW_USE_NEW_PAYMENT_TOOL_LINK, false));

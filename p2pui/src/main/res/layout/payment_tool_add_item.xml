@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/link_card_item"
+    android:id="@+id/link_payment_tool_item"
     android:orientation="vertical"
     android:layout_marginTop="48dp"
 
@@ -26,7 +26,7 @@
         android:paddingTop="@dimen/list_item_padding">
 
         <ImageView
-            android:id="@+id/card_logo"
+            android:id="@+id/payment_tool_logo"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_alignParentLeft="true"
@@ -35,15 +35,15 @@
             android:src="@drawable/ic_link_new_card" />
 
         <TextView
-            android:id="@+id/card_title"
+            android:id="@+id/payment_tool_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_toEndOf="@id/card_logo"
+            android:layout_toEndOf="@id/payment_tool_logo"
             android:layout_toLeftOf="@id/card_number"
-            android:layout_toRightOf="@id/card_logo"
+            android:layout_toRightOf="@id/payment_tool_logo"
             android:layout_toStartOf="@id/card_number"
             android:text="@string/add_new_payment_tool"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />

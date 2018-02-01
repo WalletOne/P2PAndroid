@@ -18,7 +18,7 @@ public class DealRequest {
 
     private BigDecimal amount = new BigDecimal(0.0);
 
-    private Integer freelancerCardId = 0;
+    private Integer freelancerPaymentToolId = 0;
 
     private DealStateId stateId = DealStateId.created;
 
@@ -50,16 +50,16 @@ public class DealRequest {
         return amount;
     }
 
-    public Integer getFreelancerCardId() {
-        return freelancerCardId;
+    public Integer getFreelancerPaymentToolId() {
+        return freelancerPaymentToolId;
     }
 
     public DealStateId getStateId() {
         return stateId;
     }
 
-    public void setFreelancerCardId(Integer freelancerCardId) {
-        this.freelancerCardId = freelancerCardId;
+    public void setFreelancerPaymentToolId(Integer freelancerPaymentToolId) {
+        this.freelancerPaymentToolId = freelancerPaymentToolId;
     }
 
     public void setStateId(DealStateId stateId) {

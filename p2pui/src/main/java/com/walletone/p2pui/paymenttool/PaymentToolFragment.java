@@ -79,7 +79,7 @@ public class PaymentToolFragment extends android.support.v4.app.Fragment impleme
         // Set up no paymentTools view
         noPaymentToolsView = root.findViewById(R.id.no_payment_tools);
 
-        linkPaymentToolItem = root.findViewById(R.id.link_card_item);
+        linkPaymentToolItem = root.findViewById(R.id.link_payment_tool_item);
         linkPaymentToolItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -150,7 +150,7 @@ public class PaymentToolFragment extends android.support.v4.app.Fragment impleme
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         final Integer itemId = item.getItemId();
-        if (itemId.equals(R.id.menu_link_card)) {
+        if (itemId.equals(R.id.menu_link_payment_tool)) {
             presenter.addNewPaymentTool();
         }
         return true;
@@ -219,7 +219,7 @@ public class PaymentToolFragment extends android.support.v4.app.Fragment impleme
     }
 
     /**
-     * Listener for clicks on bank paymentTool in the ListView.
+     * Listener for clicks on paymentTool in the ListView.
      */
     PaymentToolItemListener itemListener = new PaymentToolItemListener() {
 

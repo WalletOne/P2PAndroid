@@ -16,13 +16,14 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.walletone.p2p.R;
 import com.walletone.p2p.models.Deal;
 import com.walletone.p2p.models.DealRequest;
+import com.walletone.p2pui.library.Owner;
 import com.walletone.p2pui.paydeal.PayDealActivity;
 import com.walletone.p2pui.paymenttool.PaymentToolActivity;
-import com.walletone.p2pui.paymenttool.PaymentToolPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,10 +38,7 @@ import static com.walletone.p2pui.paydeal.PayDealActivity.REQUEST_PAY_DEAL;
 import static com.walletone.p2pui.paymenttool.PaymentToolActivity.ARG_OWNER_ID;
 import static com.walletone.p2pui.paymenttool.PaymentToolActivity.ARG_PAYMENT_TOOL_ID;
 import static com.walletone.p2pui.paymenttool.PaymentToolActivity.ARG_SHOW_USE_NEW_PAYMENT_TOOL_LINK;
-import static com.walletone.p2pui.paymenttool.PaymentToolActivity.REQUEST_SELECT_CARD;
-import static com.walletone.p2pui.paymenttool.PaymentToolPresenter.Owner.BENEFICIARY;
-import static com.walletone.p2pui.paymenttool.PaymentToolPresenter.Owner.PAYER;
-
+import static com.walletone.p2pui.paymenttool.PaymentToolActivity.REQUEST_SELECT_PAYMENT_TOOL;
 
 /**
  * Created by anton on 14.09.2017.
@@ -152,7 +150,7 @@ public class DealFragment extends Fragment implements DealContract.View {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String value = editText.getText().toString();
                 presenter.createDealRequest(value);
-                showPaymentToolActivityForSelect(BENEFICIARY);
+                showPaymentToolActivityForSelect(Owner.BENEFICIARY);
 
             }
         });
@@ -169,14 +167,14 @@ public class DealFragment extends Fragment implements DealContract.View {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case REQUEST_SELECT_CARD:
+            case REQUEST_SELECT_PAYMENT_TOOL:
                 if (resultCode == RESULT_OK) {
-                    Integer cardId = data.getIntExtra(ARG_PAYMENT_TOOL_ID, 0);
-                    presenter.setSelectedPaymentToolId(cardId);
+                    Integer paymentToolId = data.getIntExtra(ARG_PAYMENT_TOOL_ID, 0);
+                    presenter.setSelectedPaymentToolId(paymentToolId);
 
                     switch (presenter.getUserTypeId()) {
                         case EMPLOYER:
-                            presenter.createP2PDeal(cardId == 0 ? null : cardId);
+                            presenter.createP2PDeal(paymentToolId == 0 ? null : paymentToolId);
                             break;
                         case FREELANCER:
                             presenter.addCreatedDealRequest();
@@ -341,11 +339,11 @@ public class DealFragment extends Fragment implements DealContract.View {
     }
 
     @Override
-    public void showPaymentToolActivityForSelect(PaymentToolPresenter.Owner owner) {
+    public void showPaymentToolActivityForSelect(Owner owner) {
         Intent intent = new Intent(getContext(), PaymentToolActivity.class);
         intent.putExtra(ARG_OWNER_ID, owner);
-        intent.putExtra(ARG_SHOW_USE_NEW_PAYMENT_TOOL_LINK, owner == PAYER);
-        startActivityForResult(intent, REQUEST_SELECT_CARD);
+        intent.putExtra(ARG_SHOW_USE_NEW_PAYMENT_TOOL_LINK, owner == Owner.PAYER);
+        startActivityForResult(intent, REQUEST_SELECT_PAYMENT_TOOL);
     }
 
     @Override
@@ -354,6 +352,11 @@ public class DealFragment extends Fragment implements DealContract.View {
         intent.putExtra(ARG_AUTH_DATA, authData);
         intent.putExtra(ARG_DEAL_ID, dealId);
         startActivityForResult(intent, REQUEST_PAY_DEAL);
+    }
+
+    @Override
+    public void showError(Throwable error) {
+        Toast.makeText(getContext(), error.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
