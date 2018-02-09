@@ -35,6 +35,7 @@ public class BeneficiariesPaymentToolsManager extends Manager {
     /**
      * Get all payment tools of beneficiary
      *
+     * @param callback callback from server
      * @return all payment tools of beneficiary
      */
     public PaymentToolsResult paymentTools(CompleteHandler<PaymentToolsResult, Throwable> callback) {
@@ -45,6 +46,7 @@ public class BeneficiariesPaymentToolsManager extends Manager {
      * Get payment tool of beneficiary by id
      *
      * @param paymentToolId Id paymentTool
+     * @param callback callback from server
      * @return paymentTool of beneficiary by id
      */
     public PaymentTool paymentTool(int paymentToolId, CompleteHandler<PaymentTool, Throwable> callback) {
@@ -55,6 +57,7 @@ public class BeneficiariesPaymentToolsManager extends Manager {
      * Delete linked paymentTool of beneficiary
      *
      * @param paymentToolId Id paymentTool
+     * @param callback callback from server
      */
 
     public void delete(int paymentToolId, CompleteErrorOnlyHandler<Throwable> callback) {
@@ -64,8 +67,9 @@ public class BeneficiariesPaymentToolsManager extends Manager {
     /**
      * Link new bank payment tool request
      *
-     * @param returnUrl     Url to back user redirect
+     * @param returnUrl Url to back user redirect
      * @param paymentTypeId new payment type title
+     * @param redirectToPaymentToolAddition Optional. If true redirect to add new payment tool page
      * @return request to API
      */
     public RequestBuilder addNewPaymentToolRequest(@NonNull String returnUrl, @Nullable String paymentTypeId, @Nullable Boolean redirectToPaymentToolAddition) {

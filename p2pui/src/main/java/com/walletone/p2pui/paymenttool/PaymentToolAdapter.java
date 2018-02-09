@@ -133,7 +133,7 @@ public class PaymentToolAdapter extends RecyclerView.Adapter<PaymentToolAdapter.
             }
         }
     }
-
+/*
     private int getCardTypeLogo(String name){
         if("MasterCard".equals(name)){
             return R.drawable.ic_mastercard_mini;
@@ -153,4 +153,5 @@ public class PaymentToolAdapter extends RecyclerView.Adapter<PaymentToolAdapter.
         last4Digits = last4Digits.replace('*', '•');
         return String.format("•••• %s", last4Digits);
     }
+*/
 }

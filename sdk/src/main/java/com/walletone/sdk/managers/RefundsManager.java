@@ -21,24 +21,24 @@ public class RefundsManager extends Manager {
 
     private Composer composer = new Composer();
 
-    class Composer extends URLComposer{
+    class Composer extends URLComposer {
 
-        String payers(){
+        String payers() {
             return getInstance().relativeToApi("payers");
         }
 
-        String payers(String id){
+        String payers(String id) {
             return getInstance().relative(payers(), id);
         }
 
-        String payersRefunds(@NonNull String id, int pageNumber, int itemsPerPage, String dealId){
+        String payersRefunds(@NonNull String id, int pageNumber, int itemsPerPage, String dealId) {
 
             List<String> items = new ArrayList<>();
 
             items.add(String.format(Locale.US, "pageNumber=%d", pageNumber));
             items.add(String.format(Locale.US, "itemsPerPage=%d", itemsPerPage));
 
-            if(dealId != null){
+            if (dealId != null) {
                 items.add(String.format(Locale.US, "dealId=%s", dealId));
             }
 
@@ -52,9 +52,15 @@ public class RefundsManager extends Manager {
 
     /**
      * Get all refunds by payer id
+     *
+     * @param pageNumber   Number of page in pagination
+     * @param itemsPerPage count of payouts in one page
+     * @param dealId       platform deal id
+     * @param callback     callback from server
      * @return all refunds of payer
      */
-    public RefundsResult refunds(int pageNumber, int itemsPerPage, String dealId, CompleteHandler<RefundsResult, Throwable> callback){
+
+    public RefundsResult refunds(int pageNumber, int itemsPerPage, String dealId, CompleteHandler<RefundsResult, Throwable> callback) {
         String url = composer.payersRefunds(core.getPayerId(), pageNumber, itemsPerPage, dealId);
         return core.networkManager.request(url, NetworkManager.MethodType.GET, null, RefundsResult.class, callback);
     }

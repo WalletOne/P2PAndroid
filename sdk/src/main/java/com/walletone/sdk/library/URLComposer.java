@@ -1,7 +1,5 @@
 package com.walletone.sdk.library;
 
-import android.support.annotation.WorkerThread;
-
 /**
  * Created by aaronskiy on 25.08.2017.
  */
@@ -15,7 +13,6 @@ public class URLComposer {
 
     private static URLComposer instance;
 
-    @WorkerThread
     public static URLComposer getInstance() {
         if (instance == null) instance = new URLComposer();
         return instance;

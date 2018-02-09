@@ -6,7 +6,7 @@
 allprojects {
 		repositories {
 			...
-			maven { url 'https://jitpack.io' }
+			jcenter()
 		}
 	}
 ```
@@ -14,14 +14,16 @@ allprojects {
 Для интеграции P2P в ваш проект, используя Gradle, укажите его в списке зависимостей в build.gradle файле.
 ```bash
 dependencies {
-		compile 'com.github.WalletOne:P2PAndroid:0.2.2'
+		compile 'com.walletone.p2p:sdk:0.3.2'
+		compile 'com.walletone.p2p:p2pui:0.3.2'
 	}
 ```
 
 ```ruby
 '0.1.2' # (Поддержка только банковских карт)
-'0.2.2' #  (Поддержка разных платежных средств (Карты, Альфа-Клик, Qiwi и т.д.))
+'0.3.2' #  (Поддержка разных платежных средств (Карты, Альфа-Клик, Qiwi и т.д.))
 ```
+
 
 
 ## Использование
@@ -33,10 +35,10 @@ dependencies {
 В Application class вашего app, в код OnCreate() метода, добавьте код инициализации приложения: 
 
 ```java
-P2PCore.INSTANCE.setPlatform("PLATFORM_ID", "PLATFORM_SIGNATURE_KEY");
+P2PCore.INSTANCE.setPlatform("PLATFORM_ID", "PLATFORM_SIGNATURE_KEY", Environment.PRODUCT);
 ```
 
-Значения `PLATFORM_ID` и `PLATFORM_SIGNATURE_KEY` вы получите при регистрации в сервисе [P2P Wallet One](https://www.walletone.com/ru/p2p/).
+Значения `PLATFORM_ID` и `PLATFORM_SIGNATURE_KEY` вы получите при регистрации в сервисе [P2P Wallet One](https://www.walletone.com/ru/p2p/). Environment.PRODUCT используется в релизах, Environment.SANDBOX используется для тестирования.
 
 ### Шаг 2 (Конфигурация пользователя):
 
@@ -68,7 +70,7 @@ P2PCore.INSTANCE.setBeneficiary("PLATFORM_USER_ID", "PLATFORM_USER_TITLE", "PLAT
 
 ```java
 Intent intent = new Intent(getContext(), PaymentToolActivity.class);
-intent.putExtra(ARG_OWNER_ID, BENEFICIARY);
+intent.putExtra(ARG_OWNER_ID, Owner.BENEFICIARY);
 intent.putExtra(ARG_SHOW_USE_NEW_PAYMENT_TOOL_LINK, true);
 startActivityForResult(intent, REQUEST_SELECT_PAYMENT_TOOL);
 ```
@@ -82,7 +84,7 @@ public void onActivityResult(int requestCode, int resultCode, Intent data) {
     switch (requestCode) {
         case REQUEST_SELECT_PAYMENT_TOOL:
             if (resultCode == RESULT_OK) {
-                Integer cardId = data.getIntExtra(ARG_PAYMENT_TOOL_ID, 0);
+                Integer paymentToolId = data.getIntExtra(ARG_PAYMENT_TOOL_ID, 0);
 		...
             }
             break;
@@ -123,7 +125,8 @@ startActivityForResult(intent, LinkPaymentToolActivity.REQUEST_LINK_PAYMENT_TOOL
 Еслы вы хотите сделать собственную Activity добавления способа оплаты, то для получения `RequestBuilder` используйте следующий код:
 
 ```java
-final RequestBuilder request = P2PCore.INSTANCE.beneficiariesCards.linkNewCardRequest("RETURN_HOST");
+final RequestBuilder request = P2PCore.INSTANCE.beneficiariesPaymentTools.addNewPaymentToolRequest("RETURN_HOST");
+
 ```
 
 Где:
@@ -143,7 +146,7 @@ final RequestBuilder request = P2PCore.INSTANCE.beneficiariesCards.linkNewCardRe
 
 ```java
     Intent intent = new Intent(getContext(), PaymentToolActivity.class);
-    intent.putExtra(ARG_OWNER_ID, owner);
+    intent.putExtra(ARG_OWNER_ID, Owner.PAYER);
     intent.putExtra(ARG_SHOW_USE_NEW_PAYMENT_TOOL_LINK, true);
     startActivityForResult(intent, REQUEST_SELECT_PAYMENT_TOOL);
 ```
@@ -337,7 +340,7 @@ startActivity(intent);
 CompleteHandler<PayoutResult, Throwable> handler = new CompleteHandler<PayoutResult, Throwable>() {
             @Override
             public void completed(PayoutResult result, Throwable error) {
-	        List<Payout> payoutsList = list.getPayouts();
+	        List<Payout> payoutsList = result.getPayouts();
 		// payoutsList: - Список с объектами выплат
 		// error: null в случае успешного запроса
             }

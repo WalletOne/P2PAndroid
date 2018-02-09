@@ -7,8 +7,6 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -20,11 +18,102 @@ android {
     }
 }
 
+configurations { javadocDeps }
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation "com.android.support:appcompat-v7:26.1.0"
+    javadocDeps "com.android.support:support-annotations:27.0.2"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}
+
+ext {
+    bintrayRepo = 'p2p'
+    bintrayName = 'core'
+
+    publishedGroupId = 'com.walletone.p2p'
+    libraryName = 'P2PCore'
+    artifact = 'sdk'
+
+    libraryDescription = 'Framework for network requests Wallet One P2P. Core'
+
+    siteUrl = 'https://github.com/WalletOne/P2PAndroid'
+    gitUrl = 'https://github.com/WalletOne/P2PAndroid.git'
+
+    libraryVersion = rootProject.ext.libraryVersion
+
+    developerId = 'matpockih'
+    developerName = 'Anton Aronskiy'
+    developerEmail = 'anton.aronskiy@walletone.com'
+
+    licenseName = 'The MIT License'
+    licenseUrl = 'https://opensource.org/licenses/mit-license.php'
+    allLicenses = ["MIT"]
+}
+
+apply from: 'installv1.gradle'
+
+apply plugin: 'com.jfrog.bintray'
+
+version = libraryVersion
+
+if (project.hasProperty("android")) { // Android libraries
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from android.sourceSets.main.java.srcDirs
+    }
+
+    task javadoc(type: Javadoc) {
+        source = android.sourceSets.main.java.srcDirs
+        classpath += project.files(android.getBootClasspath().join(File.pathSeparator)) + configurations.javadocDeps
+    }
+} else { // Java libraries/
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+// Bintray
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+
+    configurations = ['archives']
+    pkg {
+        repo = bintrayRepo
+        name = bintrayName
+        desc = libraryDescription
+        userOrg = properties.getProperty("bintray.userOrg")
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = allLicenses
+        publish = true
+        publicDownloadNumbers = false
+        version {
+            desc = libraryDescription
+            gpg {
+                sign = true //Determines whether to GPG sign the files. The default is false
+                passphrase = properties.getProperty("bintray.gpg.password")
+                //Optional. The passphrase for GPG signing'
+            }
+        }
+    }
 }
