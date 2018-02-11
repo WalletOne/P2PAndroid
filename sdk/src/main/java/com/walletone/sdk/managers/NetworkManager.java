@@ -178,6 +178,7 @@ public class NetworkManager extends Manager {
         return null;
     }
 
+    @SuppressWarnings("unchecked")
     public void request(final String urlString, final MethodType method, final Map<String, Object> parameters, final CompleteErrorOnlyHandler<Throwable> callback) {
         requestWithPrint(urlString, method, parameters, new CompleteHandler<Object, Throwable>() {
             @Override

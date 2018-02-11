@@ -6,7 +6,7 @@
 allprojects {
 		repositories {
 			...
-			maven { url 'https://jitpack.io' }
+			jcenter()
 		}
 	}
 ```
@@ -14,13 +14,14 @@ allprojects {
 Для интеграции P2P в ваш проект, используя Gradle, укажите его в списке зависимостей в build.gradle файле.
 ```bash
 dependencies {
-		compile 'com.github.WalletOne:P2PAndroid:0.3.1'
+		compile 'com.walletone.p2p:sdk:0.3.2'
+		compile 'com.walletone.p2p:p2pui:0.3.2'
 	}
 ```
 
 ```ruby
 '0.1.2' # (Поддержка только банковских карт)
-'0.3.1' #  (Поддержка разных платежных средств (Карты, Альфа-Клик, Qiwi и т.д.))
+'0.3.2' #  (Поддержка разных платежных средств (Карты, Альфа-Клик, Qiwi и т.д.))
 ```
 
 

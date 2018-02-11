@@ -27,16 +27,17 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+
 // Define versions in a single place
 ext {
     // Sdk and tools
     minSdkVersion = 15
-    targetSdkVersion = 26
-    compileSdkVersion = 26
-    buildToolsVersion = '26.0.1'
+    targetSdkVersion = 27
+    compileSdkVersion = 27
+    buildToolsVersion = '27.0.3'
 
     // App dependencies
-    supportLibraryVersion = '26.1.0'
+    supportLibraryVersion = '27.0.2'
     guavaVersion = '18.0'
     junitVersion = '4.12'
     mockitoVersion = '1.10.19'
@@ -46,18 +47,5 @@ ext {
     rulesVersion = '0.5'
     espressoVersion = '2.2.2'
 
-    bintrayRepo = 'p2p'
-    bintrayName = 'p2p-core'
-
-    publishedGroupId = 'com.walletone.p2p'
-    libraryName = 'p2p'
-    artifact = 'p2p-core'
-
-    libraryDescription = 'A wrapper for Facebook Native Like Button (LikeView) on Android'
-
-    siteUrl = 'https://github.com/WalletOne/P2PAndroid'
-    gitUrl = 'https://github.com/WalletOne/P2PAndroid.git'
-
-    libraryVersion = '0.2.1'
+    libraryVersion = '0.3.2'
 }
-
