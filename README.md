@@ -14,8 +14,8 @@ allprojects {
 Для интеграции P2P в ваш проект, используя Gradle, укажите его в списке зависимостей в build.gradle файле.
 ```bash
 dependencies {
-		compile 'com.walletone.p2p:sdk:0.3.2'
-		compile 'com.walletone.p2p:p2pui:0.3.2'
+		compile 'com.walletone.p2p:sdk:0.3.3'
+		compile 'com.walletone.p2p:p2pui:0.3.3'
 	}
 ```
 
