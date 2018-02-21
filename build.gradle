@@ -47,5 +47,5 @@ ext {
     rulesVersion = '0.5'
     espressoVersion = '2.2.2'
 
-    libraryVersion = '0.3.2'
+    libraryVersion = '0.3.3'
 }
