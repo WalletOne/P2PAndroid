@@ -294,15 +294,13 @@ public class DealPresenter implements DealContract.Presenter {
         final DealRequest request = selectedRequest;
         P2PCore.INSTANCE.dealsManager.create(
                 dealId,
-                deal.getEmployer().getId(),
-                request.getFreelancer().getId(),
-                deal.getEmployer().getPhoneNumber(),
-                paymentToolId,
-                request.getFreelancerPaymentToolId(),
-                request.getAmount(),
-                CurrencyId.RUB,
-                deal.getShortDescription(),
-                deal.getFullDescription(),
+                request.getFreelancer().getId(), // beneficiary Id
+                paymentToolId,  // payer payment tool id optional
+                request.getFreelancerPaymentToolId(), // beneficiary payment tool id
+                request.getAmount(), // amount
+                CurrencyId.RUB, // currency
+                deal.getShortDescription(), // short description
+                deal.getFullDescription(), // full description
                 true,
                 new CompleteHandler<com.walletone.sdk.models.Deal, Throwable>() {
                     @Override

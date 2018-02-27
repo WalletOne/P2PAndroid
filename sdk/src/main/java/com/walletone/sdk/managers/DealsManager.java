@@ -101,9 +101,7 @@ public class DealsManager extends Manager {
      * Create money request for payer
      *
      * @param dealId                   Deal identifier in your system
-     * @param payerId                  Payer identifier in your system
      * @param beneficiaryId            ID beneficiary
-     * @param payerPhoneNumber         Phone number of payer
      * @param payerPaymentToolId       payment tool ID, to which funds will be transferred
      * @param beneficiaryPaymentToolId payment tool ID, from which funds will be transferred
      * @param amount                   Amount
@@ -116,14 +114,14 @@ public class DealsManager extends Manager {
      */
 
 
-    public Deal create(String dealId, String payerId, String beneficiaryId, String payerPhoneNumber,
+    public Deal create(String dealId, String beneficiaryId,
                        Integer payerPaymentToolId, Integer beneficiaryPaymentToolId, BigDecimal amount, CurrencyId currencyId,
                        String shortDescription, String fullDescription, boolean deferPayout, CompleteHandler<Deal, Throwable> callback) {
 
         Map<String, Object> params = new HashMap<>();
         params.put("PlatformDealId", dealId);
-        params.put("PlatformPayerId", payerId);
-        params.put("PayerPhoneNumber", payerPhoneNumber);
+        params.put("PlatformPayerId", core.getPayerId());
+        params.put("PayerPhoneNumber", core.getPayerPhoneNumber());
         params.put("PlatformBeneficiaryId", beneficiaryId);
         params.put("BeneficiaryPaymentToolId", beneficiaryPaymentToolId);
         params.put("Amount", amount);
