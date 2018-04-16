@@ -14,14 +14,14 @@ allprojects {
 Для интеграции P2P в ваш проект, используя Gradle, укажите его в списке зависимостей в build.gradle файле.
 ```bash
 dependencies {
-		compile 'com.walletone.p2p:sdk:0.3.5'
-		compile 'com.walletone.p2p:p2pui:0.3.5'
+		compile 'com.walletone.p2p:sdk:0.3.4'
+		compile 'com.walletone.p2p:p2pui:0.3.4'
 	}
 ```
 
 ```ruby
 '0.1.2' # (Поддержка только банковских карт)
-'0.3.5' #  (Поддержка разных платежных средств (Карты, Альфа-Клик, Qiwi и т.д.))
+'0.3.4' #  (Поддержка разных платежных средств (Карты, Альфа-Клик, Qiwi и т.д.))
 ```
 
 
