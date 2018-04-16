@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.ConsoleMessage;
@@ -13,6 +14,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -28,6 +30,8 @@ import java.io.UnsupportedEncodingException;
  */
 
 public class LinkPaymentToolActivity extends AppCompatActivity {
+
+    private static final String LOG_TAG = "W1P2PToolbar";
 
     public static final int RESULT_FAIL = RESULT_FIRST_USER + 1;
 
@@ -85,6 +89,35 @@ public class LinkPaymentToolActivity extends AppCompatActivity {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+
+
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        LinearLayout toolBarContainer = findViewById(R.id.container);
+
+        int[] location = new int[2];
+        toolBarContainer.getLocationOnScreen(location);
+        int locationY = location[1];
+
+        Log.d(LOG_TAG, "locationY: " + locationY);
+        Log.d(LOG_TAG, "getY(): " + toolBarContainer.getY());
+
+        if(locationY <= 0) {
+            toolBarContainer.setY(getStatusBarHeight());
+        }
+    }
+
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
     private void setupWebView() {
@@ -115,6 +148,8 @@ public class LinkPaymentToolActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     private class MyWebViewClient extends WebViewClient {
         private String pendingUrl;

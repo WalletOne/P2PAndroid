@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".paydeal.PayDealActivity"
+    android:id="@+id/container"
     android:orientation="vertical">
 
     <include layout="@layout/w1_p2p_toolbar"/>

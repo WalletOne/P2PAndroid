@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.walletone.p2pui.R;
@@ -17,6 +19,8 @@ import com.walletone.p2pui.util.ActivityUtils;
  */
 
 public class PaymentToolActivity extends AppCompatActivity {
+
+    private static final String LOG_TAG = "W1P2PToolbar";
 
     public static final String ARG_OWNER_ID = "PaymentToolActivity.ARG_OWNER_ID";
     public static final String ARG_PAYMENT_TOOL_ID = "PaymentToolActivity.ARG_PAYMENT_TOOL_ID";
@@ -65,4 +69,33 @@ public class PaymentToolActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        LinearLayout toolBarContainer = findViewById(R.id.container);
+
+        int[] location = new int[2];
+        toolBarContainer.getLocationOnScreen(location);
+        int locationY = location[1];
+
+        Log.d(LOG_TAG, "locationY: " + locationY);
+        Log.d(LOG_TAG, "getY(): " + toolBarContainer.getY());
+
+        if(locationY <= 0) {
+            Log.d(LOG_TAG, "setY(): " + getStatusBarHeight());
+            toolBarContainer.setY(getStatusBarHeight());
+        }
+    }
+
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+
 }

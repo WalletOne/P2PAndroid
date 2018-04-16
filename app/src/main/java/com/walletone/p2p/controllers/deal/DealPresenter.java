@@ -304,8 +304,12 @@ public class DealPresenter implements DealContract.Presenter {
                 true,
                 new CompleteHandler<com.walletone.sdk.models.Deal, Throwable>() {
                     @Override
-                    public void completed(com.walletone.sdk.models.Deal deal, Throwable var2) {
-                        detailView.showPayDealActivity("", dealId);
+                    public void completed(com.walletone.sdk.models.Deal deal, Throwable error) {
+                        if(error != null) {
+                            detailView.showError(error);
+                        } else {
+                            detailView.showPayDealActivity("", dealId);
+                        }
                     }
                 }
         );

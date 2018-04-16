@@ -12,6 +12,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.walletone.p2pui.R;
@@ -110,6 +111,31 @@ public class PayDealActivity extends AppCompatActivity {
                 super.onProgressChanged(view, newProgress);
             }
         });
+    }
+
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        LinearLayout toolBarContainer = findViewById(R.id.container);
+
+        int[] location = new int[2];
+        toolBarContainer.getLocationOnScreen(location);
+        int locationY = location[1];
+
+        if(locationY <= 0) {
+            toolBarContainer.setY(getStatusBarHeight());
+        }
+    }
+
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
     private class MyWebViewClient extends WebViewClient {
