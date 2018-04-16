@@ -69,16 +69,13 @@ public enum P2PCore {
 
     public BeneficiariesPaymentToolsManager beneficiariesPaymentTools = new BeneficiariesPaymentToolsManager(this);
 
-    public DealsManager dealsManager = new DealsManager(this);
+    public PayersPaymentToolsManager payersPaymentTools = new PayersPaymentToolsManager(this);
 
-    public PayersPaymentToolsManager payersPaymentToolsManager = new PayersPaymentToolsManager(this);
+    public DealsManager dealsManager = new DealsManager(this);
 
     public PayoutsManager payoutsManager = new PayoutsManager(this);
 
     public RefundsManager refundsManager = new RefundsManager(this);
-
-    /// Manager for working with payers payment tools
-    public PayersPaymentToolsManager payersPaymentTools = new PayersPaymentToolsManager(this);
 
     public boolean isInitialized() {
         return this.initialised;

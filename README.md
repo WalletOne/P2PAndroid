@@ -14,14 +14,14 @@ allprojects {
 Для интеграции P2P в ваш проект, используя Gradle, укажите его в списке зависимостей в build.gradle файле.
 ```bash
 dependencies {
-		compile 'com.walletone.p2p:sdk:0.3.3'
-		compile 'com.walletone.p2p:p2pui:0.3.3'
+		compile 'com.walletone.p2p:sdk:0.3.5'
+		compile 'com.walletone.p2p:p2pui:0.3.5'
 	}
 ```
 
 ```ruby
 '0.1.2' # (Поддержка только банковских карт)
-'0.3.3' #  (Поддержка разных платежных средств (Карты, Альфа-Клик, Qiwi и т.д.))
+'0.3.5' #  (Поддержка разных платежных средств (Карты, Альфа-Клик, Qiwi и т.д.))
 ```
 
 
@@ -176,7 +176,7 @@ P2PCore.INSTANCE.dealsManager.create(
 	"PLATFORM_BENEFICIARY_ID",
 	"PAYER_PAYMENT_TOOL_ID", // опциoнальный, 
 	"BENEFICIARY_PAYMENT_TOOL_ID",
-	100, // Сумма к оплате
+	new BigDecimal(100), // Сумма к оплате
 	CurrencyId.RUB, // валюта
 	"PLATFORM_DEAL_SHORT_DESCRIPTION",
 	"PLATFORM_DEAL_FULL_DESCRIPTION",
@@ -258,6 +258,7 @@ final RequestBuilder request = P2PCore.INSTANCE.dealsManager.payRequest("PLATFOR
 P2PCore.INSTANCE.dealsManager.status(dealId, new CompleteHandler<Deal, Throwable>() {
             @Override
             public void completed(Deal deal, Throwable error) {
+                // error != null в случае ошибки
                 switch (deal.getDealStateId()) {
                     case DEAL_STATE_ID_PROCESSING:
 		    	// Возникает в случае ошибки оплаты. Например недостаточно средств на карте заказчика
