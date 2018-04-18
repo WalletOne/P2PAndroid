@@ -38,7 +38,7 @@ dependencies {
 P2PCore.INSTANCE.setPlatform("PLATFORM_ID", "PLATFORM_SIGNATURE_KEY", Environment.PRODUCT);
 ```
 
-Значения `PLATFORM_ID` и `PLATFORM_SIGNATURE_KEY` вы получите при регистрации в сервисе [P2P Wallet One](https://www.walletone.com/ru/p2p/). Environment.PRODUCT используется в релизах, Environment.SANDBOX используется для тестирования.
+Значения `PLATFORM_ID` и `PLATFORM_SIGNATURE_KEY` вы получите при регистрации в сервисе [P2P Wallet One](https://www.walletone.com/ru/p2p/). `Environment.PRODUCT` используется в релизах, `Environment.SANDBOX` используется для тестирования.
 
 ### Шаг 2 (Конфигурация пользователя):
 
@@ -184,10 +184,10 @@ P2PCore.INSTANCE.dealsManager.create(
 	  new CompleteHandler<Deal, Throwable>() {
 	      @Override
 	      public void completed(Deal deal, Throwable error) {
-		 if(deal != null){
-		    // Pay deal
-		 } else {
+		 if(error != null){
 		    // Process error
+		 } else {
+		    // Pay deal
 		 }
 	      }
 	  }
@@ -258,17 +258,20 @@ final RequestBuilder request = P2PCore.INSTANCE.dealsManager.payRequest("PLATFOR
 P2PCore.INSTANCE.dealsManager.status(dealId, new CompleteHandler<Deal, Throwable>() {
             @Override
             public void completed(Deal deal, Throwable error) {
-                // error != null в случае ошибки
-                switch (deal.getDealStateId()) {
-                    case DEAL_STATE_ID_PROCESSING:
-		    	// В процессе оплаты. Тут необходимо проверить статус еще раз через некоторое время
-                        break;
-                    case DEAL_STATE_ID_PAYMENT_PROCESS_ERROR:
-				// Возникает в случае ошибки оплаты. Например недостаточно средств на карте заказчика
-                        break;
-                    case DEAL_STATE_ID_PAID:
-		       // Средства успешно зарезевированы
-                        break;
+               if(error != null){
+                // Завершилось с сетевой ошибкой (ответ != 200 ОК)
+                } else {
+                    switch (deal.getDealStateId()) {
+                        case DEAL_STATE_ID_PROCESSING:
+                    // В процессе оплаты. Тут необходимо проверить статус еще раз через некоторое время
+                            break;
+                        case DEAL_STATE_ID_PAYMENT_PROCESS_ERROR:
+                    // Возникает в случае ошибки оплаты. Например недостаточно средств на карте заказчика
+                            break;
+                        case DEAL_STATE_ID_PAID:
+                   // Средства успешно зарезевированы
+                            break;
+                    }
                 }
             }
         });
@@ -286,8 +289,8 @@ P2PCore.INSTANCE.dealsManager.complete(dealId, new CompleteHandler<Deal, Throwab
             @Override
             public void completed(Deal deal, Throwable error) {
 	    	if(error != null){
-			// Завершилось с ошибкой
-		} else {
+			// Завершилось с сетевой ошибкой (ответ != 200 ОК)
+		    } else {
 			switch (deal.getDealStateId()) {
 			    case DEAL_STATE_ID_PAYOUT_PROCESSING:
 				// выплата в процессе
