@@ -14,14 +14,14 @@ allprojects {
 Для интеграции P2P в ваш проект, используя Gradle, укажите его в списке зависимостей в build.gradle файле.
 ```bash
 dependencies {
-		compile 'com.walletone.p2p:sdk:0.3.5'
-		compile 'com.walletone.p2p:p2pui:0.3.5'
+		compile 'com.walletone.p2p:sdk:0.3.6'
+		compile 'com.walletone.p2p:p2pui:0.3.6'
 	}
 ```
 
 ```ruby
 '0.1.2' # (Поддержка только банковских карт)
-'0.3.5' #  (Поддержка разных платежных средств (Карты, Альфа-Клик, Qiwi и т.д.))
+'0.3.6' #  (Поддержка разных платежных средств (Карты, Альфа-Клик, Qiwi и т.д.))
 ```
 
 
@@ -387,7 +387,6 @@ P2PCore.INSTANCE.refundsManager.refunds(pageNumber, itemsPerPage, dealId, handle
 В `P2PCore` имеется возможность массово завершить сделки.
 
 ```java
-        // dealIds List<String> - список идентификаторов завершаемых сделок.
         P2PCore.INSTANCE.dealsManager.complete(dealIds, new CompleteHandler<List<Deal>, Throwable>() {
             @Override
             public void completed(List<Deal> deals, Throwable error) {
@@ -395,6 +394,26 @@ P2PCore.INSTANCE.refundsManager.refunds(pageNumber, itemsPerPage, dealId, handle
 		            // error: null в случае успешного запроса
             }
         });
+```
+
+### Подтверждение сделки:
+
+Метод актуален для сделок в состоянии PaymentHold. 
+Позволяет завершить оплату сделки. После вызова метода сделка переходит в состояние PaymentHoldProcessing, 
+после чего будет запущен механизм проведения предавторизованой операции по сделке. 
+После завершения операции, состояние сделки сменится на Paid.
+
+```java
+        P2PCore.INSTANCE.dealsManager.confirm(dealId, new CompleteHandler<Deal, Throwable>() {
+            @Override
+            public void completed(Deal deal, Throwable error) {
+		        if(error != null){
+					// Завершилось с сетевой ошибкой (ответ != 200 ОК)
+				} else {
+					// Сделка со статусом Paid
+				}
+			}
+		});
 ```
 
 Полный сценарий работы сервиса Вы можете посмотреть в проекте.
