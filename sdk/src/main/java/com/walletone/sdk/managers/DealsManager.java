@@ -61,6 +61,10 @@ public class DealsManager extends Manager {
             return getInstance().relative(deals(), "complete");
         }
 
+        String dealsConfirm(String dealId) {
+            return getInstance().relative(deals(dealId), "confirm");
+        }
+
         String dealsCancel(String dealId) {
             return getInstance().relative(deals(dealId), "cancel");
         }
@@ -168,6 +172,22 @@ public class DealsManager extends Manager {
         params.put("PaymentToolId", paymentToolId);
 
         return core.networkManager.requestList(composer.dealsComplete(), NetworkManager.MethodType.PUT, params, Deal.class, callback);
+    }
+
+    /**
+     * Confirm deal
+     * The method is relevant for transactions in the state of Payment Hold. Allows you to complete the transaction payment.
+     * After calling the method, the transaction goes into a state of PaymentHoldProcessing,
+     * which invokes a mechanism for predvaritelnoe operations in the transaction.
+     * After the operation is completed, the status of the transaction will be changed to Paid.
+     *
+     * @param dealId   Platform deal ID
+     * @param callback Callback from server
+     * @return confirmed deal
+     */
+
+    public Deal confirm(String dealId, CompleteHandler<Deal, Throwable> callback) {
+        return core.networkManager.request(composer.dealsConfirm(dealId), NetworkManager.MethodType.PUT, null, Deal.class, callback);
     }
 
     /**
