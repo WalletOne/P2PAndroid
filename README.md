@@ -267,10 +267,17 @@ P2PCore.INSTANCE.dealsManager.status(dealId, new CompleteHandler<Deal, Throwable
                             break;
                         case DEAL_STATE_ID_PAYMENT_PROCESS_ERROR:
                     // Возникает в случае ошибки оплаты. Например недостаточно средств на карте заказчика
+							break;
+						case DEAL_STATE_ID_PAYMENT_HOLD:
+						// Средства успешно зарезевированы
                             break;
-                        case DEAL_STATE_ID_PAID:
-                   // Средства успешно зарезевированы
+                        case DEAL_STATE_ID_COMPLETED:
+						// выплата прошла успешно
                             break;
+						case DEAL_STATE_ID_PAID:
+						// возникает после успешно подтверждения
+							break;
+							...
                     }
                 }
             }
@@ -301,6 +308,7 @@ P2PCore.INSTANCE.dealsManager.complete(dealId, new CompleteHandler<Deal, Throwab
 			    case DEAL_STATE_ID_COMPLETED:
 				// выплата прошла успешно
 				break;
+				...
 			}
 		}
                 
