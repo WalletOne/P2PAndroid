@@ -263,21 +263,22 @@ P2PCore.INSTANCE.dealsManager.status(dealId, new CompleteHandler<Deal, Throwable
                 } else {
                     switch (deal.getDealStateId()) {
                         case DEAL_STATE_ID_PROCESSING:
-                    // В процессе оплаты. Тут необходимо проверить статус еще раз через некоторое время
+			// В процессе оплаты. Тут необходимо проверить статус еще раз через некоторое время
                             break;
                         case DEAL_STATE_ID_PAYMENT_PROCESS_ERROR:
-                    // Возникает в случае ошибки оплаты. Например недостаточно средств на карте заказчика
-							break;
-						case DEAL_STATE_ID_PAYMENT_HOLD:
-						// Средства успешно зарезевированы
+			// Возникает в случае ошибки оплаты. Например недостаточно средств на карте заказчика
+			    break;
+			case DEAL_STATE_ID_PAYMENT_HOLD:
+			// Средства успешно зарезевированы
                             break;
+			case DEAL_STATE_ID_PAID:
+			// сделка успешно оплачена
+			    break;
                         case DEAL_STATE_ID_COMPLETED:
-						// выплата прошла успешно
+			// выплата прошла успешно
                             break;
-						case DEAL_STATE_ID_PAID:
-						// возникает после успешно подтверждения
-							break;
-							...
+
+			...
                     }
                 }
             }
